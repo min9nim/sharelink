@@ -12,7 +12,9 @@ const app = {
     api: {
         // 전체 목록 조회
         getLinks : async () => {
-            let res = await fetch(app.BACKEND + "/links");
+            let res = await fetch(app.BACKEND + "/links", {
+                method: "GET"
+            });
             let json = await res.json();
             app.state.links = json;
         },
