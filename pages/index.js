@@ -7,6 +7,7 @@ export default class List extends React.Component {
   constructor(props){
     super(props);
     app.view.List = this;
+    app.api.getLinks();
   }
 
   render() {

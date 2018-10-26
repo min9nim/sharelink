@@ -6,12 +6,16 @@ const remove = async (post) => {
     if(!confirm("삭제합니다")){
         return;
     }
+    app.api.deleteLink(post.id);
     app.state.links = app.state.links.filter(l => l.id !== post.id);
 }
 
 const Post = ({ link }) => (
     <li>
-        <div>
+        <div className="title">
+            <a href={link.url} target="_blank">{link.title}</a>
+        </div>
+        <div className="url">
             <a href={link.url} target="_blank">{link.url}</a>
         </div>
         <div className="post-menu">
@@ -24,9 +28,17 @@ const Post = ({ link }) => (
         margin: 20px 0;
       }
 
+      .title {
+        color: green;
+        font-size: 24px;
+      }
+
+      .title a:-webkit-any-link {
+         color: #333;
+      }
+
       a {
         text-decoration: none;
-        color: green;
         font-family: "Arial";
       }
 

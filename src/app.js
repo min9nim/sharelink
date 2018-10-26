@@ -1,28 +1,61 @@
 import { observable, reaction, decorate } from "mobx";
+import fetch from 'isomorphic-unfetch';
+
 
 
 const app = {
     state : {
-        links: [
-            { id: 'hello-nextjs', title: 'Hello Next.js', url: "http://paulgraham.com/head.html"},
-            { id: 'learn-nextjs', title: 'Learn Next.js is awesome', url: "http://daum.net"},
-            { id: 'learn-nextjs2', title: 'Learn Next.js is awesome', url: "http://daum1.net"},
-            { id: 'learn-nextjs3', title: 'Learn Next.js is awesome', url: "http://daum2.net"},
-            { id: 'learn-nextjs4', title: 'Learn Next.js is awesome', url: "http://daum3.net"},
-            { id: 'deploy-nextjs', title: 'Deploy apps with ZEIT', url: "https://anony-212509.appspot.com/inswave"},
-        ],
+        links: [],
     },
-    view : {}
+    view : {},          // 공유가 필요한 react 컴포넌트
+    BACKEND : "https://sharelink-backend-wglcudxfxv.now.sh",
+    api: {
+        // 전체 목록 조회
+        getLinks : async () => {
+            let res = await fetch(app.BACKEND + "/links");
+            let json = await res.json();
+            app.state.links = json;
+        },
 
+        // 링크삭제
+        deleteLink : async (id) => {
+            let res = await fetch(app.BACKEND + "/links/" + id, {
+                method: 'DELETE',
+                //body: JSON.stringify(data),
+            })
+            //let json = await res.json();
+        },
+
+        // 링크추가
+        postLink : async (link) => {
+            let res = await fetch(app.BACKEND + "/links/", {
+                method : "POST",
+                body: JSON.stringify(link),
+                headers:{
+                  'Content-Type': 'application/json'
+                }
+            });
+        },
+
+        // 링크수정
+        putLink : async (link) => {
+            let res = await fetch(app.BACKEND + "/links/" + link.id, {
+                method : "PUT",
+                body: JSON.stringify(link),
+                headers:{
+                  'Content-Type': 'application/json'
+                }
+            });
+        }
+    }
 };
 
 decorate(app, {state: observable});
 
 // 변화에 따른 효과를 정의
-reaction(() => app.state.links.length, () => {
-    app.view.List.forceUpdate();
+reaction(() => JSON.stringify(app.state.links), () => {
+    app.view.List && app.view.List.forceUpdate();
 });
 
 global.app = app;
-
 export default app;
