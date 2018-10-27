@@ -8,7 +8,7 @@ const app = {
         links: [],
     },
     view : {},          // 공유가 필요한 react 컴포넌트
-    BACKEND : "https://sharelink-backend-wglcudxfxv.now.sh",
+    BACKEND : "https://sharelink-backend.now.sh",
     api: {
         // 전체 목록 조회
         getLinks : async () => {
