@@ -2,13 +2,22 @@ import { observable, reaction, decorate } from "mobx";
 import fetch from 'isomorphic-unfetch';
 
 
+let BACKEND;
+//console.log("process.env.NODE_ENV = " + process.env.NODE_ENV);
+if(process.env.NODE_ENV === "development"){
+    BACKEND = "http://localhost:3030";
+}else{
+    BACKEND = "https://sharelink-backend.now.sh";
+}
+console.log("Backend server : " + BACKEND);
+
 
 const app = {
     state : {
         links: [],
     },
     view : {},          // 공유가 필요한 react 컴포넌트
-    BACKEND : "https://sharelink-backend.now.sh",
+    BACKEND,
     api: {
         // 전체 목록 조회
         getLinks : async () => {
@@ -30,7 +39,7 @@ const app = {
 
         // 링크추가
         postLink : async (link) => {
-            let res = await fetch(app.BACKEND + "/links/", {
+            let res = await fetch(app.BACKEND + "/links", {
                 method : "POST",
                 body: JSON.stringify(link),
                 headers:{
@@ -48,6 +57,17 @@ const app = {
                   'Content-Type': 'application/json'
                 }
             });
+        },
+
+        getTitle : async (url) => {
+            let res = await fetch(app.BACKEND + "/get-title", {
+                method : "POST",
+                body : JSON.stringify({url}),
+                headers:{
+                  'Content-Type': 'application/json'
+                }
+            })
+            return await res.json();
         }
     }
 };

@@ -30,7 +30,7 @@ const Post = ({ link }) => (
 
       .title {
         color: green;
-        font-size: 24px;
+        font-size: 22px;
       }
 
       .title a:-webkit-any-link {
