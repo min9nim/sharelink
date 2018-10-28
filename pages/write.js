@@ -80,7 +80,8 @@ class Write extends React.Component {
   async handleFocus() {
     console.log("@@ handleFocus called..")
     if (this.state.url === "") return;
-    this.state.title = "적절한 제목을 생각 중 입니다";
+    if (this.state.title !== "") return;
+    this.state.title = "글제목을 가져오는 중 입니다";
     let json = await app.api.getTitle(this.state.url);
     
     // 타이틀 세팅
