@@ -1,35 +1,18 @@
 import Link from 'next/link';
+import "./Header.scss";
 
 const Header = () => (
-  <div className="headerStyle">
-    <div className="logo">
+  <div className="header">
+    <div className="logo-wrapper">
       <Link href="/">
-        <a className="linkStyle">Sharelink</a>
+        <div className="logo">Sharelink</div>
       </Link>
     </div>
-    <div>
+    <div className="btn-wrapper">
       <Link href="/write">
-        <a className="linkStyle">등록</a>
+        <div className="add-btn">등록</div>
       </Link>
     </div>
-
-    <style jsx>{`
-      .headerStyle {
-        border-bottom: 1px solid #DDD;
-        display: flex;
-      }
-      .linkStyle{
-      margin-right: 15px;
-      }
-      .logo {
-        flex: 1;
-        font-size: 20px;
-      }
-
-      a:-webkit-any-link {
-        text-decoration: none;
-      }      
-  `}</style>
   </div>
 )
 

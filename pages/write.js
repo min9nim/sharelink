@@ -82,20 +82,26 @@ class Write extends React.Component {
     if (this.state.url === "") return;
     if (this.state.title !== "") return;
     this.state.title = "글제목을 가져오는 중 입니다";
-    let json = await app.api.getTitle(this.state.url);
+    this.state.desc = "글내용을 가져오는 중입니다";
+    let {title, image, desc} = await app.api.getTitle(this.state.url);
     
     // 타이틀 세팅
-    this.state.title = json.title;
+    this.state.title = title;
 
-    // 이미지 세팅
-    if(json.image.indexOf("http") === 0){
-      this.state.image = json.image;
+  
+    //이미지 세팅
+    if(image.indexOf("http") === 0){
       // http 로 시작하면 그냥 사용
+      this.state.image = image;
     }else{
       let url = new URL(this.state.url);
-      this.state.image = url.protocol + "//" + url.hostname + json.image;
-      console.log(this.state.image)  
+      this.state.image = url.protocol + "//" + url.hostname + image;
+      //console.log(this.state.image);
     }
+
+    // 설명세팅
+    this.state.desc = desc;
+
   }
 
   render() {

@@ -21,6 +21,10 @@ const Post = ({ link }) => (
         <div className="url">
           <a href={link.url} target="_blank">{link.url}</a>
         </div>
+        <div className="desc">
+          {link.desc}
+        </div>
+
         <div className="post-menu">
           <Link href={`/write?id=${link.id}`}><div>수정</div></Link>
           <div onClick={() => remove(link)}>삭제</div>
