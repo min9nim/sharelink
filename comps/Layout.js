@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Header from './Header';
+import "./Layout.scss";
 
 const Layout = (props) => (
   <div className="layoutStyle">
@@ -9,15 +10,6 @@ const Layout = (props) => (
     </Head>  
     <Header />
     {props.children}
-
-    <style jsx>{`
-    .layoutStyle {
-      margin: 0px auto;
-      padding: 0px 15px;
-      max-width: 1000px;
-    }
-
-  `}</style>    
   </div>
 )
 
