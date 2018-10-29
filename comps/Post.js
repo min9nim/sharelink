@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import app from '../src/app';
+import URL from "url-parse";
+
 import "./Post.scss";
 
 
@@ -11,30 +13,33 @@ const remove = async (post) => {
   app.state.links = app.state.links.filter(l => l.id !== post.id);
 }
 
-const Post = ({ link }) => (
-  <li>
-    <div className="wrapper">
-      <div className="left">
-        <div className="title">
-          <a href={link.url} target="_blank">{link.title}</a>
-        </div>
-        <div className="url">
-          <a href={link.url} target="_blank">{link.url}</a>
-        </div>
-        <div className="desc">
-          {link.desc}
-        </div>
+const Post = ({ link }) => {
+  let {hostname} = new URL(link.url);
 
-        <div className="post-menu">
-          <Link href={`/write?id=${link.id}`}><div>수정</div></Link>
-          <div onClick={() => remove(link)}>삭제</div>
+  return (
+    <li>
+      <div className="wrapper">
+        <div className="left">
+          <div className="title">
+            <a href={link.url} target="_blank">{link.title}</a>
+          </div>
+          <div className="url">
+            {hostname}
+          </div>
+          <div className="desc">
+            {link.desc}
+          </div>
+          <div className="post-menu">
+            <Link href={`/write?id=${link.id}`}><div>수정</div></Link>
+            <div onClick={() => remove(link)}>삭제</div>
+          </div>
+        </div>
+        <div className="right">
+          <img src={link.image}></img>
         </div>
       </div>
-      <div className="right">
-        <img src={link.image}></img>
-      </div>
-    </div>
-  </li>
-)
+    </li>
+  )
+}
 
 export default Post;

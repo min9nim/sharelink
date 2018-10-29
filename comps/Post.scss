@@ -1,3 +1,7 @@
+
+
+
+
 li {
     list-style: none;
     margin: 10px 0px;
@@ -9,17 +13,20 @@ li {
             flex: 1;
             .title {
                 color: green;
-                font-size: 22px;
+                font-size: 18px;
                 a:-webkit-any-link {
                     color: #333;
                 }
             }
             .url {
                 font-size: 14px;
+                color:darkslategray;
             }
             .desc {
                 font-size: 14px;
                 color: #999;
+                max-height: 35px;
+                overflow: hidden;
             }
             .post-menu {
                 margin-top: 5px;
@@ -41,11 +48,31 @@ li {
         }
         .right {
             text-align: center;
-            width: 200px;
+            margin-left: 5px;
             img {
-                max-width: 200px;
                 max-height: 150px;
             }
+        }
+    }
+}
+
+
+$img-width: 200px;
+$img-width-mobile: 100px;
+
+@media only screen and (max-width: 600px) {
+    li .wrapper .right {
+        width: $img-width-mobile;
+        img {
+            max-width: $img-width-mobile;
+        }
+    }
+}
+@media only screen and (min-width: 601px) {
+    li .wrapper .right {
+        width: $img-width;
+        img {
+            max-width: $img-width;
         }
     }
 }
