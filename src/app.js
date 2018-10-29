@@ -7,11 +7,8 @@ let BACKEND;
 if(process.env.NODE_ENV === "development"){
     BACKEND = "http://localhost:3030";
 }else{
-    //BACKEND = "https://sharelink-backend.now.sh";
-    BACKEND = "https://sharelink-backend.appspot.com";
+    BACKEND = "https://sharelink-mongoose.appspot.com";
 }
-
-BACKEND = "https://sharelink-backend.appspot.com";
 
 console.log("Backend server : " + BACKEND);
 
