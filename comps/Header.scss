@@ -6,9 +6,6 @@
         flex: 1;
         .logo {
             margin-right: 15px;
-            font-weight: bold;  
-            font-size: 24px;  
-            color: darkmagenta;
             cursor: pointer;
         }
     }
@@ -18,5 +15,12 @@
             margin-right: 15px;
             cursor: pointer;
         }
+    }
+}
+
+// mobile-first
+@media only screen and (max-width: 600px) {
+    .logo img {
+        width: 100px;
     }
 }
