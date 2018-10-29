@@ -119,13 +119,16 @@ class Write extends React.Component {
         <div className="wrapper">
           <div className="form">
             <div>
-              <input placeholder="http://" id="url" ref={el => { this.urlInput = el; }} value={this.state.url} onChange={this.handleChange.bind(this)} />
+              <input placeholder="(포스트주소) http://" id="url" ref={el => { this.urlInput = el; }} value={this.state.url} onChange={this.handleChange.bind(this)} />
             </div>
             <div>
               <input placeholder="제목" id="title" ref={el => { this.titleInput = el; }} value={this.state.title} onChange={this.handleChange.bind(this)} onFocus={this.handleFocus.bind(this)} />
             </div>
             <div>
               <input placeholder="간단 설명(선택)" id="desc" value={this.state.desc} onChange={this.handleChange.bind(this)} />
+            </div>
+            <div>
+              <input placeholder="(이미지주소) http://" id="image" value={this.state.image} onChange={this.handleChange.bind(this)} />
             </div>
           </div>
           <div className="image">
