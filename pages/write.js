@@ -4,8 +4,9 @@ import app from "../src/app";
 import { observable, reaction, decorate } from "mobx";
 import shortid from "shortid";
 import Link from 'next/link';
-import fetch from 'isomorphic-unfetch';
 import URL from "url-parse";
+
+import "./write.scss";
 
 
 class Write extends React.Component {
@@ -78,36 +79,43 @@ class Write extends React.Component {
   }
 
   async handleFocus() {
-    console.log("@@ handleFocus called..")
     if (this.state.url === "") return;
     if (this.state.title !== "") return;
-    this.state.title = "글제목을 가져오는 중 입니다";
-    this.state.desc = "글내용을 가져오는 중입니다";
-    let {title, image, desc} = await app.api.getTitle(this.state.url);
     
-    // 타이틀 세팅
-    this.state.title = title;
+    this.state.title = "글 제목을 가져오는 중 입니다";
+    this.state.desc = "글 내용을 가져오는 중입니다";
 
+    try{
+      let {title, image, desc} = await app.api.getTitle(this.state.url);
+    
+      // 타이틀 세팅
+      this.state.title = title;
+    
+      //이미지 세팅
+      if(image.indexOf("http") === 0){
+        // http 로 시작하면 그냥 사용
+        this.state.image = image;
+      }else{
+        let url = new URL(this.state.url);
+        this.state.image = url.protocol + "//" + url.hostname + image;
+        //console.log(this.state.image);
+      }
   
-    //이미지 세팅
-    if(image.indexOf("http") === 0){
-      // http 로 시작하면 그냥 사용
-      this.state.image = image;
-    }else{
-      let url = new URL(this.state.url);
-      this.state.image = url.protocol + "//" + url.hostname + image;
-      //console.log(this.state.image);
-    }
+      // 설명세팅
+      this.state.desc = desc;      
+    }catch(e){
+      console.error(e.message);
 
-    // 설명세팅
-    this.state.desc = desc;
+      this.state.title = "글 제목을 가져올 수 없습니다";
+      this.state.desc = "글 내용을 가져올 수 없습니다";
+    }
 
   }
 
   render() {
     return (
       <Layout>
-        <h2>포스트 등록</h2>
+        <div className="write-title">포스트를 등록해 주세요</div>
         <div className="wrapper">
           <div className="form">
             <div>
@@ -129,34 +137,6 @@ class Write extends React.Component {
           <button onClick={this.save.bind(this)}>저장하기</button>
           <Link href="/"><button>취소</button></Link>
         </div>
-        <style jsx global>{`
-      .form {
-        flex:1 ;
-        margin-right: 20px;
-      }
-      .form > div {
-        margin: 10px 0px;
-      }
-      input {
-        width: 100%;
-        max-width: 800px;
-        height: 30px;
-        font-size: 16px;
-      }
-
-      .btn > button {
-        margin: 0px 5px;
-        cursor: pointer;
-      }
-
-      .wrapper {
-        display: flex;
-      }
-
-      .image > img {
-        width: 200px;
-      }
-    `}</style>
       </Layout>
     )
   }
