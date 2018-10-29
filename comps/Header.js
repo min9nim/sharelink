@@ -5,7 +5,7 @@ const Header = () => (
   <div className="header">
     <div className="logo-wrapper">
       <Link href="/">
-        <div className="logo">Sharelink</div>
+        <div className="logo"><img src="/static/logo.png"></img></div>
       </Link>
     </div>
     <div className="btn-wrapper">
