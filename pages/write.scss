@@ -1,6 +1,7 @@
+@import "../com/style.scss";
+
 $img-width: 200px;
 $img-width-mobile: 100px;
-
 
 .write-title {
     font-size: 18px;
@@ -9,14 +10,11 @@ $img-width-mobile: 100px;
 
 .wrapper {
     display: flex;
-
     .form {
         flex: 1;
         margin-right: 20px;
-
         div {
             margin-bottom: 10px;
-
             input {
                 width: 100%;
                 max-width: 800px;
@@ -24,14 +22,13 @@ $img-width-mobile: 100px;
                 font-size: 16px;
             }
         }
-
-        .image {
-            img {
-                width: 200px;
-                max-width: $img-width;
-            }
-        }
     }
+    .image {
+        img {
+            width: 200px;
+            max-width: $img-width;
+        }
+    }    
 }
 
 .btn {
@@ -41,7 +38,13 @@ $img-width-mobile: 100px;
     }
 }
 
-@media only screen and (max-width: 600px) {
+// @media only screen and (max-width: $mobile-width) {
+//     .wrapper .image img {
+//         max-width: $img-width-mobile;
+//     }
+// }
+
+@include mobile() {
     .wrapper .image img {
         max-width: $img-width-mobile;
     }

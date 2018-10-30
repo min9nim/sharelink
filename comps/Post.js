@@ -14,7 +14,7 @@ const remove = async (post) => {
 }
 
 const Post = ({ link }) => {
-  let {hostname} = new URL(link.url);
+  let { hostname } = new URL(link.url);
 
   return (
     <li>
@@ -23,9 +23,7 @@ const Post = ({ link }) => {
           <div className="title">
             <a href={link.url} target="_blank">{link.title}</a>
           </div>
-          <div className="url">
-            {hostname}
-          </div>
+          <div className="url">{hostname}</div>
           <div className="desc">
             {link.desc}
           </div>

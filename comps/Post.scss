@@ -1,6 +1,6 @@
-
-
-
+@import "../com/style.scss";
+$img-width: 200px;
+$img-width-mobile: 100px;
 
 li {
     list-style: none;
@@ -20,7 +20,7 @@ li {
             }
             .url {
                 font-size: 14px;
-                color:darkslategray;
+                color: $site-color;
             }
             .desc {
                 font-size: 14px;
@@ -49,30 +49,20 @@ li {
         .right {
             text-align: center;
             margin-left: 5px;
+            width: $img-width;
             img {
                 max-height: 150px;
+                max-width: $img-width;
             }
         }
     }
 }
 
-
-$img-width: 200px;
-$img-width-mobile: 100px;
-
-@media only screen and (max-width: 600px) {
+@include mobile() {
     li .wrapper .right {
         width: $img-width-mobile;
         img {
             max-width: $img-width-mobile;
-        }
-    }
-}
-@media only screen and (min-width: 601px) {
-    li .wrapper .right {
-        width: $img-width;
-        img {
-            max-width: $img-width;
         }
     }
 }
