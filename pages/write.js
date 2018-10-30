@@ -81,29 +81,29 @@ class Write extends React.Component {
   async handleFocus() {
     if (this.state.url === "") return;
     if (this.state.title !== "") return;
-    
+
     this.state.title = "글 제목을 가져오는 중 입니다";
     this.state.desc = "글 내용을 가져오는 중입니다";
 
-    try{
-      let {title, image, desc} = await app.api.getTitle(this.state.url);
-    
+    try {
+      let { title, image, desc } = await app.api.getTitle(this.state.url);
+
       // 타이틀 세팅
       this.state.title = title;
-    
+
       //이미지 세팅
-      if(image.indexOf("http") === 0){
+      if (image.indexOf("http") === 0) {
         // http 로 시작하면 그냥 사용
         this.state.image = image;
-      }else{
+      } else {
         let url = new URL(this.state.url);
         this.state.image = url.protocol + "//" + url.hostname + image;
         //console.log(this.state.image);
       }
-  
+
       // 설명세팅
-      this.state.desc = desc;      
-    }catch(e){
+      this.state.desc = desc;
+    } catch (e) {
       console.error(e.message);
 
       this.state.title = "글 제목을 가져올 수 없습니다";
@@ -119,23 +119,27 @@ class Write extends React.Component {
         <div className="wrapper">
           <div className="form">
             <div>
+              <div className="label">글주소</div>
               <input placeholder="http://" id="url" ref={el => { this.urlInput = el; }} value={this.state.url} onChange={this.handleChange.bind(this)} />
             </div>
             <div>
-              <input placeholder="제목" id="title" ref={el => { this.titleInput = el; }} value={this.state.title} onChange={this.handleChange.bind(this)} onFocus={this.handleFocus.bind(this)} />
+              <div className="label">글제목</div>
+              <input placeholder="" id="title" ref={el => { this.titleInput = el; }} value={this.state.title} onChange={this.handleChange.bind(this)} onFocus={this.handleFocus.bind(this)} />
             </div>
             <div>
-              <input placeholder="간단 설명(선택)" id="desc" value={this.state.desc} onChange={this.handleChange.bind(this)} />
+              <div className="label">간단 설명(선택)</div>
+              <input placeholder="" id="desc" value={this.state.desc} onChange={this.handleChange.bind(this)} />
             </div>
             <div>
-              <input placeholder="이미지경로" id="image" value={this.state.image} onChange={this.handleChange.bind(this)} />
+              <div className="label">대표 이미지 경로</div>
+              <input placeholder="" id="image" value={this.state.image} onChange={this.handleChange.bind(this)} />
             </div>
           </div>
           <div className="image">
             <img src={this.state.image}></img>
           </div>
         </div>
-        
+
         <div className="btn">
           <button onClick={this.save.bind(this)}>저장하기</button>
           <Link href="/"><button>취소</button></Link>

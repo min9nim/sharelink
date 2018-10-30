@@ -28,8 +28,8 @@ const Post = ({ link }) => {
             {link.desc}
           </div>
           <div className="post-menu">
-            <Link href={`/write?id=${link.id}`}><div>수정</div></Link>
-            <div onClick={() => remove(link)}>삭제</div>
+            <Link href={`/write?id=${link.id}`}><div><button>수정</button></div></Link>
+            <div onClick={() => remove(link)}><button>삭제</button></div>
           </div>
         </div>
         <div className="right">

@@ -12,20 +12,27 @@ $img-width-mobile: 100px;
     display: flex;
     .form {
         flex: 1;
-        margin-right: 20px;
-        div {
+        margin-right: 40px;
+        > div {
             margin-bottom: 10px;
+            .label {
+                font-size: 14px;
+                color: #555;
+                margin-bottom: 5px;
+            }
             input {
                 width: 100%;
                 max-width: 800px;
-                height: 30px;
-                font-size: 16px;
+                height: 24px;
+                font-size: 14px;                
+                color: #777;
             }
         }
     }
     .image {
+        width: $img-width;
         img {
-            width: 200px;
+            width: $img-width;
             max-width: $img-width;
         }
     }    

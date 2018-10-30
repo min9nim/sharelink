@@ -1,5 +1,8 @@
+@import "../com/style.scss";
+
+
 .header {
-    border-bottom: 1px solid #DDD;
+    border-bottom: 2px solid $site-color;
     display: flex;
     padding: 5px 0px;
     .logo-wrapper {
@@ -7,10 +10,13 @@
         .logo {
             margin-right: 15px;
             cursor: pointer;
+            img {
+                //width: 120px;
+            }
         }
     }
     .btn-wrapper {
-        padding: 5px;
+        padding: 12px;
         .add-btn {
             margin-right: 15px;
             cursor: pointer;
