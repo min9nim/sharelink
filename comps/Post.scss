@@ -21,13 +21,14 @@ li {
             .url {
                 font-size: 14px;
                 color: $site-color;
+                margin: 2px 0px;
             }
             .desc {
                 font-size: 14px;
                 color: #999;
-                max-height: 35px;
+                max-height: 32px;
                 overflow: hidden;
-            }
+                line-height: 16px;            }
             .post-menu {
                 margin-top: 5px;
                 display: flex;
