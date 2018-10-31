@@ -9,17 +9,18 @@
         flex: 1;
         .logo {
             margin-right: 15px;
-            cursor: pointer;
             img {
                 //width: 120px;
+                cursor: pointer;
             }
         }
     }
     .btn-wrapper {
-        padding: 12px;
+        padding: 8px;
         .add-btn {
             margin-right: 15px;
             cursor: pointer;
+            font-size: 14px;
         }
     }
 }

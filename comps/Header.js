@@ -8,10 +8,9 @@ import "./Header.scss";
 const Header = () => (
   <div className="header">
     <div className="logo-wrapper">
-      <Link href="/">
-        <div className="logo"><img src="/static/logo.png"></img></div>
-        
-      </Link>
+      <div className="logo">
+        <Link href="/"><img src="/static/logo.png"></img></Link>
+      </div>
     </div>
     <div className="btn-wrapper">
       <Link href="/write">
