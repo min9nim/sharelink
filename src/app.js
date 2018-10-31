@@ -12,25 +12,24 @@ if (process.env.NODE_ENV === "development") {
 
 console.log("Backend server : " + BACKEND);
 
+//let user = global.sessionStorage && JSON.parse(global.sessionStorage.getItem("user"))
 
 const app = {
     state: {
         links: [],
         user: {
             name: "",
-            email: ""
+            email: "",
+            image: "",
+            token: ""
         },
     },
     auth: {// 로그인 관련
         isLogin: () => {
-            return app.user.email !== "";
+            return app.state.user.token !== "";
         },
-        signOut: () => {
-
-        },
-        signIn: () => {
-
-        }
+        signOut: () => {},
+        signIn: () => {}
     },
     view: {},          // 공유가 필요한 react 컴포넌트
     BACKEND,
@@ -95,26 +94,12 @@ reaction(() => JSON.stringify(app.state.links), () => {
     app.view.List && app.view.List.forceUpdate();
 });
 
-
-app.auth.onSiginIn = () => {
-    let auth2 = gapi.auth2.getAuthInstance();
-    let googleUser = auth2.currentUser.get();
-    var profile = googleUser.getBasicProfile();
-    console.log('ID: ' + profile.getId());
-    console.log('Full Name: ' + profile.getName());
-    console.log('Given Name: ' + profile.getGivenName());
-    console.log('Family Name: ' + profile.getFamilyName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail());
-
-    // The ID token you need to pass to your backend:
-    var id_token = googleUser.getAuthResponse().id_token;
-    console.log("ID Token: " + id_token);
+reaction(() => JSON.stringify(app.state.user), () => {
+    //sessionStorage.setItem("user", JSON.stringify(app.state.user));
+    app.view.Header && app.view.Header.forceUpdate();
+});
 
 
-    app.state.user.name = profile.getGivenName();
-    app.state.user.email = profile.getEmail();
-}
 
 
 global.app = app;

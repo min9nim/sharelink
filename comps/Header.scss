@@ -2,6 +2,7 @@
 
 
 .header {
+    position: relative;
     border-bottom: 2px solid $site-color;
     display: flex;
     padding: 5px 0px;
@@ -16,12 +17,63 @@
         }
     }
     .btn-wrapper {
+        display: flex;
         padding: 8px;
+        .user-name {
+            margin-right: 15px;
+            margin-left: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .user-image {
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+        }
         .add-btn {
             margin-right: 15px;
             cursor: pointer;
             font-size: 14px;
         }
+    }
+    .menu {
+        color: #888;
+        position: absolute;
+        right: 0px;
+        top: 50px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+        border-radius: 5px;
+        box-shadow: rgba(16, 58, 102, 0.2) 0px 5px 50px -5px;
+        font-family: sans-serif;
+        .user-info {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            justify-content: flex-start;
+            .user-name {
+                margin-right: 20px;
+                margin-left: 3px;
+                cursor: pointer;
+                font-size: 16px;
+                padding: 2px;
+                font-weight: bold;
+            }
+            .user-image {
+                width: 30px;
+                height: 30px;
+                border-radius: 15px;
+
+            }
+        }
+        .item {
+            > div {
+               margin: 8px 0px; 
+            } 
+        }
+
     }
 }
 
