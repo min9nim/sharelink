@@ -118,7 +118,7 @@ class Write extends React.Component {
   render() {
     return (
       <Layout>
-        <div className="write-title">포스트를 등록해 주세요</div>
+        <div className="write-title">링크 등록</div>
         <div className="wrapper">
           <div className="form">
             <div>
