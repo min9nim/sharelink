@@ -52,7 +52,12 @@ $img-width-mobile: 100px;
 // }
 
 @include mobile() {
-    .wrapper .image img {
-        max-width: $img-width-mobile;
-    }
+    .wrapper .image {
+        width: $img-width-mobile;
+        img {
+            width: $img-width-mobile;
+            max-width: $img-width-mobile;
+        }
+    } 
+
 }

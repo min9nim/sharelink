@@ -82,8 +82,10 @@ class Write extends React.Component {
     if (this.state.url === "") return;
     if (this.state.title !== "") return;
 
-    this.state.title = "글 제목을 가져오는 중 입니다";
-    this.state.desc = "글 내용을 가져오는 중입니다";
+    const loadingMessage = "Loading.."
+    this.state.title = loadingMessage;
+    this.state.desc = loadingMessage;
+    this.state.image = loadingMessage;
 
     try {
       let { title, image, desc } = await app.api.getTitle(this.state.url);
@@ -108,6 +110,7 @@ class Write extends React.Component {
 
       this.state.title = "글 제목을 가져올 수 없습니다";
       this.state.desc = "글 내용을 가져올 수 없습니다";
+      this.state.image = "이미지를 가져올 수 없습니다";
     }
 
   }

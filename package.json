@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next",
     "build": "next build",
-    "start": "next start -p $PORT"
+    "start": "next start -p $PORT",
+    "start-dev": "PORT=3000 npm start"
   },
   "keywords": [],
   "author": "",
