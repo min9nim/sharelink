@@ -118,7 +118,7 @@ class Write extends React.Component {
       this.state.title = title;
 
       //이미지 세팅
-      if (image.indexOf("http") === 0) {
+      if (image && image.indexOf("http") === 0) {
         // http 로 시작하면 그냥 사용
         this.state.image = image;
       } else {
@@ -134,7 +134,7 @@ class Write extends React.Component {
         this.descInput.setAttribute("placeholder", "글 설명을 가져올 수 없습니다")
       }
       if(this.state.image === ""){
-        this.imageInput.setAttribute("placeholder", "대표 이미지를 가져올 수 없습니다")
+        this.imageInput.setAttribute("placeholder", "대표 이미지가 없습니다")
       }
       
 

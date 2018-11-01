@@ -114,11 +114,9 @@ reaction(() => JSON.stringify(app.state.links), () => {
 
 reaction(() => app.state.userID, async () => {
     // app.state.userID 값을 바라보며 앱의 로그인 여부를 판단한다.
-    app.view.Header && app.view.Header.forceUpdate();
     if(app.auth.isLogin()){
         console.log("로그인 완료")
     }else{
-        global.document.onclick = undefined;
         app.user = {
             id: "",
             name: "",
@@ -127,6 +125,10 @@ reaction(() => app.state.userID, async () => {
             token: ""
         };
     }
+
+    app.view.Header && app.view.Header.forceUpdate();
+    app.view.List && app.view.List.forceUpdate();
+
 });
 
 

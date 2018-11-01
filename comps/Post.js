@@ -17,6 +17,11 @@ const remove = async (post) => {
 const Post = ({ link }) => {
   let { hostname } = new URL(link.url);
 
+
+  console.log(link.author.id);
+  console.log(app.user.id)
+  console.log(link.author.id === app.user.id);
+
   return (
     <li>
       <div className="wrapper">
