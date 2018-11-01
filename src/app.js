@@ -41,10 +41,14 @@ const app = {
     api: {
         // 전체 목록 조회
         fetchLinks: async () => {
+            //app.view.List.setState({loading: true})
+            app.view.List.state.loading = true;
+            app.state.links = [];
             let res = await fetch(app.BACKEND + "/links", {
                 method: "GET"
             });
             let json = await res.json();
+            app.view.List.state.loading = false;
             app.state.links = json;
         },
 
@@ -112,12 +116,39 @@ const app = {
         },
         // 내 포스트 조회
         fetchMyLinks: async () => {
+            // 목록 초기화
+            app.view.List.state.loading = true;
+            app.state.links = [];
+
+            // fetch
             let res = await fetch(app.BACKEND + "/links/my/" + app.user.id, {
                 method: "GET"
             });
             let json = await res.json();
+
+            // UI 갱신
+            app.view.List.state.loading = false;
             app.state.links = json;
+
         },
+
+        // 내가 좋아하는 포스트
+        fetchMyLike: async () => {
+            // 목록 초기화
+            app.view.List.state.loading = true;
+            app.state.links = [];
+
+            // fetch
+            let res = await fetch(app.BACKEND + "/links/like/" + app.user.id, {
+                method: "GET"
+            });
+            let json = await res.json();
+
+            // UI 갱신
+            app.view.List.state.loading = false;
+            app.state.links = json;
+
+        },        
 
         // 좋아요
         like : async (link) => {

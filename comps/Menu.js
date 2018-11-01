@@ -31,8 +31,8 @@ class Menu extends React.Component {
             }
     }
 
-    logout() {
-        app.auth.signOut();
+    async logout() {
+        await app.auth.signOut();
         this.props.hideMenu();
     }
 
@@ -41,8 +41,14 @@ class Menu extends React.Component {
         global.document.onclick = undefined;
     }
 
-    myLink(){
-        app.api.fetchMyLinks();
+    async myLink(){
+        await app.api.fetchMyLinks();
+        this.props.hideMenu()
+    }
+
+    async myLike(){
+        await app.api.fetchMyLike()
+        this.props.hideMenu()
     }
 
 
@@ -55,7 +61,7 @@ class Menu extends React.Component {
                 </div>
                 <div className="item">
                     <div onClick={this.myLink.bind(this)}>내 포스트</div>
-                    <div>내가 좋아하는 포스트</div>
+                    <div onClick={this.myLike.bind(this)}>내가 좋아하는 포스트</div>
                     <div>내가 읽었던 포스트</div>
                     <div>나중에 읽을 포스트</div>
                     <div onClick={this.logout.bind(this)}>로그아웃</div>

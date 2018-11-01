@@ -1,4 +1,4 @@
-import Link from 'next/link';
+//import Link from 'next/link';
 import "./Header.scss";
 import app from "../src/app";
 import Menu from "./Menu";
@@ -34,12 +34,17 @@ class Header extends React.Component {
     }
   }
 
+  logoClick(){
+    this.props.router.push("/");
+    app.api.fetchLinks();
+  }
+
   render(){
     return (
       <div className="header">
         <div className="logo-wrapper">
-          <div className="logo">
-            <Link href="/"><img src="/static/logo.png"></img></Link>
+          <div className="logo" onClick={this.logoClick.bind(this)}>
+            <img src="/static/logo.png"></img>
           </div>
         </div>
         <div className="btn-wrapper">

@@ -8,13 +8,12 @@ import "./index.scss";
 export default class List extends React.Component {
   constructor(props){
     super(props);
-    app.view.List = this;
     this.state = {
-      loading: false
+      loading: true
     }
-
-    this.state.loading = true;
-    app.api.fetchLinks().then(() => this.setState({loading: false}));
+    app.view.List = this;
+    
+    app.api.fetchLinks();
   }
 
 
