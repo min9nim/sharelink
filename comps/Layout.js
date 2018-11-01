@@ -12,7 +12,7 @@ const Layout = (props) => {
       return;
     }
     var profile = googleUser.getBasicProfile();
-    // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+    console.log("ID: " + profile.getId()); // Don't send this directly to your server!
     // console.log('Full Name: ' + profile.getName());
     // console.log('Given Name: ' + profile.getGivenName());
     // console.log('Family Name: ' + profile.getFamilyName());
@@ -22,30 +22,27 @@ const Layout = (props) => {
     // The ID token you need to pass to your backend:
     var id_token = googleUser.getAuthResponse().id_token;
     console.log("ID Token: " + id_token);
+
+    app.api.login(id_token).then(res => {
+      app.user = res.user;
+      app.user.token = id_token;
+
+      app.state.userID = res.user.id;
+    });
   
-    app.state.user = {
-        name : profile.getGivenName(),
-        email : profile.getEmail(),
-        image : profile.getImageUrl(),
-        token : id_token     
-    }
   
     let GoogleAuth = gapi.auth2.getAuthInstance();
         
     app.auth.signOut = () => {
         return GoogleAuth.signOut().then(()=>{
-            app.state.user = {
-                name: "",
-                email: "",
-                image: "",
-                token: ""
-            };
-            //router.push("/");
+          app.state.userID = "";
         });
     }
-    app.auth.signIn = () => {
-        return GoogleAuth.signIn();
-    }
+
+    // app.auth.signIn = () => {
+    //     return GoogleAuth.signIn();
+    // }
+
     props.router.push("/");
   };
 

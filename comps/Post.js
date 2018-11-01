@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import app from '../src/app';
 import URL from "url-parse";
+import moment from "moment";
 
 import "./Post.scss";
 
@@ -23,14 +24,23 @@ const Post = ({ link }) => {
           <div className="title">
             <a href={link.url} target="_blank">{link.title}</a>
           </div>
-          <div className="url">{hostname}</div>
+          <div className="meta">
+            <div className="url">{hostname}</div>
+            <div className="author-name">{link.author && " | by " + link.author.name}</div>
+            <div className="updatedAt">{link.updatedAt && "| " + moment(link.updatedAt).fromNow()}</div>
+          </div>
           <div className="desc">
             {link.desc}
           </div>
-          <div className="post-menu">
-            <Link href={`/write?id=${link.id}`}><div><button>수정</button></div></Link>
-            <div onClick={() => remove(link)}><button>삭제</button></div>
-          </div>
+          {
+            (link.author.id === app.user.id)
+            &&
+            <div className="post-menu">
+              <Link href={`/write?id=${link.id}`}><div><button>수정</button></div></Link>
+              <div onClick={() => remove(link)}><button>삭제</button></div>
+            </div>
+          }
+
         </div>
         <div className="right">
           <img src={link.image}></img>

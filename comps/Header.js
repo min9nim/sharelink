@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import "./Header.scss";
 import app from "../src/app";
+import Menu from "./Menu";
 
 
 /**
@@ -10,32 +11,19 @@ class Header extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      showMenu: true
+      showMenu: false
     }
     app.view.Header = this;
-    if(global.document){
-      global.document.onclick = (e) => {
-        let clickMenu = [
-          e.target.className,
-          e.target.parentNode.className,
-          e.target.parentNode.parentNode.className
-        ].includes("menu");
-  
-        if(!clickMenu){
-          this.setState({showMenu: false})
-        }
-      }
-    }
-    
   }
 
-  menu(){
+  showMenu(){
     this.setState({showMenu: true});
   }
 
-  logout(){
-    app.auth.signOut();
+  hideMenu(){
+    this.setState({showMenu: false});
   }
+
 
   newLink(){
     if(app.auth.isLogin()){
@@ -60,31 +48,14 @@ class Header extends React.Component {
             app.auth.isLogin()
             &&
             <React.Fragment>
-              <img className="user-image" src={app.state.user.image}></img>
-              <div className="user-name" onClick={this.menu.bind(this)}>{app.state.user.name} v</div>
+              <img className="user-image" src={app.user.image}></img>
+              <div className="user-name" onClick={this.showMenu.bind(this)}>{app.user.name} v</div>
             </React.Fragment>
-            
-            // <Link href="/login">
-            //   <div className="login-btn">로그인</div>
-            // </Link>
           }            
         </div>
         {
           this.state.showMenu &&
-          <div className="menu">
-            <div className="user-info">
-              <img className="user-image" src={app.state.user.image}></img>
-              <div className="user-name" onClick={this.menu.bind(this)}>{app.state.user.name}</div>
-            </div>
-            <div className="item">
-              <div>내 포스트</div>
-              <div>내가 좋아하는 포스트</div>
-              <div>내가 읽었던 포스트</div>
-              <div>나중에 읽을 포스트</div>
-              <div>로그아웃</div>              
-            </div>
-
-          </div>          
+          <Menu hideMenu={this.hideMenu.bind(this)}/>
         }
 
       </div>

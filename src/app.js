@@ -1,5 +1,6 @@
 import { observable, reaction, decorate } from "mobx";
 import fetch from 'isomorphic-unfetch';
+import $m from "../com/util";
 
 
 let BACKEND;
@@ -15,18 +16,22 @@ console.log("Backend server : " + BACKEND);
 //let user = global.sessionStorage && JSON.parse(global.sessionStorage.getItem("user"))
 
 const app = {
+    $m,             // 기본 유틸
+    scrollTop: 0,        // 목록화면에서 현재 스크롤 위치
     state: {
         links: [],
-        user: {
-            name: "",
-            email: "",
-            image: "",
-            token: ""
-        },
+        userID: "",
+    },
+    user: {
+        id: "",
+        name: "",
+        email: "",
+        image: "",
+        token: ""
     },
     auth: {// 로그인 관련
         isLogin: () => {
-            return app.state.user.token !== "";
+            return app.state.userID !== "";
         },
         signOut: () => {},
         signIn: () => {}
@@ -74,8 +79,9 @@ const app = {
             });
         },
 
-        getTitle: async (url) => {
-            let res = await fetch(app.BACKEND + "/get-title", {
+        // 글작성시 글제목/글설명/글이미지 가져오기
+        webscrap: async (url) => {
+            let res = await fetch(app.BACKEND + "/webscrap", {
                 method: "POST",
                 body: JSON.stringify({ url }),
                 headers: {
@@ -83,6 +89,18 @@ const app = {
                 }
             })
             return await res.json();
+        },
+
+        // 로그인처리
+        login: async (token) => {
+            let res = await fetch(app.BACKEND + "/login", {
+                method: "POST",
+                body: JSON.stringify({ token }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            return await res.json();            
         }
     }
 };
@@ -94,9 +112,21 @@ reaction(() => JSON.stringify(app.state.links), () => {
     app.view.List && app.view.List.forceUpdate();
 });
 
-reaction(() => JSON.stringify(app.state.user), () => {
-    //sessionStorage.setItem("user", JSON.stringify(app.state.user));
+reaction(() => app.state.userID, async () => {
+    // app.state.userID 값을 바라보며 앱의 로그인 여부를 판단한다.
     app.view.Header && app.view.Header.forceUpdate();
+    if(app.auth.isLogin()){
+        console.log("로그인 완료")
+    }else{
+        global.document.onclick = undefined;
+        app.user = {
+            id: "",
+            name: "",
+            email: "",
+            image: "",
+            token: ""
+        };
+    }
 });
 
 

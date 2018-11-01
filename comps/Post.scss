@@ -13,15 +13,29 @@ li {
             flex: 1;
             .title {
                 color: green;
-                font-size: 18px;
+                font-size: 20px;
                 a:-webkit-any-link {
                     color: #333;
                 }
             }
-            .url {
+            .meta {
+                display: flex;
                 font-size: 14px;
-                color: $site-color;
-                margin: 2px 0px;
+                margin-top: 1px;
+                margin-bottom: 2px;
+                .url {
+                    color: $site-color;
+                    margin: 2px 0px;
+                }
+                .author-name {
+                    color: #666;
+                    margin-left: 5px;
+                }
+                .updatedAt {
+                    color: #666;
+                    margin-left: 5px;
+                }
+    
             }
             .desc {
                 font-size: 14px;

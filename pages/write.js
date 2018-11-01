@@ -21,8 +21,22 @@ class Write extends React.Component {
       url: "",
       title: "",
       desc: "",
-      image: ""
+      image: "",
+      // author: {
+      //   name: app.user.name,
+      //   id : app.user.id,
+      //   email: app.user.email
+      // }
     };
+
+    // 과거 데이터 보정 작업
+    //if(this.state.author === undefined){
+      this.state.author = {
+        name : app.user.name,
+        id : app.user.id
+      }
+    //}
+
 
     console.log("runtime env = " + this.props.from);
 
@@ -54,11 +68,16 @@ class Write extends React.Component {
     }
 
 
+    // 인증을 위한 토큰 전달
+    this.state.token = app.user.token;
+
     if (this.state.id) {
+      // 수정할 때
       var asisIdx = app.state.links.findIndex(l => l.id === this.state.id);
       await app.api.putLink(this.state);
       app.state.links.splice(asisIdx, 1, this.state);
     } else {
+      // 신규등록
       let newLink = Object.assign({}, this.state, { id: shortid.generate() });
       await app.api.postLink(newLink);
       app.state.links.push(newLink);
@@ -78,17 +97,22 @@ class Write extends React.Component {
     // this.setState(o);
   }
 
-  async handleFocus() {
+  async handleBlur() {
     if (this.state.url === "") return;
     if (this.state.title !== "") return;
 
     const loadingMessage = "Loading.."
-    this.state.title = loadingMessage;
-    this.state.desc = loadingMessage;
-    this.state.image = loadingMessage;
+
+    // this.state.title = loadingMessage;
+    // this.state.desc = loadingMessage;
+    // this.state.image = loadingMessage;
+
+    this.titleInput.setAttribute("placeholder", loadingMessage);
+    this.descInput.setAttribute("placeholder", loadingMessage);
+    this.imageInput.setAttribute("placeholder", loadingMessage);
 
     try {
-      let { title, image, desc } = await app.api.getTitle(this.state.url);
+      let { title, image, desc } = await app.api.webscrap(this.state.url);
 
       // 타이틀 세팅
       this.state.title = title;
@@ -103,14 +127,23 @@ class Write extends React.Component {
         //console.log(this.state.image);
       }
 
+      if(this.state.title === ""){
+        this.titleInput.setAttribute("placeholder", "글 제목을 가져올 수 없습니다")
+      }
+      if(this.state.desc === ""){
+        this.descInput.setAttribute("placeholder", "글 설명을 가져올 수 없습니다")
+      }
+      if(this.state.image === ""){
+        this.imageInput.setAttribute("placeholder", "대표 이미지를 가져올 수 없습니다")
+      }
+      
+
+
+
       // 설명세팅
       this.state.desc = desc;
     } catch (e) {
       console.error(e.message);
-
-      this.state.title = "글 제목을 가져올 수 없습니다";
-      this.state.desc = "글 내용을 가져올 수 없습니다";
-      this.state.image = "이미지를 가져올 수 없습니다";
     }
 
   }
@@ -123,19 +156,19 @@ class Write extends React.Component {
           <div className="form">
             <div>
               <div className="label">글주소</div>
-              <input placeholder="http://" id="url" ref={el => { this.urlInput = el; }} value={this.state.url} onChange={this.handleChange.bind(this)} />
+              <input placeholder="http://" id="url" ref={el => { this.urlInput = el; }} value={this.state.url} onChange={this.handleChange.bind(this)} onBlur={this.handleBlur.bind(this)}/>
             </div>
             <div>
               <div className="label">글제목</div>
-              <input placeholder="" id="title" ref={el => { this.titleInput = el; }} value={this.state.title} onChange={this.handleChange.bind(this)} onFocus={this.handleFocus.bind(this)} />
+              <input placeholder="" id="title" ref={el => { this.titleInput = el; }} value={this.state.title} onChange={this.handleChange.bind(this)} />
             </div>
             <div>
               <div className="label">간단 설명(선택)</div>
-              <input placeholder="" id="desc" value={this.state.desc} onChange={this.handleChange.bind(this)} />
+              <input placeholder="" id="desc" ref={el => { this.descInput = el; }} value={this.state.desc} onChange={this.handleChange.bind(this)} />
             </div>
             <div>
               <div className="label">대표 이미지 경로</div>
-              <input placeholder="" id="image" value={this.state.image} onChange={this.handleChange.bind(this)} />
+              <input placeholder="" id="image" ref={el => { this.imageInput = el; }} value={this.state.image} onChange={this.handleChange.bind(this)} />
             </div>
           </div>
           <div className="image">
