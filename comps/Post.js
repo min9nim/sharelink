@@ -11,7 +11,14 @@ const remove = async (post) => {
     return;
   }
   app.api.deleteLink(post.id);
-  app.state.links = app.state.links.filter(l => l.id !== post.id);
+}
+
+const likeClick = (isLike, link) => {
+  if(isLike){
+    app.api.unlike(link)
+  }else{
+    app.api.like(link)
+  }
 }
 
 const Post = ({ link }) => {
@@ -21,6 +28,10 @@ const Post = ({ link }) => {
   // console.log(link.author.id);
   // console.log(app.user.id)
   // console.log(link.author.id === app.user.id);
+
+  const isLike = link.like.includes(app.user.id);
+  const isRead = link.read.includes(app.user.id);
+  const isToread = link.toread.includes(app.user.id);
 
   return (
     <li>
@@ -38,18 +49,24 @@ const Post = ({ link }) => {
             {link.desc}
           </div>
           <div className="post-menu">
-          <div className="like-btn" title="좋아요">
+          {
+            app.auth.isLogin() &&
+          <React.Fragment>
+          <div className={isLike ? "sns-btn marked" : "sns-btn"} title="좋아요" onClick={()=>likeClick(isLike, link)}>
                 <i className="icon-thumbs-up" />
           </div>          
-          <div className="read-btn" title="읽음표시">
+          <div className={isRead ? "sns-btn marked" : "sns-btn"}  title="읽음표시">
                 <i className="icon-ok" />
           </div>          
-          <div className="toread-btn" title="읽을 글 표시">
+          <div className={isToread ? "sns-btn marked" : "sns-btn"} title="읽을 글 표시">
                 <i className="icon-basket" />
           </div>      
-          <div className="comment-btn" title="댓글">
+          <div className="sns-btn" title="댓글">
                 <i className="icon-comment-empty" />
-          </div>      
+          </div>  
+          </React.Fragment>            
+          }
+                
 
           
 

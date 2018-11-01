@@ -27,7 +27,7 @@ export default class List extends React.Component {
     return (
       <Layout>
       <ul>
-        {app.state.links.slice().reverse().map((link) => (
+        {app.state.links.map((link) => (
           <Post key={link.id} link={link}/>
         ))}
         {this.state.loading && new Array(5).fill().map((v,i) => <LinkLoading key={i}/>)}

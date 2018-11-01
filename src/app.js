@@ -55,6 +55,7 @@ const app = {
                 //body: JSON.stringify(data),
             })
             //let json = await res.json();
+            app.state.links = app.state.links.filter(l => l.id !== id);
         },
 
         // 링크추가
@@ -121,9 +122,9 @@ const app = {
         // 좋아요
         like : async (link) => {
             // DB 업데이트
-            let res = await fetch(app.BACKEND + "/links/like/" + app.user.id, {
+            let res = await fetch(app.BACKEND + "/links/like/" + link.id, {
                 method: "PUT",
-                body: JSON.stringify({ linkID: link.id, userID: app.user.id}),
+                body: JSON.stringify({ userID: app.user.id}),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -132,9 +133,29 @@ const app = {
             //app.state.links = json;
 
             // 로컬상태 업데이트
-            var link = app.state.links.find(l => l.id === link.id);
+            //var link = app.state.links.find(l => l.id === link.id);
             link.like.push(app.user.id);
         },
+        // 좋아요 취소
+        unlike : async (link) => {
+            // DB 업데이트
+            let res = await fetch(app.BACKEND + "/links/unlike/" + link.id, {
+                method: "PUT",
+                body: JSON.stringify({ userID: app.user.id}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            //let json = await res.json();
+            //app.state.links = json;
+
+            // 로컬상태 업데이트
+            //var link = app.state.links.find(l => l.id === link.id);
+            //let idx = link.like.indexOf(app.user.id);
+            //link.like.splice(idx, 1);
+
+            link.like = link.like.filter(userID => userID !== app.user.id);
+        },        
     }
 };
 

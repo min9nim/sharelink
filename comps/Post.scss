@@ -62,10 +62,15 @@ li {
                     border-radius: 8px;
                 }
 
-                .like-btn, .read-btn, .toread-btn, .comment-btn {
+                .sns-btn {
                     width: 20px;
                     font-size: 14px;
                     padding: 2px;
+                }
+
+                .marked {
+                    color: black;
+                    background-color: #ddd;
                 }
 
                 .comment-btn {
