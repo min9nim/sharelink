@@ -18,9 +18,9 @@ const Post = ({ link }) => {
   let { hostname } = new URL(link.url);
 
 
-  console.log(link.author.id);
-  console.log(app.user.id)
-  console.log(link.author.id === app.user.id);
+  // console.log(link.author.id);
+  // console.log(app.user.id)
+  // console.log(link.author.id === app.user.id);
 
   return (
     <li>
@@ -37,14 +37,35 @@ const Post = ({ link }) => {
           <div className="desc">
             {link.desc}
           </div>
+          <div className="post-menu">
+          <div className="like-btn" title="좋아요">
+                <i className="icon-thumbs-up" />
+          </div>          
+          <div className="read-btn" title="읽음표시">
+                <i className="icon-ok" />
+          </div>          
+          <div className="toread-btn" title="읽을 글 표시">
+                <i className="icon-basket" />
+          </div>      
+          <div className="comment-btn" title="댓글">
+                <i className="icon-comment-empty" />
+          </div>      
+
+          
+
           {
             (link.author.id === app.user.id)
             &&
-            <div className="post-menu">
-              <Link href={`/write?id=${link.id}`}><div><button>수정</button></div></Link>
-              <div onClick={() => remove(link)}><button>삭제</button></div>
-            </div>
+            <React.Fragment>
+              <Link href={`/write?id=${link.id}`}>
+                <div className="edit-btn" title="수정"><i className="icon-pencil" />수정</div>
+              </Link>
+              <div className="delete-btn" title="삭제" onClick={() => remove(link)}>
+                <i className="icon-trash-empty" />삭제
+              </div>
+              </React.Fragment>
           }
+          </div>
 
         </div>
         <div className="right">

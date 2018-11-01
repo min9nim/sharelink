@@ -14,7 +14,7 @@ export default class List extends React.Component {
     }
 
     this.state.loading = true;
-    app.api.getLinks().then(() => this.setState({loading: false}));
+    app.api.fetchLinks().then(() => this.setState({loading: false}));
   }
 
 

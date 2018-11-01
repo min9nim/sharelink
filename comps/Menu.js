@@ -8,11 +8,11 @@ import "./Menu.scss";
 class Menu extends React.Component {
     constructor(props) {
         super(props);
-        console.log("@@@ Menu created..")
+        // console.log("@@@ Menu created..")
 
 
 
-            console.log("@@ document.onclick 세팅")
+            // console.log("@@ document.onclick 세팅")
             global.document.onclick = (e) => {
                 let clickMenu = [
                     e.target.className,
@@ -37,8 +37,12 @@ class Menu extends React.Component {
     }
 
     componentWillUnmount(){
-        console.log("@@@ Menu unmount")
+        // console.log("@@@ Menu unmount")
         global.document.onclick = undefined;
+    }
+
+    myLink(){
+        app.api.fetchMyLinks();
     }
 
 
@@ -50,7 +54,7 @@ class Menu extends React.Component {
                     <div className="user-name">{app.user.name}</div>
                 </div>
                 <div className="item">
-                    <div>내 포스트</div>
+                    <div onClick={this.myLink.bind(this)}>내 포스트</div>
                     <div>내가 좋아하는 포스트</div>
                     <div>내가 읽었던 포스트</div>
                     <div>나중에 읽을 포스트</div>

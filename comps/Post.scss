@@ -4,11 +4,12 @@ $img-width-mobile: 100px;
 
 li {
     list-style: none;
-    margin: 10px 0px;
-    padding: 10px 0px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
     border-bottom: 1px solid #eee;
     .wrapper {
         display: flex;
+        
         .left {
             flex: 1;
             .title {
@@ -44,13 +45,36 @@ li {
                 overflow: hidden;
                 line-height: 16px;            }
             .post-menu {
-                margin-top: 5px;
+                margin-top: 11px;
+                margin-bottom: 5px;
                 display: flex;
+
                 div {
-                    color: #555;
-                    font-size: 14px;
-                    width: 46px;
+                    margin-right: 5px;
+                    color: #888;
+                    font-size: 11px;
+                    width: 43px;
                     cursor: pointer;
+                    border: 1px solid #ddd;
+                    padding: 4px;
+                    /* margin: 3px; */
+                    background-color: #fafafa;
+                    border-radius: 8px;
+                }
+
+                .like-btn, .read-btn, .toread-btn, .comment-btn {
+                    width: 20px;
+                    font-size: 14px;
+                    padding: 2px;
+                }
+
+                .comment-btn {
+                    margin-right: 15px;
+                }
+
+                div:hover {
+                    font-weight: bold;
+                    color: $site-color-light;
                 }
             }
             a {

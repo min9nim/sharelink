@@ -22,20 +22,14 @@ class Write extends React.Component {
       title: "",
       desc: "",
       image: "",
-      // author: {
-      //   name: app.user.name,
-      //   id : app.user.id,
-      //   email: app.user.email
-      // }
-    };
-
-    // 과거 데이터 보정 작업
-    //if(this.state.author === undefined){
-      this.state.author = {
-        name : app.user.name,
-        id : app.user.id
+      like: [],
+      read: [],
+      toread: [],
+      author: {
+        id: app.user.id,
+        name: app.user.name
       }
-    //}
+    };
 
 
     console.log("runtime env = " + this.props.from);
@@ -48,7 +42,7 @@ class Write extends React.Component {
   }
 
   static async getInitialProps({ req }) {
-    console.log("@@ 여기는 서버에서만 수행되는 로직");
+    // console.log("@@ 여기는 서버에서만 수행되는 로직");
     return req
       ? { from: 'server' } // 서버에서 실행 할 시
       : { from: 'client ' } // 클라이언트에서 실행 할 시
@@ -73,14 +67,11 @@ class Write extends React.Component {
 
     if (this.state.id) {
       // 수정할 때
-      var asisIdx = app.state.links.findIndex(l => l.id === this.state.id);
       await app.api.putLink(this.state);
-      app.state.links.splice(asisIdx, 1, this.state);
     } else {
       // 신규등록
       let newLink = Object.assign({}, this.state, { id: shortid.generate() });
       await app.api.postLink(newLink);
-      app.state.links.push(newLink);
     }
 
     this.props.router.push("/");

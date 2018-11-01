@@ -40,7 +40,7 @@ const app = {
     BACKEND,
     api: {
         // 전체 목록 조회
-        getLinks: async () => {
+        fetchLinks: async () => {
             let res = await fetch(app.BACKEND + "/links", {
                 method: "GET"
             });
@@ -66,10 +66,12 @@ const app = {
                     'Content-Type': 'application/json'
                 }
             });
+            app.state.links.push(link);
         },
 
         // 링크수정
         putLink: async (link) => {
+            // DB 업데이트
             let res = await fetch(app.BACKEND + "/links/" + link.id, {
                 method: "PUT",
                 body: JSON.stringify(link),
@@ -77,6 +79,11 @@ const app = {
                     'Content-Type': 'application/json'
                 }
             });
+
+            // 로컬상태 업데이트
+            var asisIdx = app.state.links.findIndex(l => l.id === link.id);
+            app.state.links.splice(asisIdx, 1, link);
+      
         },
 
         // 글작성시 글제목/글설명/글이미지 가져오기
@@ -101,7 +108,33 @@ const app = {
                 }
             })
             return await res.json();            
-        }
+        },
+        // 내 포스트 조회
+        fetchMyLinks: async () => {
+            let res = await fetch(app.BACKEND + "/links/my/" + app.user.id, {
+                method: "GET"
+            });
+            let json = await res.json();
+            app.state.links = json;
+        },
+
+        // 좋아요
+        like : async (link) => {
+            // DB 업데이트
+            let res = await fetch(app.BACKEND + "/links/like/" + app.user.id, {
+                method: "PUT",
+                body: JSON.stringify({ linkID: link.id, userID: app.user.id}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            let json = await res.json();
+            //app.state.links = json;
+
+            // 로컬상태 업데이트
+            var link = app.state.links.find(l => l.id === link.id);
+            link.like.push(app.user.id);
+        },
     }
 };
 

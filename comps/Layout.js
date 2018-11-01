@@ -12,7 +12,7 @@ const Layout = (props) => {
       return;
     }
     var profile = googleUser.getBasicProfile();
-    console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+    // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
     // console.log('Full Name: ' + profile.getName());
     // console.log('Given Name: ' + profile.getGivenName());
     // console.log('Family Name: ' + profile.getFamilyName());
@@ -21,7 +21,7 @@ const Layout = (props) => {
   
     // The ID token you need to pass to your backend:
     var id_token = googleUser.getAuthResponse().id_token;
-    console.log("ID Token: " + id_token);
+    // console.log("ID Token: " + id_token);
 
     app.api.login(id_token).then(res => {
       app.user = res.user;
@@ -51,6 +51,7 @@ const Layout = (props) => {
       <Head>
         <title>sharelink - 링크공유</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="stylesheet" href="/static/css/fontello.css"></link>
         <meta name="google-signin-scope" content="profile email" />
         <meta name="google-signin-client_id" content="557495610346-0d8b5e9vlnh9abpdn7rheamuck4982cg.apps.googleusercontent.com" />
         <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
