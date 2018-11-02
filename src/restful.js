@@ -51,8 +51,8 @@ export default function getApi(app){
 
         // 글작성시 글제목/글설명/글이미지 가져오기
         webscrap: async (url) => {
-            let res = await req("/webscrap", "POST", { url })
-            return await res.json();
+            let json = await req("/webscrap", "POST", { url })
+            return await json;
         },
 
         // 로그인처리
@@ -67,8 +67,7 @@ export default function getApi(app){
             app.state.links = [];
 
             // fetch
-            let res = await req("/links/my/" + app.user.id, "GET");
-            let json = await res.json();
+            let json = await req("/links/my/" + app.user.id, "GET");
 
             // UI 갱신
             app.view.List.state.loading = false;
@@ -83,8 +82,7 @@ export default function getApi(app){
             app.state.links = [];
 
             // fetch
-            let res = await req("/links/like/" + app.user.id, "GET");
-            let json = await res.json();
+            let json = await req("/links/like/" + app.user.id, "GET");
 
             // UI 갱신
             app.view.List.state.loading = false;
@@ -99,8 +97,7 @@ export default function getApi(app){
             app.state.links = [];
 
             // fetch
-            let res = await req("/links/read/" + app.user.id, "GET");
-            let json = await res.json();
+            let json = await req("/links/read/" + app.user.id, "GET");
 
             // UI 갱신
             app.view.List.state.loading = false;
@@ -114,8 +111,7 @@ export default function getApi(app){
             app.state.links = [];
 
             // fetch
-            let res = await req("/links/toread/" + app.user.id, "GET");
-            let json = await res.json();
+            let json = await req("/links/toread/" + app.user.id, "GET");
 
             // UI 갱신
             app.view.List.state.loading = false;

@@ -6,11 +6,12 @@ import getApi from "./restful.js";
 //console.log("process.env.PORT : " + process.env.PORT);
 //console.log("location.hostname : " + location.hostname);
 
-
 let BACKEND;
 
-if(process.env.PORT === 80){
+if(process.env.NODE_ENV === "production"  ){
+    // GCP 운영환경
     BACKEND = "https://sharelink-mongoose.appspot.com";
+    // https://cloud.google.com/appengine/docs/flexible/nodejs/runtime
 } else {
     let location = global.location;
     if(location){
