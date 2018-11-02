@@ -28,6 +28,16 @@ const readClick = (isRead, link) => {
     app.api.read(link)
   }
 }
+const toreadClick = (isToread, link) => {
+  if (isToread) {
+    app.api.untoread(link)
+  } else {
+    app.api.toread(link)
+  }
+}
+const commentClick = () => {
+  alert("준비 중");
+}
 
 const Post = ({ link }) => {
   let { hostname } = new URL(link.url);
@@ -66,18 +76,14 @@ const Post = ({ link }) => {
                 <div className={isRead ? "sns-btn marked" : "sns-btn"} title="읽음표시" onClick={() => readClick(isRead, link)}>
                   <i className="icon-ok" />
                 </div>
-                <div className={isToread ? "sns-btn marked" : "sns-btn"} title="읽을 글 표시">
+                <div className={isToread ? "sns-btn marked" : "sns-btn"} title="읽을 글 표시" onClick={() => toreadClick(isToread, link)}>
                   <i className="icon-basket" />
                 </div>
-                <div className="sns-btn" title="댓글">
+                <div className="sns-btn" title="댓글" onClick={() => commentClick()}>
                   <i className="icon-comment-empty" />
                 </div>
               </React.Fragment>
             }
-
-
-
-
             {
               (link.author.id === app.user.id)
               &&

@@ -129,8 +129,24 @@ export default function getApi(app){
             // UI 갱신
             app.view.List.state.loading = false;
             app.state.links = json;
-
         },                  
+
+        // 나중에 읽을 포스트
+        fetchMyToread: async () => {
+            // 목록 초기화
+            app.view.List.state.loading = true;
+            app.state.links = [];
+
+            // fetch
+            let res = await fetch(app.BACKEND + "/links/toread/" + app.user.id, {
+                method: "GET"
+            });
+            let json = await res.json();
+
+            // UI 갱신
+            app.view.List.state.loading = false;
+            app.state.links = json;
+        }, 
 
         // 좋아요
         like : async (link) => {
@@ -201,7 +217,40 @@ export default function getApi(app){
 
             // 로컬상태 업데이트
             link.read = link.read.filter(userID => userID !== app.user.id);
-        },         
+        },      
+        // 읽을 글 표시
+        toread : async (link) => {
+            // DB 업데이트
+            let res = await fetch(app.BACKEND + "/links/toread/" + link.id, {
+                method: "PUT",
+                body: JSON.stringify({ userID: app.user.id}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            //let json = await res.json();
+            //app.state.links = json;
+
+            // 로컬상태 업데이트
+            //var link = app.state.links.find(l => l.id === link.id);
+            link.toread.push(app.user.id);
+        },  
+        // 읽을 글 표시 취소
+        untoread : async (link) => {
+            // DB 업데이트
+            let res = await fetch(app.BACKEND + "/links/untoread/" + link.id, {
+                method: "PUT",
+                body: JSON.stringify({ userID: app.user.id}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            //let json = await res.json();
+            //app.state.links = json;
+
+            // 로컬상태 업데이트
+            link.toread = link.toread.filter(userID => userID !== app.user.id);
+        },             
     };
 };
 
