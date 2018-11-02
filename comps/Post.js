@@ -20,7 +20,7 @@ const remove = async (post, dom) => {
   }
 
   // 애니메이션 시작
-  await removeAnimation(dom, "1")
+  await removeAnimation(dom, "0.2")
 
   // DB 삭제처리
   await app.api.deleteLink(post.id);
