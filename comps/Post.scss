@@ -20,10 +20,13 @@ li {
                 }
             }
             .meta {
-                display: flex;
+                //display: flex;
                 font-size: 14px;
                 margin-top: 1px;
                 margin-bottom: 2px;
+                div {
+                    display: inline-block;
+                }
                 .url {
                     color: $site-color;
                     margin: 2px 0px;
@@ -104,7 +107,13 @@ li {
 
 @include mobile() {
     li .wrapper .right {
-        width: $img-width-mobile;
+        //width: $img-width-mobile; 
+        /**
+        * 18.11.02
+        * 모바일환경에서 이미지가 없는 경우에는 이미지영역까지 왼쪽 영역이 밀고 들어올 수 있도록 하기 위해 아래와 같이 수정함
+        */
+        // 
+        width: initial;
         img {
             max-width: $img-width-mobile;
         }

@@ -2,11 +2,25 @@ import { observable, reaction, decorate } from "mobx";
 import $m from "../com/util";
 import getApi from "./restful.js";
 
+
+//console.log("process.env.PORT : " + process.env.PORT);
+//console.log("location.hostname : " + location.hostname);
+
+
 let BACKEND;
-if (process.env.NODE_ENV === "development") {
-    BACKEND = "http://localhost:3030";
-} else {
+
+if(process.env.PORT === 80){
     BACKEND = "https://sharelink-mongoose.appspot.com";
+} else {
+    let location = global.location;
+    if(location){
+        // 클라이언트에서 실행될 때
+        BACKEND = location.protocol + "//" + location.hostname + ":3030"  // 모바일에서도 로컬 테스트가 가능하려면 이렇게 해야함
+    }else{
+        // 서버에서 실행될 때
+        BACKEND = "http://localhost:3030";    
+    }
+    
 }
 
 console.log("Backend server : " + BACKEND);
