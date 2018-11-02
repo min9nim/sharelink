@@ -61,7 +61,7 @@ export default function getApi(app){
             return json;
         },
         // 내 포스트 조회
-        fetchMyLinks: async () => {
+        fetchMyLink: async () => {
             // 목록 초기화
             app.view.List.state.loading = true;
             app.state.links = [];
@@ -70,7 +70,8 @@ export default function getApi(app){
             let json = await req("/links/my/" + app.user.id, "GET");
 
             // UI 갱신
-            app.view.List.state.loading = false;
+            //app.view.List.state.loading = false;
+            app.view.List.setState({loading: false});
             app.state.links = json;
 
         },
@@ -78,15 +79,18 @@ export default function getApi(app){
         // 내가 좋아하는 포스트
         fetchMyLike: async () => {
             // 목록 초기화
-            app.view.List.state.loading = true;
             app.state.links = [];
+            app.view.List.setState({loading: true})
+            //app.view.List.state.loading = true;
+            
 
             // fetch
             let json = await req("/links/like/" + app.user.id, "GET");
 
             // UI 갱신
-            app.view.List.state.loading = false;
-            app.state.links = json;
+            app.view.List.setState({loading: false})
+            //app.view.List.state.loading = false;
+            app.state.links = json;    
 
         },
 
@@ -100,7 +104,8 @@ export default function getApi(app){
             let json = await req("/links/read/" + app.user.id, "GET");
 
             // UI 갱신
-            app.view.List.state.loading = false;
+            //app.view.List.state.loading = false;
+            app.view.List.setState({loading: false})
             app.state.links = json;
         },                  
 
@@ -114,7 +119,8 @@ export default function getApi(app){
             let json = await req("/links/toread/" + app.user.id, "GET");
 
             // UI 갱신
-            app.view.List.state.loading = false;
+            //app.view.List.state.loading = false;
+            app.view.List.setState({loading: false});
             app.state.links = json;
         }, 
 

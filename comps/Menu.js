@@ -42,23 +42,41 @@ class Menu extends React.Component {
         global.document.onclick = undefined;
     }
 
-    async myLink() {
-        await app.api.fetchMyLinks();
-        this.props.hideMenu()
-    }
+    // async myLink(e) {
+    //     app.view.List.state.intro = e.target.innerText;
+    //     await app.api.fetchMyLink();
+    //     this.props.hideMenu()
+    // }
 
-    async myLike() {
-        await app.api.fetchMyLike()
-        this.props.hideMenu()
-    }
+    // async myLike() {
+    //     app.view.List.state.intro = e.target.innerText;
+    //     await app.api.fetchMyLike()
+    //     this.props.hideMenu()
+    // }
 
-    async myRead() {
-        await app.api.fetchMyRead()
-        this.props.hideMenu()
-    }
-    async myToread() {
-        await app.api.fetchMyToread()
-        this.props.hideMenu()
+    // async myRead() {
+    //     app.view.List.state.intro = e.target.innerText;
+    //     await app.api.fetchMyRead()
+    //     this.props.hideMenu()
+    // }
+    // async myToread() {
+    //     app.view.List.state.intro = e.target.innerText;
+    //     await app.api.fetchMyToread()
+    //     this.props.hideMenu()
+    // }
+
+    selectMenu(fetchApi){
+        return async (e) => {
+            if(this.props.router.pathname === "/write"){
+                this.props.router.push("/");
+                app.view.List.state.intro = e.target.innerText;
+            }else{
+                app.view.List.setState({intro: e.target.innerText});
+            }
+            
+            await fetchApi();
+            this.props.hideMenu(); 
+        }
     }
 
 
@@ -75,10 +93,15 @@ class Menu extends React.Component {
                     <div className="user-name">{app.user.name}</div>
                 </div>
                 <div className="item">
-                    <div onClick={this.myLink.bind(this)}>내가 등록한 포스트</div>
+                    {/* <div onClick={this.myLink.bind(this)}>내가 등록한 포스트</div>
                     <div onClick={this.myLike.bind(this)}>내가 좋아하는 포스트</div>
                     <div onClick={this.myRead.bind(this)}>내가 읽었던 포스트</div>
-                    <div onClick={this.myToread.bind(this)}>나중에 읽을 포스트</div>
+                    <div onClick={this.myToread.bind(this)}>나중에 읽을 포스트</div> */}
+                    <div onClick={this.selectMenu(app.api.fetchMyLink)}>내가 등록한 포스트</div>
+                    <div onClick={this.selectMenu(app.api.fetchMyLike)}>내가 좋아하는 포스트</div>
+                    <div onClick={this.selectMenu(app.api.fetchMyRead)}>내가 읽었던 포스트</div>
+                    <div onClick={this.selectMenu(app.api.fetchMyToread)}>나중에 읽을 포스트</div>
+
                 </div>
                 <div className="item2">
                     <div onClick={this.newLink.bind(this)}>등록하기</div>

@@ -29,6 +29,7 @@ class Header extends React.Component {
 
   logoClick() {
     this.props.router.push("/");
+    app.view.List.state.intro = "전체 포스트"
     app.api.fetchLinks();
   }
 
