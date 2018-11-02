@@ -152,7 +152,7 @@ class Write extends React.Component {
   render() {
     return (
       <Layout>
-        <div className="write-title">링크 등록</div>
+        <div className="write-title">{this.state.id ? "내용 수정" : "링크 등록"}</div>
         <div className="wrapper">
           <div className="form">
             <div>

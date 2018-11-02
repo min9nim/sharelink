@@ -21,7 +21,16 @@ export default class List extends React.Component {
 
   componentDidMount() {
     this._ismounted = true;
-    app.$m.scrollTo(0, app.scrollTop);        // 이전 스크롤 위치로 복원
+    
+    /**
+     * 18.11.02
+     * delay를 줘도 스크롤 위치 보정이 잘 안된다;
+     */
+    console.log("이동할 스크롤 위치 값 = " + app.scrollTop);
+    setTimeout(function(){
+      app.$m.scrollTo(0, app.scrollTop);        // 이전 스크롤 위치로 복원
+      console.log("이동 후스크롤 위치 값 = " + app.scrollTop);
+    }, 1000);
 
     if (global.document) {
       global.document.body.onscroll = function () {
@@ -42,6 +51,7 @@ export default class List extends React.Component {
 
   componentWillUnmount() {
     this._ismounted = false;
+    console.log("저장된 스크롤 값 = " + app.scrollTop)
     global.document.body.onscroll = undefined;
   }
 
