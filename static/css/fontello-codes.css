@@ -6,5 +6,7 @@
 .icon-pencil:before { content: '\e804'; } /* '' */
 .icon-trash-empty:before { content: '\e805'; } /* '' */
 .icon-floppy:before { content: '\e806'; } /* '' */
+.icon-cancel:before { content: '\e807'; } /* '' */
+.icon-login:before { content: '\e808'; } /* '' */
 .icon-menu:before { content: '\f008'; } /* '' */
 .icon-comment-empty:before { content: '\f0e5'; } /* '' */

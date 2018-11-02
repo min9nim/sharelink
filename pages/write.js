@@ -1,5 +1,6 @@
 import Layout from '../comps/Layout.js';
 import { withRouter } from 'next/router'
+
 import app from "../src/app";
 import { observable, reaction, decorate } from "mobx";
 import shortid from "shortid";
@@ -46,6 +47,10 @@ class Write extends React.Component {
     return req
       ? { from: 'server' } // 서버에서 실행 할 시
       : { from: 'client ' } // 클라이언트에서 실행 할 시
+  }
+
+  cancel(){
+    this.props.router.push("/")
   }
 
 
@@ -173,8 +178,8 @@ class Write extends React.Component {
         </div>
 
         <div className="btn">
-          <button onClick={this.save.bind(this)}>저장하기</button>
-          <Link href="/"><button>취소</button></Link>
+          <div onClick={this.save.bind(this)}><i className="icon-floppy"/> 저장</div>
+          <div onClick={this.cancel.bind(this)}><i className="icon-cancel"/> 취소</div>
         </div>
       </Layout>
     )

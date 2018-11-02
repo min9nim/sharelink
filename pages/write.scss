@@ -40,9 +40,18 @@ $img-width-mobile: 100px;
 }
 
 .btn {
-    button {
+    div {
+        display: inline-block;
         margin-right: 5px;
+        color: #666;
+        font-size: 13px;
+        width: 48px;
         cursor: pointer;
+        border: 1px solid #ddd;
+        padding: 4px;
+        /* margin: 3px; */
+        background-color: #fafafa;
+        border-radius: 8px;
     }
 }
 

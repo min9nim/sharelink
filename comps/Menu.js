@@ -1,3 +1,4 @@
+import { withRouter } from 'next/router'
 import app from "../src/app";
 import "./Menu.scss";
 
@@ -12,23 +13,23 @@ class Menu extends React.Component {
 
 
 
-            // console.log("@@ document.onclick 세팅")
-            global.document.onclick = (e) => {
-                let clickMenu = [
-                    e.target.className,
-                ]
-    
-                if (e.target.parentNode) {
-                    clickMenu.push(e.target.parentNode.className);
-                    if (e.target.parentNode.parentNode) {
-                        clickMenu.push(e.target.parentNode.parentNode.className);
-                    }
-                }
-    
-                if (!clickMenu.includes("menu")) {
-                    props.hideMenu();
+        // console.log("@@ document.onclick 세팅")
+        global.document.onclick = (e) => {
+            let clickMenu = [
+                e.target.className,
+            ]
+
+            if (e.target.parentNode) {
+                clickMenu.push(e.target.parentNode.className);
+                if (e.target.parentNode.parentNode) {
+                    clickMenu.push(e.target.parentNode.parentNode.className);
                 }
             }
+
+            if (!clickMenu.includes("menu")) {
+                props.hideMenu();
+            }
+        }
     }
 
     async logout() {
@@ -36,29 +37,35 @@ class Menu extends React.Component {
         this.props.hideMenu();
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         // console.log("@@@ Menu unmount")
         global.document.onclick = undefined;
     }
 
-    async myLink(){
+    async myLink() {
         await app.api.fetchMyLinks();
         this.props.hideMenu()
     }
 
-    async myLike(){
+    async myLike() {
         await app.api.fetchMyLike()
         this.props.hideMenu()
     }
 
-    async myRead(){
+    async myRead() {
         await app.api.fetchMyRead()
         this.props.hideMenu()
     }
-    async myToread(){
+    async myToread() {
         await app.api.fetchMyToread()
         this.props.hideMenu()
     }
+
+
+    newLink() {
+        this.props.router.push("/write");
+    }
+
 
     render() {
         return (
@@ -74,6 +81,7 @@ class Menu extends React.Component {
                     <div onClick={this.myToread.bind(this)}>나중에 읽을 포스트</div>
                 </div>
                 <div className="item2">
+                    <div onClick={this.newLink.bind(this)}>등록하기</div>
                     <div onClick={this.logout.bind(this)}>로그아웃</div>
                 </div>
             </div>
@@ -84,4 +92,4 @@ class Menu extends React.Component {
 
 
 
-export default Menu;
+export default withRouter(Menu);

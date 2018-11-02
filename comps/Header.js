@@ -2,13 +2,15 @@
 import "./Header.scss";
 import app from "../src/app";
 import Menu from "./Menu";
+import { withRouter } from 'next/router'
+
 
 
 /**
  * 로고 이미지 출처: https://www.fontspace.com
  */
 class Header extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       showMenu: false
@@ -16,27 +18,22 @@ class Header extends React.Component {
     app.view.Header = this;
   }
 
-  showMenu(){
-    this.setState({showMenu: true});
+  showMenu() {
+    this.setState({ showMenu: true });
   }
 
-  hideMenu(){
-    this.setState({showMenu: false});
+  hideMenu() {
+    this.setState({ showMenu: false });
   }
 
 
-  newLink(){
-    if(app.auth.isLogin()){
-      this.props.router.push("/write");
-    }else{
-      alert("로그인 페이지로 이동합니다");
-      this.props.router.push("/login");
-    }
-  }
-
-  logoClick(){
+  logoClick() {
     this.props.router.push("/");
     app.api.fetchLinks();
+  }
+
+  goLogin() {
+    this.props.router.push("/login");
   }
 
   componentDidMount() {
@@ -48,7 +45,7 @@ class Header extends React.Component {
     this._ismounted = false;
   }
 
-  render(){
+  render() {
     return (
       <div className="header">
         <div className="logo-wrapper">
@@ -57,21 +54,21 @@ class Header extends React.Component {
           </div>
         </div>
         <div className="btn-wrapper">
-            <div className="add-btn" onClick={this.newLink.bind(this)}><i className="icon-doc-new"/>등록</div>
-            {
+          {
             app.auth.isLogin()
-            &&
-            <React.Fragment>
-              <img className="user-image" src={app.user.image}></img>
-              <div className="user-name" onClick={this.showMenu.bind(this)}>{app.user.name} <i className="icon-menu"/></div>
-            </React.Fragment>
-          }            
+              ?
+              <React.Fragment>
+                <img className="user-image" src={app.user.image}></img>
+                <div className="user-name" onClick={this.showMenu.bind(this)}>{app.user.name} <i className="icon-menu" /></div>
+              </React.Fragment>
+              :
+              <div className="add-btn" onClick={this.goLogin.bind(this)}><i className="icon-login" />로그인</div>
+          }
         </div>
         {
           this.state.showMenu &&
           <Menu hideMenu={this.hideMenu.bind(this)}/>
         }
-
       </div>
     )
   }
@@ -79,4 +76,4 @@ class Header extends React.Component {
 
 
 
-export default Header
+export default withRouter(Header)

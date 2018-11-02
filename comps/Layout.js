@@ -64,7 +64,7 @@ const Layout = (props) => {
         <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
       </Head>
       <div style={{ display: "none" }} className="g-signin2" data-onsuccess="onSignIn" />
-      <Header router={props.router} />
+      <Header/>
       {props.children}
     </div>
   )
