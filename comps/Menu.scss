@@ -1,5 +1,4 @@
 @import "../com/style.scss";
-
 .menu {
     color: #888;
     position: absolute;
@@ -8,8 +7,8 @@
     background-color: white;
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    border-radius: 5px;
+    padding: 17px;
+    border-radius: 7px;
     box-shadow: rgba(16, 58, 102, 0.2) 0px 5px 50px -5px;
     font-family: sans-serif;
     .user-info {
@@ -31,15 +30,18 @@
             border-radius: 15px;
         }
     }
-    .item {
-        > div {
+    .item, .item2 {
+        >div {
             cursor: pointer;
-            margin-top: 10px;
-            //margin-bottom: 10px;
+            margin-top: 10px; //margin-bottom: 10px;
         }
-        > div:hover {
+        >div:hover {
             //color: $site-color-light;
             font-weight: bold;
-        }        
+        }
+    }
+    .item2 {
+        border-top: 1px solid #eee;
+        margin-top: 10px;
     }
 }

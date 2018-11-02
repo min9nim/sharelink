@@ -57,13 +57,13 @@ class Header extends React.Component {
           </div>
         </div>
         <div className="btn-wrapper">
-            <div className="add-btn" onClick={this.newLink.bind(this)}>등록</div>
+            <div className="add-btn" onClick={this.newLink.bind(this)}><i className="icon-doc-new"/>등록</div>
             {
             app.auth.isLogin()
             &&
             <React.Fragment>
               <img className="user-image" src={app.user.image}></img>
-              <div className="user-name" onClick={this.showMenu.bind(this)}>{app.user.name} v</div>
+              <div className="user-name" onClick={this.showMenu.bind(this)}>{app.user.name} <i className="icon-menu"/></div>
             </React.Fragment>
           }            
         </div>

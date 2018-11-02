@@ -53,6 +53,12 @@
       "css": "floppy",
       "code": 59398,
       "src": "fontawesome"
+    },
+    {
+      "uid": "c55fdf978f617992b43ee7cbaa6ef87e",
+      "css": "menu",
+      "code": 61448,
+      "src": "mfglabs"
     }
   ]
 }

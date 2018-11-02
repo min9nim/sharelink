@@ -18,23 +18,34 @@
     .btn-wrapper {
         display: flex;
         padding: 8px;
-        .user-name {
-            margin-right: 15px;
-            margin-left: 3px;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 6px;
-        }
-        .user-image {
-            width: 30px;
-            height: 30px;
-            border-radius: 15px;
-        }
+        
         .add-btn {
             margin-right: 15px;
             cursor: pointer;
             font-size: 14px;
             padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f6f6f6;
+            color: #555;
+            &:hover {
+                background-color: #eee;
+                color: black;
+            }
+        }
+
+        .user-name {
+            margin-right: 15px;
+            margin-left: 3px;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 6px;
+            color: #444;
+        }
+        .user-image {
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
         }
     }
 }

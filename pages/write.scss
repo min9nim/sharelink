@@ -46,12 +46,6 @@ $img-width-mobile: 100px;
     }
 }
 
-// @media only screen and (max-width: $mobile-width) {
-//     .wrapper .image img {
-//         max-width: $img-width-mobile;
-//     }
-// }
-
 @include mobile() {
     .wrapper .image {
         width: $img-width-mobile;

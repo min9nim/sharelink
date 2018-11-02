@@ -72,6 +72,8 @@ class Menu extends React.Component {
                     <div onClick={this.myLike.bind(this)}>내가 좋아하는 포스트</div>
                     <div onClick={this.myRead.bind(this)}>내가 읽었던 포스트</div>
                     <div onClick={this.myToread.bind(this)}>나중에 읽을 포스트</div>
+                </div>
+                <div className="item2">
                     <div onClick={this.logout.bind(this)}>로그아웃</div>
                 </div>
             </div>

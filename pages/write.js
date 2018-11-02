@@ -62,7 +62,7 @@ class Write extends React.Component {
     }
 
 
-    
+
 
     // 인증을 위한 토큰 전달
     this.state.token = app.user.token;
@@ -79,7 +79,7 @@ class Write extends React.Component {
     this.props.router.push("/");
 
 
-    
+
   }
 
   componentDidMount() {
@@ -123,16 +123,16 @@ class Write extends React.Component {
         //console.log(this.state.image);
       }
 
-      if(this.state.title === ""){
+      if (this.state.title === "") {
         this.titleInput.setAttribute("placeholder", "글 제목을 가져올 수 없습니다")
       }
-      if(this.state.desc === ""){
+      if (this.state.desc === "") {
         this.descInput.setAttribute("placeholder", "글 설명을 가져올 수 없습니다")
       }
-      if(this.state.image === ""){
+      if (this.state.image === "") {
         this.imageInput.setAttribute("placeholder", "대표 이미지가 없습니다")
       }
-      
+
 
 
 
@@ -152,7 +152,7 @@ class Write extends React.Component {
           <div className="form">
             <div>
               <div className="label">글주소</div>
-              <input placeholder="http://" id="url" ref={el => { this.urlInput = el; }} value={this.state.url} onChange={this.handleChange.bind(this)} onBlur={this.handleBlur.bind(this)}/>
+              <input placeholder="http://" id="url" ref={el => { this.urlInput = el; }} value={this.state.url} onChange={this.handleChange.bind(this)} onBlur={this.handleBlur.bind(this)} />
             </div>
             <div>
               <div className="label">글제목</div>
