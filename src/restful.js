@@ -1,14 +1,14 @@
 import fetch from 'isomorphic-unfetch';
 
 const req = async (path, method, body) => {
-    global.NProgress.start();
+    global.NProgress && global.NProgress.start();
     let res = await fetch(app.BACKEND + path, {
         method,
         body: JSON.stringify(body),
         headers: {'Content-Type': 'application/json'}
     })
     let json = await res.json();
-    global.NProgress.done();
+    global.NProgress && global.NProgress.done();
 
     return json;
 };
