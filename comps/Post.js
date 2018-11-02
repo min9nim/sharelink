@@ -14,10 +14,18 @@ const remove = async (post) => {
 }
 
 const likeClick = (isLike, link) => {
-  if(isLike){
+  if (isLike) {
     app.api.unlike(link)
-  }else{
+  } else {
     app.api.like(link)
+  }
+}
+
+const readClick = (isRead, link) => {
+  if (isRead) {
+    app.api.unread(link)
+  } else {
+    app.api.read(link)
   }
 }
 
@@ -49,39 +57,39 @@ const Post = ({ link }) => {
             {link.desc}
           </div>
           <div className="post-menu">
-          {
-            app.auth.isLogin() &&
-          <React.Fragment>
-          <div className={isLike ? "sns-btn marked" : "sns-btn"} title="좋아요" onClick={()=>likeClick(isLike, link)}>
-                <i className="icon-thumbs-up" />
-          </div>          
-          <div className={isRead ? "sns-btn marked" : "sns-btn"}  title="읽음표시">
-                <i className="icon-ok" />
-          </div>          
-          <div className={isToread ? "sns-btn marked" : "sns-btn"} title="읽을 글 표시">
-                <i className="icon-basket" />
-          </div>      
-          <div className="sns-btn" title="댓글">
-                <i className="icon-comment-empty" />
-          </div>  
-          </React.Fragment>            
-          }
-                
+            {
+              app.auth.isLogin() &&
+              <React.Fragment>
+                <div className={isLike ? "sns-btn marked" : "sns-btn"} title="좋아요" onClick={() => likeClick(isLike, link)}>
+                  <i className="icon-thumbs-up" />
+                </div>
+                <div className={isRead ? "sns-btn marked" : "sns-btn"} title="읽음표시" onClick={() => readClick(isRead, link)}>
+                  <i className="icon-ok" />
+                </div>
+                <div className={isToread ? "sns-btn marked" : "sns-btn"} title="읽을 글 표시">
+                  <i className="icon-basket" />
+                </div>
+                <div className="sns-btn" title="댓글">
+                  <i className="icon-comment-empty" />
+                </div>
+              </React.Fragment>
+            }
 
-          
 
-          {
-            (link.author.id === app.user.id)
-            &&
-            <React.Fragment>
-              <Link href={`/write?id=${link.id}`}>
-                <div className="edit-btn" title="수정"><i className="icon-pencil" />수정</div>
-              </Link>
-              <div className="delete-btn" title="삭제" onClick={() => remove(link)}>
-                <i className="icon-trash-empty" />삭제
+
+
+            {
+              (link.author.id === app.user.id)
+              &&
+              <React.Fragment>
+                <Link href={`/write?id=${link.id}`}>
+                  <div className="edit-btn" title="수정"><i className="icon-pencil" />수정</div>
+                </Link>
+                <div className="delete-btn" title="삭제" onClick={() => remove(link)}>
+                  <i className="icon-trash-empty" />삭제
               </div>
               </React.Fragment>
-          }
+            }
           </div>
 
         </div>
