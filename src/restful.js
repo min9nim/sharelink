@@ -21,7 +21,7 @@ export default function getApi(app){
                 method: 'DELETE',
                 //body: JSON.stringify(data),
             })
-            //let json = await res.json();
+            let json = await res.json();
             app.state.links = app.state.links.filter(l => l.id !== id);
         },
 
@@ -151,6 +151,8 @@ export default function getApi(app){
         // 좋아요
         like : async (link) => {
             // DB 업데이트
+            global.NProgress.start();
+
             let res = await fetch(app.BACKEND + "/links/like/" + link.id, {
                 method: "PUT",
                 body: JSON.stringify({ userID: app.user.id}),
@@ -158,8 +160,9 @@ export default function getApi(app){
                     'Content-Type': 'application/json'
                 }
             });
-            let json = await res.json();
+            //let json = await res.json();
             //app.state.links = json;
+            global.NProgress.done();
 
             // 로컬상태 업데이트
             //var link = app.state.links.find(l => l.id === link.id);
@@ -167,6 +170,8 @@ export default function getApi(app){
         },
         // 좋아요 취소
         unlike : async (link) => {
+            global.NProgress.start();
+
             // DB 업데이트
             let res = await fetch(app.BACKEND + "/links/unlike/" + link.id, {
                 method: "PUT",
@@ -175,6 +180,8 @@ export default function getApi(app){
                     'Content-Type': 'application/json'
                 }
             });
+            global.NProgress.done();
+
             //let json = await res.json();
             //app.state.links = json;
 

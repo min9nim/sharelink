@@ -1,10 +1,16 @@
 $mobile-width: 600px;
 $site-color: purple;
 $site-color-light: #EABDF6;
-
-
 @mixin mobile() {
     @media only screen and (max-width: $mobile-width) {
         @content;
     }
+}
+
+
+
+/* spinner 가 디폴트로 오른쪽 상단에 위치하기 때문에 중앙으로 정렬해 준다*/
+#nprogress .spinner {
+    top: 50%;
+    right: 50%;
 }
