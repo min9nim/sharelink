@@ -99,7 +99,7 @@ class Menu extends React.Component {
                     <div onClick={this.myToread.bind(this)}>나중에 읽을 포스트</div> */}
                     <div onClick={this.selectMenu(app.api.fetchMyLink)}>내가 등록한 포스트</div>
                     <div onClick={this.selectMenu(app.api.fetchMyLike)}>내가 좋아하는 포스트</div>
-                    <div onClick={this.selectMenu(app.api.fetchMyRead)}>내가 읽었던 포스트</div>
+                    <div onClick={this.selectMenu(app.api.fetchMyRead)}>내가 읽은 포스트</div>
                     <div onClick={this.selectMenu(app.api.fetchMyToread)}>나중에 읽을 포스트</div>
 
                 </div>
