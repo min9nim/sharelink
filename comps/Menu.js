@@ -9,15 +9,8 @@ import "./Menu.scss";
 class Menu extends React.Component {
     constructor(props) {
         super(props);
-        // console.log("@@@ Menu created..")
-
-
-
-        // console.log("@@ document.onclick 세팅")
         global.document.onclick = (e) => {
-            let clickMenu = [
-                e.target.className,
-            ]
+            let clickMenu = [e.target.className]
 
             if (e.target.parentNode) {
                 clickMenu.push(e.target.parentNode.className);
@@ -38,7 +31,6 @@ class Menu extends React.Component {
     }
 
     componentWillUnmount() {
-        // console.log("@@@ Menu unmount")
         global.document.onclick = undefined;
     }
 
@@ -69,13 +61,16 @@ class Menu extends React.Component {
         return async (e) => {
             if(this.props.router.pathname === "/write"){
                 this.props.router.push("/");
-                app.view.List.state.intro = e.target.innerText;
-            }else{
-                app.view.List.setState({intro: e.target.innerText});
             }
             
+            let intro = e.target.innerText;
+            
+
             await fetchApi();
-            this.props.hideMenu(); 
+            this.props.hideMenu();
+            console.log("intro 세팅")
+            app.view.List.setState({intro});
+            
         }
     }
 

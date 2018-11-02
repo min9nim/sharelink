@@ -7,6 +7,7 @@ import "./index.scss";
 
 export default class List extends React.Component {
   constructor(props) {
+    console.log("List 생성자 호출")
     super(props);
     this.state = {
       loading: true,
