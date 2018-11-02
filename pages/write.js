@@ -62,6 +62,8 @@ class Write extends React.Component {
     }
 
 
+    
+
     // 인증을 위한 토큰 전달
     this.state.token = app.user.token;
 
@@ -75,6 +77,9 @@ class Write extends React.Component {
     }
 
     this.props.router.push("/");
+
+
+    
   }
 
   componentDidMount() {

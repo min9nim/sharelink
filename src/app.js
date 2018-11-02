@@ -59,7 +59,7 @@ decorate(app, { state: observable });
 
 // 변화에 따른 효과를 정의
 reaction(() => JSON.stringify(app.state.links), () => {
-    app.view.List && app.view.List.forceUpdate();
+    app.view.List && app.view.List._ismounted && app.view.List.forceUpdate();
 });
 
 reaction(() => app.state.userID, async () => {
@@ -76,8 +76,8 @@ reaction(() => app.state.userID, async () => {
         };
     }
 
-    app.view.Header && app.view.Header.forceUpdate();
-    app.view.List && app.view.List.forceUpdate();
+    app.view.Header && app.view.Header._ismounted && app.view.Header.forceUpdate();
+    app.view.List && app.view.List._ismounted && app.view.List.forceUpdate();
 
 });
 

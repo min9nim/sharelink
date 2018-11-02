@@ -39,6 +39,15 @@ class Header extends React.Component {
     app.api.fetchLinks();
   }
 
+  componentDidMount() {
+    this._ismounted = true;
+  }
+
+
+  componentWillUnmount() {
+    this._ismounted = false;
+  }
+
   render(){
     return (
       <div className="header">
