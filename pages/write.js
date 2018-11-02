@@ -49,7 +49,7 @@ class Write extends React.Component {
       : { from: 'client ' } // 클라이언트에서 실행 할 시
   }
 
-  cancel(){
+  cancel() {
     this.props.router.push("/")
   }
 
@@ -178,8 +178,8 @@ class Write extends React.Component {
         </div>
 
         <div className="btn">
-          <div onClick={this.save.bind(this)}><i className="icon-floppy"/> 저장</div>
-          <div onClick={this.cancel.bind(this)}><i className="icon-cancel"/> 취소</div>
+          <div onClick={this.save.bind(this)}><i className="icon-floppy" /> 저장</div>
+          <div onClick={this.cancel.bind(this)}><i className="icon-cancel" /> 취소</div>
         </div>
       </Layout>
     )
