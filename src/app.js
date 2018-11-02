@@ -8,7 +8,7 @@ import getApi from "./restful.js";
 
 let BACKEND;
 
-if(process.env.NODE_ENV === "production"  ){
+if(process.env.NODE_ENV === "production"){
     // GCP 운영환경
     BACKEND = "https://sharelink-mongoose.appspot.com";
     // https://cloud.google.com/appengine/docs/flexible/nodejs/runtime
