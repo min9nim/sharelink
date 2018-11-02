@@ -5,12 +5,25 @@ import moment from "moment";
 
 import "./Post.scss";
 
+function removeAnimation(dom, delay) {
+  return new Promise(function (resolve) {
+    dom.style.transition = `transform ${delay}s ease-in-out`;
+    dom.style.transform = "scaleY(0)";
+    setTimeout(resolve, delay * 1000);
+  })
+}
 
-const remove = async (post) => {
+
+const remove = async (post, dom) => {
   if (!confirm("삭제합니다")) {
     return;
   }
-  app.api.deleteLink(post.id);
+
+  // 애니메이션 시작
+  await removeAnimation(dom, "1")
+
+  // DB 삭제처리
+  await app.api.deleteLink(post.id);
 }
 
 const likeClick = (isLike, link) => {
@@ -42,17 +55,14 @@ const commentClick = () => {
 const Post = ({ link }) => {
   let { hostname } = new URL(link.url);
 
-
-  // console.log(link.author.id);
-  // console.log(app.user.id)
-  // console.log(link.author.id === app.user.id);
-
   const isLike = link.like.includes(app.user.id);
   const isRead = link.read.includes(app.user.id);
   const isToread = link.toread.includes(app.user.id);
 
+  let dom;  // 삭제 애니메이션 처리를 취해 li 노드를 잠시 담을 임시 변수
+
   return (
-    <li>
+    <li ref={el => { dom = el }}>
       <div className="wrapper">
         <div className="left">
           <div className="title">
@@ -91,7 +101,7 @@ const Post = ({ link }) => {
                 <Link href={`/write?id=${link.id}`}>
                   <div className="edit-btn" title="수정"><i className="icon-pencil" />수정</div>
                 </Link>
-                <div className="delete-btn" title="삭제" onClick={() => remove(link)}>
+                <div className="delete-btn" title="삭제" onClick={() => remove(link, dom)}>
                   <i className="icon-trash-empty" />삭제
               </div>
               </React.Fragment>
