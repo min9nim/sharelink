@@ -149,6 +149,19 @@ class Write extends React.Component {
 
   }
 
+  enterSave(e){
+    if(e.key === "Enter"){
+      this.save();
+    }
+  }
+
+
+  enterCancel(e){
+    if(e.key === "Enter"){
+      this.cancel();
+    }
+  }  
+
   render() {
     return (
       <Layout>
@@ -178,8 +191,8 @@ class Write extends React.Component {
         </div>
 
         <div className="btn">
-          <div onClick={this.save.bind(this)}><i className="icon-floppy" /> 저장</div>
-          <div onClick={this.cancel.bind(this)}><i className="icon-cancel" /> 취소</div>
+          <div onClick={this.save.bind(this)} tabIndex="0" onKeyPress={this.enterSave.bind(this)}><i className="icon-floppy" /> 저장</div>
+          <div onClick={this.cancel.bind(this)} tabIndex="0" onKeyPress={this.enterCancel.bind(this)}><i className="icon-cancel" /> 취소</div>
         </div>
       </Layout>
     )
