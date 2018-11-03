@@ -52,7 +52,12 @@ $img-width-mobile: 100px;
         /* margin: 3px; */
         background-color: #fafafa;
         border-radius: 8px;
+
+        &:hover {
+            font-weight: bold;
+        }
     }
+
 }
 
 @include mobile() {
