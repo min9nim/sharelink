@@ -56,7 +56,7 @@ const Layout = (props) => {
         
         
         <meta name="google-signin-scope" content="profile email" />
-        <meta name="google-signin-client_id" content="557495610346-0d8b5e9vlnh9abpdn7rheamuck4982cg.apps.googleusercontent.com" />
+        <meta name="google-signin-client_id" content="314955303656-ohiovevqbpms4pguh82fnde7tvo9cqnb.apps.googleusercontent.com" />
         <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
         
 
