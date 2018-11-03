@@ -29,7 +29,7 @@ path | file | desc
 /src/ | app.js | Sharelink core business logic
 /src/ | restful.js | RESTful API definition referenced by the `app.js`
 /comps/ | * | React-components referenced by the screen
-/comps/ | Header.js| Screen common Header ares
+/comps/ | Header.js| Screen common Header area
 /comps/ | Layout.js| Screen layout
 /comps/ | LinkLoading.js| Loading image to show while loading
 /comps/ | Menu.js| Menu layer
