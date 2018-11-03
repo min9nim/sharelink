@@ -19,8 +19,7 @@ An online bookmarking service that lets you share and manage useful posts with s
 <br>
 
 #### Folder Description
-
-path | file | desc
+folder | file | desc
 --- | --- | ---
 /pages/ | * | Screen by route
 /pages/ | index.js | Main screen `/`
