@@ -174,7 +174,7 @@ class Write extends React.Component {
               <div className="label">글주소</div>
               <input placeholder="http://" id="url" ref={el => { this.urlInput = el; }} value={this.state.url} onChange={this.handleChange.bind(this)} onBlur={this.handleBlur.bind(this)} />
               <div className="init-btn">
-                <i className="icon-cancel" onClick={this.initValue.bind(this)}/>
+                <i className="icon-cancel" onClick={this.initValue.bind(this)} />
               </div>
 
             </div>
@@ -182,7 +182,7 @@ class Write extends React.Component {
               <div className="label">글제목</div>
               <input placeholder="" id="title" ref={el => { this.titleInput = el; }} value={this.state.title} onChange={this.handleChange.bind(this)} />
               <div className="init-btn">
-                <i className="icon-cancel" onClick={this.initValue.bind(this)}/>
+                <i className="icon-cancel" onClick={this.initValue.bind(this)} />
               </div>
 
             </div>
@@ -190,7 +190,7 @@ class Write extends React.Component {
               <div className="label">간단 설명(선택)</div>
               <input placeholder="" id="desc" ref={el => { this.descInput = el; }} value={this.state.desc} onChange={this.handleChange.bind(this)} />
               <div className="init-btn">
-                <i className="icon-cancel" onClick={this.initValue.bind(this)}/>
+                <i className="icon-cancel" onClick={this.initValue.bind(this)} />
               </div>
 
             </div>
