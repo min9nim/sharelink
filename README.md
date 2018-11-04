@@ -37,6 +37,10 @@ folder | file | desc
 /com/ | style.scss| common style of app
 /static/ | * | Static resource
 
+<br>
+
+### React component dependency
+<img src="https://sharelink-nextjs.appspot.com/static/component-dependency.svg">
 
 <br>
 
