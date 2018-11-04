@@ -57,25 +57,40 @@ class Menu extends React.Component {
     //     this.props.hideMenu()
     // }
 
-    selectMenu(fetchApi){
+    selectMenu(fetchApi) {
         return async (e) => {
-            if(this.props.router.pathname === "/write"){
+            if (this.props.router.pathname === "/write") {
                 this.props.router.push("/");
             }
-            
+
             let intro = e.target.innerText;
-            
+
 
             await fetchApi();
             this.props.hideMenu();
             console.log("intro 세팅")
-            app.view.List.setState({intro});
-            
+            app.view.List.setState({ intro });
+
         }
     }
 
 
     newLink() {
+        app.view.Write._ismounted && Object.assign(app.view.Write.state, {
+            id: "",
+            url: "",
+            title: "",
+            desc: "",
+            image: "",
+            like: [],
+            read: [],
+            toread: [],
+            author: {
+                id: app.user.id,
+                name: app.user.name
+            }
+        });
+        this.props.hideMenu();
         this.props.router.push("/write");
     }
 

@@ -32,6 +32,8 @@ class Write extends React.Component {
       }
     };
 
+    app.view.Write = this;
+
 
     console.log("runtime env = " + this.props.from);
 
@@ -53,6 +55,9 @@ class Write extends React.Component {
     this.props.router.push("/")
   }
 
+  componentWillUnmount() {
+    this._ismounted = false;
+ }
 
   async save() {
     if (!this.state.url) {
@@ -88,6 +93,7 @@ class Write extends React.Component {
   }
 
   componentDidMount() {
+    this._ismounted = true;
     this.urlInput.focus();
   }
 
