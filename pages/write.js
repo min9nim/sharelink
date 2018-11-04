@@ -93,9 +93,6 @@ class Write extends React.Component {
 
   handleChange(e) {
     this.state[e.target.id] = e.target.value;
-    // let o = {};
-    // o[e.target.id] = e.target.value;
-    // this.setState(o);
   }
 
   async handleBlur() {
@@ -162,6 +159,11 @@ class Write extends React.Component {
     }
   }  
 
+  initValue(e){
+    this.state[e.target.parentNode.previousSibling.id] = ""
+    e.target.parentNode.previousSibling.focus();
+  }
+
   render() {
     return (
       <Layout>
@@ -171,18 +173,33 @@ class Write extends React.Component {
             <div>
               <div className="label">글주소</div>
               <input placeholder="http://" id="url" ref={el => { this.urlInput = el; }} value={this.state.url} onChange={this.handleChange.bind(this)} onBlur={this.handleBlur.bind(this)} />
+              <div className="init-btn">
+                <i className="icon-cancel" onClick={this.initValue.bind(this)}/>
+              </div>
+
             </div>
             <div>
               <div className="label">글제목</div>
               <input placeholder="" id="title" ref={el => { this.titleInput = el; }} value={this.state.title} onChange={this.handleChange.bind(this)} />
+              <div className="init-btn">
+                <i className="icon-cancel" onClick={this.initValue.bind(this)}/>
+              </div>
+
             </div>
             <div>
               <div className="label">간단 설명(선택)</div>
               <input placeholder="" id="desc" ref={el => { this.descInput = el; }} value={this.state.desc} onChange={this.handleChange.bind(this)} />
+              <div className="init-btn">
+                <i className="icon-cancel" onClick={this.initValue.bind(this)}/>
+              </div>
+
             </div>
             <div>
               <div className="label">대표 이미지 경로</div>
               <input placeholder="" id="image" ref={el => { this.imageInput = el; }} value={this.state.image} onChange={this.handleChange.bind(this)} />
+              <div className="init-btn">
+                <i className="icon-cancel" onClick={this.initValue.bind(this)}/>
+              </div>
             </div>
           </div>
           <div className="image">

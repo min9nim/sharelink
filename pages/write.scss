@@ -14,6 +14,7 @@ $img-width-mobile: 100px;
     .form {
         flex: 1;
         margin-right: 40px;
+        padding-right: 25px;
         > div {
             margin-bottom: 10px;
             .label {
@@ -27,6 +28,19 @@ $img-width-mobile: 100px;
                 height: 24px;
                 font-size: 14px;                
                 color: #777;
+                padding-right: 25px;
+            }
+            .init-btn{
+                text-align: right;
+                height: 5px;
+                .icon-cancel {
+                    color: #777;
+                    display: inline-block;
+                    top: -23px;
+                    right: -26px;
+                    position: relative;
+                    cursor: pointer;
+                }    
             }
         }
     }

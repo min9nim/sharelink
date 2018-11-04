@@ -1,11 +1,20 @@
+@import "../com/style.scss";
+
+
 .layoutStyle {
     margin: 0px auto;
     padding: 0px 15px;
     max-width: 1000px;
 }
 
-// mobile-first
-@media only screen and (max-width: 600px) {
+// // mobile-first
+// @media only screen and (max-width: 600px) {
+//     .layoutStyle {
+//         padding: 0px 5px;
+//     }
+// }
+
+@include mobile(){
     .layoutStyle {
         padding: 0px 5px;
     }
