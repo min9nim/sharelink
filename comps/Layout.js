@@ -53,13 +53,12 @@ const Layout = (props) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         
         <link rel="stylesheet" href="/static/css/fontello.css"></link>
-        
+        <link rel="stylesheet" href="/static/css/style.css"></link>
         
         <meta name="google-signin-scope" content="profile email" />
         <meta name="google-signin-client_id" content="314955303656-ohiovevqbpms4pguh82fnde7tvo9cqnb.apps.googleusercontent.com" />
         <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
         
-
         <link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css' />
         <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
       </Head>
