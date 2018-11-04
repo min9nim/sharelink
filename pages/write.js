@@ -4,7 +4,7 @@ import { withRouter } from 'next/router'
 import app from "../src/app";
 import { observable, reaction, decorate } from "mobx";
 import shortid from "shortid";
-import Link from 'next/link';
+//import Link from 'next/link';
 import URL from "url-parse";
 
 import "./write.scss";

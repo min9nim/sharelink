@@ -1,7 +1,7 @@
 import Layout from '../comps/Layout.js';
 import { withRouter } from 'next/router'
-import Head from 'next/head';
-import app from "../src/app";
+//import Head from 'next/head';
+//import app from "../src/app";
 import "./login.scss";
 
 
