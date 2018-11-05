@@ -9,22 +9,22 @@ import getApi from "./restful.js";
 let BACKEND;
 
 if (process.env.NODE_ENV === "production") {
-    // GCP 노드 운영환경
-    BACKEND = "https://sharelink-mongoose.appspot.com";
     // https://cloud.google.com/appengine/docs/flexible/nodejs/runtime
+    // GCP 노드 운영환경
+
+    if(global.location){
+        if (global.location.hostname === "sharelink-nextjs.appspot.com") {
+            BACKEND = "https://sharelink-mongoose.appspot.com";
+        } else {
+            BACKEND = "https://sharelink-mongoose-dev.appspot.com";
+        }   
+    }
+    
 } else {
     let location = global.location;
     if (location) {
-        if (location.hostname === "sharelink-nextjs.appspot.com") {
-            // 운영환경 클라이언트
-            BACKEND = "https://sharelink-mongoose.appspot.com";
-        } else if (location.hostname === "sharelink-dev.appspot.com") {
-            // 운영환경 클라이언트
-            BACKEND = "https://sharelink-mongoose-dev.appspot.com";
-        } else {
-            // 개발환경 클라이언트
-            BACKEND = location.protocol + "//" + location.hostname + ":3030"  // 모바일에서도 로컬 테스트가 가능하려면 이렇게 해야함
-        }
+        // 개발환경 클라이언트
+        BACKEND = location.protocol + "//" + location.hostname + ":3030"  // 모바일에서도 로컬 테스트가 가능하려면 이렇게 해야함
     } else {
         // 노드 서버에서 실행될 때
         BACKEND = "http://localhost:3030";
