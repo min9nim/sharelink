@@ -81,7 +81,13 @@ function onscroll() {
 
 
   if(app.isScrollLast) return;
-  // 아직 모든 글이 로드된 상태가 아니라면 스크롤이 아래까지 내려왔을 때 다음 글 10개 로드
+  
+  /**
+   * 18.11.05
+   * 추가 10개 로드전 다시한번 요청이 올라가는 문제를 막기위해 아래 조건 추가
+   */
+  if(app.view.List.state.loading) return;
+
 
   //현재문서의 높이
   const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
