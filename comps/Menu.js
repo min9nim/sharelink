@@ -76,7 +76,7 @@ class Menu extends React.Component {
 
 
     newLink() {
-        app.view.Write._ismounted && Object.assign(app.view.Write.state, {
+        app.view.Write && app.view.Write._ismounted && Object.assign(app.view.Write.state, {
             id: "",
             url: "",
             title: "",

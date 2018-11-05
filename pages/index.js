@@ -33,18 +33,7 @@ export default class List extends React.Component {
     }, 1000);
 
     if (global.document) {
-      global.document.body.onscroll = function () {
-        if (global.location.pathname !== "/") {
-          // 목록화면이 아니면 리턴  
-          return;
-        }
-    
-        // 현재 목록화면 scrollTop 의 값
-        const scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
-    
-        // 현재 스크롤 값을 전역변수에 저장
-        app.scrollTop = scrollTop;
-      };
+      global.document.body.onscroll = onscroll;
     }
   }
 
@@ -62,14 +51,67 @@ export default class List extends React.Component {
           this.state.intro &&
           <div className="intro">{"* " + this.state.intro + "(" + app.state.links.length + "개)"}</div>
         }
-        
         <ul>
-          {app.state.links.map((link) => (
-            <Post key={link.id} link={link} />
-          ))}
+          {app.state.links.map((link) => {
+            return (
+              <Post key={link.id} link={link} />
+            )
+          })}
           {this.state.loading && new Array(5).fill().map((v, i) => <LinkLoading key={i} />)}
         </ul>
       </Layout>
     )
   }
 }
+
+
+function onscroll() {
+  // if (global.location.pathname !== "/") {
+  //   // 목록화면이 아니면 리턴  
+  //   return;
+  // }
+
+  const PAGEROWS = 10;
+
+  // 현재 목록화면 scrollTop 의 값
+  const scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+
+  // 현재 스크롤 값을 전역변수에 저장
+  app.scrollTop = scrollTop;
+
+
+  if(app.isScrollLast) return;
+  // 아직 모든 글이 로드된 상태가 아니라면 스크롤이 아래까지 내려왔을 때 다음 글 10개 로드
+
+  //현재문서의 높이
+  const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+  //현재 화면 높이 값
+  const clientHeight = document.documentElement.clientHeight;
+
+  //console.log("scrollTop : " + scrollTop)
+  //console.log("clientHeight : " + clientHeight)
+  //console.log("scrollHeight : " + scrollHeight)
+
+
+  if (
+      (scrollTop + clientHeight == scrollHeight)    // 일반적인 경우(데스크탑: 크롬/파폭, 아이폰: 사파리)
+      ||
+      (app.isMobileChrome() && (scrollTop + clientHeight == scrollHeight - 56))   // 모바일 크롬(55는 위에 statusbar 의 높이 때문인건가)
+  ){ //스크롤이 마지막일때
+
+      app.api.fetchLinks({
+          idx: app.state.links.length,
+          cnt: PAGEROWS,
+      })
+      .then(links => {
+          if(links.length < PAGEROWS){
+              console.log("Scroll has touched bottom")
+              app.isScrollLast = true;
+              return;
+          }
+      })
+  }
+
+
+
+};

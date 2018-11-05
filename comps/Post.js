@@ -55,9 +55,9 @@ const commentClick = () => {
 const Post = ({ link }) => {
   let { hostname } = new URL(link.url);
 
-  const isLike = link.like.includes(app.user.id);
-  const isRead = link.read.includes(app.user.id);
-  const isToread = link.toread.includes(app.user.id);
+  const isLike = link.like && link.like.includes(app.user.id);
+  const isRead = link.read && link.read.includes(app.user.id);
+  const isToread = link.toread && link.toread.includes(app.user.id);
 
   let dom;  // 삭제 애니메이션 처리를 취해 li 노드를 잠시 담을 임시 변수
 
