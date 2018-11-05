@@ -18,6 +18,9 @@ if (process.env.NODE_ENV === "production") {
         if (location.hostname === "sharelink-nextjs.appspot.com") {
             // 운영환경 클라이언트
             BACKEND = "https://sharelink-mongoose.appspot.com";
+        } else if (location.hostname === "sharelink-dev.appspot.com") {
+            // 운영환경 클라이언트
+            BACKEND = "https://sharelink-mongoose-dev.appspot.com";
         } else {
             // 개발환경 클라이언트
             BACKEND = location.protocol + "//" + location.hostname + ":3030"  // 모바일에서도 로컬 테스트가 가능하려면 이렇게 해야함
