@@ -15,6 +15,7 @@ const req = async (path, method, body) => {
         };
     
         //console.log("@@@@ fetch 호출전 app.user.token = " + JSON.stringify(opt, null, 2))
+        console.log("url = " + app.BACKEND + path)
         let res = await fetch(app.BACKEND + path, opt)
         let json = await res.json();
         global.NProgress && global.NProgress.done();
@@ -22,7 +23,7 @@ const req = async (path, method, body) => {
         return json;
     }catch(e){
         console.error(e);
-        global.alert && global.alert(e.message);
+        //global.alert && global.alert(e.message);
     }
 };
 

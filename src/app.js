@@ -7,7 +7,7 @@ import getApi from "./restful.js";
 //console.log("location.hostname : " + location.hostname);
 
 let BACKEND;
-
+console.log("process.env.GOOGLE_CLOUD_PROJECT = " + process.env.GOOGLE_CLOUD_PROJECT)
 if (process.env.NODE_ENV === "production") {
     // https://cloud.google.com/appengine/docs/flexible/nodejs/runtime
     // GCP 노드 운영환경
@@ -18,8 +18,13 @@ if (process.env.NODE_ENV === "production") {
         } else {
             BACKEND = "https://sharelink-mongoose-dev.appspot.com";
         }   
+    }else{
+        if(process.env.GOOGLE_CLOUD_PROJECT === "sharelink-dev"){
+            BACKEND = "https://sharelink-mongoose-dev.appspot.com";
+        }else{
+            BACKEND = "https://sharelink-mongoose.appspot.com";
+        }
     }
-    
 } else {
     let location = global.location;
     if (location) {
@@ -29,7 +34,6 @@ if (process.env.NODE_ENV === "production") {
         // 노드 서버에서 실행될 때
         BACKEND = "http://localhost:3030";
     }
-
 }
 
 console.log("Backend server : " + BACKEND);
