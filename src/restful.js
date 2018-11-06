@@ -72,9 +72,11 @@ export default function getApi(app) {
                 app.view.List._ismounted && app.view.List.setState({ loading: true })
             }
 
-            let userID = app.state.menuIdx ? "/" + app.user.id : "";
+//            let userID = app.state.menuIdx ? "/" + app.user.id : "";
+//            json = await req(path + userID + "?idx=" + idx + "&cnt=" + cnt, "GET");
 
-            json = await req(path + userID + "?idx=" + idx + "&cnt=" + cnt, "GET");
+            json = await req(path + "?idx=" + idx + "&cnt=" + cnt, "GET");
+
             app.view.List.state.loading = false;
             //app.state.links = app.state.links.concat(json);
             app.state.links.push(...json);
