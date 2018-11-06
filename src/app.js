@@ -47,27 +47,22 @@ const app = {
             {
                 label: "전체 포스트",
                 path: "/links",
-                //onSelect:  app.api.fetchLinks
             },
             {
                 label: "내가 등록한 포스트",
                 path: "/links/my",
-                //onSelect:  app.api.fetchMyLink
             },
             {
                 label: "내가 좋아하는 포스트",
                 path: "/links/like",
-                //onSelect:  app.api.fetchMyLike
             },
             {
                 label: "내가 읽은 포스트",
                 path: "/links/read",
-                //onSelect:  app.api.fetchMyRead
             },
             {
                 label: "나중에 읽을 포스트",
                 path: "/links/toread",
-                //onSelect:  app.api.fetchMyToread
             }
         ]
     },

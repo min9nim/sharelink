@@ -53,13 +53,6 @@ export default function getApi(app) {
         },
 
 
-
-        // 전체 목록 조회
-        fetchLinks: async ({ idx, cnt } = {idx:0, cnt:10}) => {
-            return app.api.fetchList("/links", idx, cnt);
-        },
-
-
         fetchList : async (path, idx=0, cnt=10) => {
             let json;
 
@@ -84,95 +77,8 @@ export default function getApi(app) {
             }
 
             return json;
-
-            // if (idx === 0) {
-            //     app.view.List.state.loading = true;
-            //     app.state.links = [];
-            //     json = await req(path, "GET");
-            //     app.view.List.setState({ loading: false });
-            //     app.state.links = json;
-            // } else {
-            //     app.view.List.state.loading = true;
-            //     json = await req(path + "?idx=" + idx + "&cnt=" + cnt, "GET");
-            //     app.view.List.state.loading = false;
-            //     app.state.links.push(json);
-            // }            
+          
         },
-
-
-        fetchMyLink:  async ({ idx, cnt } = {idx:0, cnt:10}) => {
-            return app.api.fetchList("/links/my/", idx, cnt);
-        },
-
-        // // 내 포스트 조회
-        // fetchMyLink: async () => {
-        //     // 목록 초기화
-        //     app.view.List.state.loading = true;
-        //     app.state.links = [];
-
-        //     // fetch
-        //     let json = await req("/links/my/" + app.user.id, "GET");
-
-        //     // UI 갱신
-        //     //app.view.List.state.loading = false;
-        //     app.view.List.setState({ loading: false });
-        //     app.state.links = json;
-        // },
-
-
-        // 내가 좋아하는 포스트
-        fetchMyLike: async () => {
-            // 목록 초기화
-            app.state.links = [];
-            app.view.List.setState({ loading: true })
-            //app.view.List.state.loading = true;
-
-
-            // fetch
-            let json = await req("/links/like/" + app.user.id, "GET");
-
-            // UI 갱신
-            app.view.List.setState({ loading: false })
-            //app.view.List.state.loading = false;
-            app.state.links = json;
-
-        },
-
-        // 내가 읽었던 포스트
-        fetchMyRead: async () => {
-            // 목록 초기화
-            app.view.List.state.loading = true;
-            app.state.links = [];
-
-            // fetch
-            let json = await req("/links/read/" + app.user.id, "GET");
-
-            // UI 갱신
-            //app.view.List.state.loading = false;
-            app.view.List.setState({ loading: false })
-            app.state.links = json;
-        },
-
-        // 나중에 읽을 포스트
-        fetchMyToread: async () => {
-            // 목록 초기화
-            app.view.List.state.loading = true;
-            app.state.links = [];
-
-            // fetch
-            let json = await req("/links/toread/" + app.user.id, "GET");
-
-            // UI 갱신
-            //app.view.List.state.loading = false;
-            app.view.List.setState({ loading: false });
-            app.state.links = json;
-        },
-
-
-
-
-
-
 
         // 좋아요
         like: async (link) => {
