@@ -73,6 +73,7 @@ class Menu extends React.Component {
             //let intro = e.target.innerText;
             //let intro = this.state.menu[idx].label;
             app.state.menuIdx = idx+1;
+            app.state.totalCount = "?";
             app.state.isScrollLast = false;
 
             //await this.state.menu[idx].onSelect();
