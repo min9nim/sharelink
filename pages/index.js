@@ -10,7 +10,7 @@ export default class List extends React.Component {
     // console.log("List 생성자 호출")
     super(props);
     this.state = {
-      loading: true,
+      loading: false,
     }
     app.view.List = this;
 
