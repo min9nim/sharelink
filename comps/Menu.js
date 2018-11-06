@@ -3,9 +3,6 @@ import app from "../src/app";
 import "./Menu.scss";
 
 
-//console.log("### Menu.js 로드")
-
-
 class Menu extends React.Component {
     constructor(props) {
         super(props);
@@ -41,29 +38,6 @@ class Menu extends React.Component {
         global.document.onclick = undefined;
     }
 
-    // async myLink(e) {
-    //     app.view.List.state.intro = e.target.innerText;
-    //     await app.api.fetchMyLink();
-    //     this.props.hideMenu()
-    // }
-
-    // async myLike() {
-    //     app.view.List.state.intro = e.target.innerText;
-    //     await app.api.fetchMyLike()
-    //     this.props.hideMenu()
-    // }
-
-    // async myRead() {
-    //     app.view.List.state.intro = e.target.innerText;
-    //     await app.api.fetchMyRead()
-    //     this.props.hideMenu()
-    // }
-    // async myToread() {
-    //     app.view.List.state.intro = e.target.innerText;
-    //     await app.api.fetchMyToread()
-    //     this.props.hideMenu()
-    // }
-
     selectMenu(idx) {
         return async (e) => {
             if (this.props.router.pathname === "/write") {
@@ -77,8 +51,8 @@ class Menu extends React.Component {
             app.state.isScrollLast = false;
 
             //await this.state.menu[idx].onSelect();
-            let json = await app.api.fetchList(app.state.menu[idx+1].path);
-            console.log("@@ json.totalCount = " + json.totalCount)
+            let fetchRes = await app.api.fetchList(app.state.menu[idx+1].path);
+            console.log("@@ json.totalCount = " + fetchRes.totalCount)
 
             this.props.hideMenu();
             //console.log("intro 세팅");

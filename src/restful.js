@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 import app from "../src/app";
 
-
 const req = async (path, method, body) => {
     try{
         global.NProgress && global.NProgress.start();
@@ -67,28 +66,29 @@ export default function getApi(app) {
 
 
         fetchList: async (path, idx = 0, cnt = 10) => {
-            let json;
 
-            if (idx === 0) {
-                app.view.List.state.loading = true;
-                app.state.links = [];
-            } else {
-                app.view.List._ismounted && app.view.List.setState({ loading: true })
+            if(app.view.List){
+                if (idx === 0) {
+                    app.view.List.state.loading = true;
+                    app.state.links = [];
+                } else {
+                    app.view.List._ismounted && app.view.List.setState({ loading: true })
+                }    
             }
 
-            //            let userID = app.state.menuIdx ? "/" + app.user.id : "";
-            //            json = await req(path + userID + "?idx=" + idx + "&cnt=" + cnt, "GET");
+            let fetchRes = await req(path + "?idx=" + idx + "&cnt=" + cnt, "GET");
 
-            json = await req(path + "?idx=" + idx + "&cnt=" + cnt, "GET");
+            //console.log("@@ 여기서는? " + JSON.stringify(json, null, 2))
 
-            app.view.List.state.loading = false;
-            //app.state.links = app.state.links.concat(json);
+            if(app.view.List){
+                app.view.List.state.loading = false;
+            }
 
-            app.state.isScrollLast = !json.hasNext;
-            app.state.totalCount = json.totalCount;
+            app.state.isScrollLast = !fetchRes.hasNext;
+            app.state.totalCount = fetchRes.totalCount;
+            app.state.links.push(...fetchRes.links);
 
-            app.state.links.push(...json.links);
-            return json.links;
+            return fetchRes;
 
         },
 

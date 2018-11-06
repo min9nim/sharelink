@@ -13,8 +13,22 @@ export default class List extends React.Component {
       loading: true,
     }
     app.view.List = this;
-    app.api.fetchList(app.state.menu[app.state.menuIdx].path);
+
+    app.state.totalCount = props.fetchRes.totalCount
+    app.state.isScrollLast = !props.fetchRes.hasNext
+    app.state.links = props.fetchRes.links;
   }
+
+
+  static async getInitialProps ({req}) {
+    console.log("@@ 여기는 무조건 한번만 호출되는건디..?");
+    let fetchRes = await app.api.fetchList(app.state.menu[app.state.menuIdx].path);
+    
+    return {
+        fetchRes
+    }
+  }
+
 
 
   componentDidMount() {
@@ -44,6 +58,9 @@ export default class List extends React.Component {
 
   render() {
     let intro = app.state.menu[app.state.menuIdx].label;
+
+
+    //console.log("app.state.links = " + JSON.stringify(app.state.links, null, 2))
 
     //console.log("@@ app.state.totalCount = " + app.state.totalCount);
     return (

@@ -7,45 +7,9 @@ import app from '../src/app';
 
 
 const Layout = (props) => {
-  global.onSignIn = (googleUser) => {
-    if (app.auth.isLogin()) {
-      return;
-    }
-    var profile = googleUser.getBasicProfile();
-    // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-    // console.log('Full Name: ' + profile.getName());
-    // console.log('Given Name: ' + profile.getGivenName());
-    // console.log('Family Name: ' + profile.getFamilyName());
-    // console.log("Image URL: " + profile.getImageUrl());
-    // console.log("Email: " + profile.getEmail());
-
-    // The ID token you need to pass to your backend:
-    var id_token = googleUser.getAuthResponse().id_token;
-    console.log("@@@@ token 세팅 하고 login 호출할꺼임")
-    app.user.token = id_token;
-    // console.log("ID Token: " + id_token);
-
-    app.api.login(id_token).then(res => {
-      app.user = res.user;
-      app.user.token = id_token;
-      app.state.userID = res.user.id;
-    });
-
-
-    let GoogleAuth = gapi.auth2.getAuthInstance();
-
-    app.auth.signOut = () => {
-      return GoogleAuth.signOut().then(() => {
-        app.state.userID = "";
-      });
-    }
-
-    // app.auth.signIn = () => {
-    //     return GoogleAuth.signIn();
-    // }
-
-    props.router.push("/");
-  };
+  
+  let token = global.sessionStorage && global.sessionStorage.getItem("token");
+  let userID = global.sessionStorage && global.sessionStorage.getItem("userID");
 
   return (
     <div className="layoutStyle">
@@ -70,5 +34,47 @@ const Layout = (props) => {
   )
 }
 
+
+global.onSignIn = (googleUser) => {
+  if (app.auth.isLogin()) {
+    return;
+  }
+  var profile = googleUser.getBasicProfile();
+  // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+  // console.log('Full Name: ' + profile.getName());
+  // console.log('Given Name: ' + profile.getGivenName());
+  // console.log('Family Name: ' + profile.getFamilyName());
+  // console.log("Image URL: " + profile.getImageUrl());
+  // console.log("Email: " + profile.getEmail());
+
+  // The ID token you need to pass to your backend:
+  var id_token = googleUser.getAuthResponse().id_token;
+  //console.log("@@@@ token 세팅 하고 login 호출할꺼임")
+  app.user.token = id_token;
+  
+  
+
+  // console.log("ID Token: " + id_token);
+
+  app.api.login(id_token).then(res => {
+    app.user = res.user;
+    app.user.token = id_token;
+    app.state.userID = res.user.id;
+
+    sessionStorage.setItem("token", id_token);
+    sessionStorage.setItem("userID", res.user.id);
+  });
+
+
+  let GoogleAuth = gapi.auth2.getAuthInstance();
+
+  app.auth.signOut = () => {
+    return GoogleAuth.signOut().then(() => {
+      app.state.userID = "";
+    });
+  }
+
+  //props.router.push("/");
+};
 
 export default withRouter(Layout)
