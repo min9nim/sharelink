@@ -1,12 +1,22 @@
 import fetch from 'isomorphic-unfetch';
+import app from "../src/app";
+
 
 const req = async (path, method, body) => {
     global.NProgress && global.NProgress.start();
-    let res = await fetch(app.BACKEND + path, {
+    console.log("@@@@ fetch 호출전 path = " + path)
+    let opt = {
         method,
         body: JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' }
-    })
+        headers: {
+            'Content-Type': 'application/json',
+            "x-access-token": app.user.token
+            //"x-access-token": "xxxx"
+        }
+    };
+
+    console.log("@@@@ fetch 호출전 app.user.token = " + JSON.stringify(opt, null, 2))
+    let res = await fetch(app.BACKEND + path, opt)
     let json = await res.json();
     global.NProgress && global.NProgress.done();
 
@@ -15,8 +25,6 @@ const req = async (path, method, body) => {
 
 export default function getApi(app) {
     return {
-
-
         // 링크삭제
         deleteLink: async (id) => {
             await req("/links/" + id, 'DELETE');
@@ -32,7 +40,7 @@ export default function getApi(app) {
         // 링크수정
         putLink: async (link) => {
             // DB 업데이트
-            await req("/links/" + link.id, "PUT", link);
+            await req("/links/", "PUT", link);
 
             // 로컬상태 업데이트
             var asisIdx = app.state.links.findIndex(l => l.id === link.id);
@@ -47,22 +55,23 @@ export default function getApi(app) {
         },
 
         // 로그인처리
-        login: async (token) => {
-            let json = await req("/login", "POST", { token })
+        login: async () => {
+            //let json = await req("/login", "POST", { token })
+            let json = await req("/login", "POST")
             return json;
         },
 
 
-        fetchList : async (path, idx=0, cnt=10) => {
+        fetchList: async (path, idx = 0, cnt = 10) => {
             let json;
 
-            if(idx === 0){
+            if (idx === 0) {
                 app.view.List.state.loading = true;
                 app.state.links = [];
-            }else{
-                app.view.List._ismounted && app.view.List.setState({loading: true})
+            } else {
+                app.view.List._ismounted && app.view.List.setState({ loading: true })
             }
-            
+
             let userID = app.state.menuIdx ? "/" + app.user.id : "";
 
             json = await req(path + userID + "?idx=" + idx + "&cnt=" + cnt, "GET");
@@ -70,20 +79,20 @@ export default function getApi(app) {
             //app.state.links = app.state.links.concat(json);
             app.state.links.push(...json);
 
-            if(json.length < app.PAGEROWS){
+            if (json.length < app.PAGEROWS) {
                 app.state.isScrollLast = true;
-            }else{
+            } else {
                 app.state.isScrollLast = false;
             }
 
             return json;
-          
+
         },
 
         // 좋아요
         like: async (link) => {
             // DB 업데이트
-            await req("/links/like/" + link.id, "PUT", { userID: app.user.id });
+            await req("/links/like/", "PUT", { linkID: link.id });
 
             // 로컬상태 업데이트
             link.like.push(app.user.id);
@@ -91,7 +100,7 @@ export default function getApi(app) {
         // 좋아요 취소
         unlike: async (link) => {
             // DB 업데이트
-            let res = await req("/links/unlike/" + link.id, "PUT", { userID: app.user.id });
+            let res = await req("/links/unlike/", "PUT", { linkID: link.id });
 
             // 로컬상태 업데이트
             link.like = link.like.filter(userID => userID !== app.user.id);
@@ -99,7 +108,7 @@ export default function getApi(app) {
         // 읽음 표시
         read: async (link) => {
             // DB 업데이트
-            let res = await req("/links/read/" + link.id, "PUT", { userID: app.user.id });
+            let res = await req("/links/read/", "PUT", { linkID: link.id });
 
             // 로컬상태 업데이트
             link.read.push(app.user.id);
@@ -107,7 +116,7 @@ export default function getApi(app) {
         // 읽음표시 취소
         unread: async (link) => {
             // DB 업데이트
-            await req("/links/unread/" + link.id, "PUT", { userID: app.user.id });
+            await req("/links/unread/", "PUT", { linkID: link.id });
 
             // 로컬상태 업데이트
             link.read = link.read.filter(userID => userID !== app.user.id);
@@ -115,7 +124,7 @@ export default function getApi(app) {
         // 읽을 글 표시
         toread: async (link) => {
             // DB 업데이트
-            await req("/links/toread/" + link.id, "PUT", { userID: app.user.id });
+            await req("/links/toread/", "PUT", { linkID: link.id });
 
             // 로컬상태 업데이트
             link.toread.push(app.user.id);
@@ -123,7 +132,7 @@ export default function getApi(app) {
         // 읽을 글 표시 취소
         untoread: async (link) => {
             // DB 업데이트
-            await req("/links/untoread/" + link.id, "PUT", { userID: app.user.id });
+            await req("/links/untoread/", "PUT", { linkID: link.id });
 
             // 로컬상태 업데이트
             link.toread = link.toread.filter(userID => userID !== app.user.id);

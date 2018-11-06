@@ -21,12 +21,13 @@ const Layout = (props) => {
 
     // The ID token you need to pass to your backend:
     var id_token = googleUser.getAuthResponse().id_token;
+    console.log("@@@@ token 세팅 하고 login 호출할꺼임")
+    app.user.token = id_token;
     // console.log("ID Token: " + id_token);
 
     app.api.login(id_token).then(res => {
       app.user = res.user;
       app.user.token = id_token;
-
       app.state.userID = res.user.id;
     });
 
