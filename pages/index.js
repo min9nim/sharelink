@@ -22,7 +22,7 @@ export default class List extends React.Component {
 
 
   static async getInitialProps({ req, asPath }) {
-    console.log("@@ getInitialProps ");
+    //console.log("@@ getInitialProps ");
     if (req) {
       //console.log("req.cookies.token = " + req.cookies.token)
       //console.log("asPath = " + asPath);

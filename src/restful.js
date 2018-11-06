@@ -22,7 +22,7 @@ const req = async (path, method, body) => {
         return json;
     }catch(e){
         console.error(e);
-        alert(e.message);
+        global.alert && global.alert(e.message);
     }
 };
 

@@ -48,6 +48,7 @@ const toreadClick = (isToread, link) => {
     app.api.toread(link)
   }
 }
+
 const commentClick = () => {
   alert("준비 중");
 }
