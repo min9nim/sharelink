@@ -83,11 +83,11 @@ export default function getApi(app) {
 
             app.view.List.state.loading = false;
             //app.state.links = app.state.links.concat(json);
-            app.state.links.push(...json.links);
 
             app.state.isScrollLast = !json.hasNext;
             app.state.totalCount = json.totalCount;
 
+            app.state.links.push(...json.links);
             return json.links;
 
         },

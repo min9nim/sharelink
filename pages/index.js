@@ -7,7 +7,7 @@ import "./index.scss";
 
 export default class List extends React.Component {
   constructor(props) {
-    console.log("List 생성자 호출")
+    // console.log("List 생성자 호출")
     super(props);
     this.state = {
       loading: true,
@@ -24,10 +24,10 @@ export default class List extends React.Component {
      * 18.11.02
      * delay를 줘도 스크롤 위치 보정이 잘 안된다;
      */
-    console.log("이동할 스크롤 위치 값 = " + app.scrollTop);
+    // console.log("이동할 스크롤 위치 값 = " + app.scrollTop);
     setTimeout(function () {
       app.$m.scrollTo(0, app.scrollTop);        // 이전 스크롤 위치로 복원
-      console.log("이동 후스크롤 위치 값 = " + app.scrollTop);
+      // console.log("이동 후스크롤 위치 값 = " + app.scrollTop);
     }, 1000);
 
     if (global.document) {
@@ -45,6 +45,7 @@ export default class List extends React.Component {
   render() {
     let intro = app.state.menu[app.state.menuIdx].label;
 
+    console.log("@@ app.state.totalCount = " + app.state.totalCount);
     return (
       <Layout>
         <div className="intro">{"* " + intro + "(" + app.state.totalCount + "개)"}</div>

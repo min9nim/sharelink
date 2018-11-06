@@ -77,7 +77,7 @@ class Menu extends React.Component {
 
             //await this.state.menu[idx].onSelect();
             let json = await app.api.fetchList(app.state.menu[idx+1].path);
-            app.state.totalCount = json.totalCount;
+            console.log("@@ json.totalCount = " + json.totalCount)
 
             this.props.hideMenu();
             //console.log("intro 세팅");
