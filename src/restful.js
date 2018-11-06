@@ -4,18 +4,17 @@ import app from "../src/app";
 
 const req = async (path, method, body) => {
     global.NProgress && global.NProgress.start();
-    console.log("@@@@ fetch 호출전 path = " + path)
+    //console.log("@@@@ fetch 호출전 path = " + path)
     let opt = {
         method,
         body: JSON.stringify(body),
         headers: {
             'Content-Type': 'application/json',
             "x-access-token": app.user.token
-            //"x-access-token": "xxxx"
         }
     };
 
-    console.log("@@@@ fetch 호출전 app.user.token = " + JSON.stringify(opt, null, 2))
+    //console.log("@@@@ fetch 호출전 app.user.token = " + JSON.stringify(opt, null, 2))
     let res = await fetch(app.BACKEND + path, opt)
     let json = await res.json();
     global.NProgress && global.NProgress.done();
@@ -72,22 +71,18 @@ export default function getApi(app) {
                 app.view.List._ismounted && app.view.List.setState({ loading: true })
             }
 
-//            let userID = app.state.menuIdx ? "/" + app.user.id : "";
-//            json = await req(path + userID + "?idx=" + idx + "&cnt=" + cnt, "GET");
+            //            let userID = app.state.menuIdx ? "/" + app.user.id : "";
+            //            json = await req(path + userID + "?idx=" + idx + "&cnt=" + cnt, "GET");
 
             json = await req(path + "?idx=" + idx + "&cnt=" + cnt, "GET");
 
             app.view.List.state.loading = false;
             //app.state.links = app.state.links.concat(json);
-            app.state.links.push(...json);
+            app.state.links.push(...json.links);
 
-            if (json.length < app.PAGEROWS) {
-                app.state.isScrollLast = true;
-            } else {
-                app.state.isScrollLast = false;
-            }
+            app.state.isScrollLast = !json.hasNext;
 
-            return json;
+            return json.links;
 
         },
 

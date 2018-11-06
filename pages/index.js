@@ -104,11 +104,15 @@ const onscroll = async () => {
   ) { //스크롤이 마지막일때
 
     let path = app.state.menu[app.state.menuIdx].path;
-    let links = await app.api.fetchList(path, app.state.links.length, PAGEROWS);
-    if (links.length < app.PAGEROWS) {
-      console.log("Scroll has touched bottom")
-      app.state.isScrollLast = true;
-      return;
+    let json = await app.api.fetchList(path, app.state.links.length, PAGEROWS);
+
+    //if (links.length < app.PAGEROWS) {
+    
+    app.state.isScrollLast = !json.hasNext;
+    
+    if (!json.hasNext) {
+      console.log("All links loaded")
     }
+
   }
 }
