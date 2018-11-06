@@ -45,7 +45,7 @@ export default class List extends React.Component {
   render() {
     let intro = app.state.menu[app.state.menuIdx].label;
 
-    console.log("@@ app.state.totalCount = " + app.state.totalCount);
+    //console.log("@@ app.state.totalCount = " + app.state.totalCount);
     return (
       <Layout>
         <div className="intro">{"* " + intro + "(" + app.state.totalCount + "개)"}</div>
