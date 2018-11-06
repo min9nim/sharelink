@@ -65,7 +65,7 @@ export default function getApi(app) {
         },
 
 
-        fetchList: async (path, idx = 0, cnt = 10) => {
+        fetchList: async (menuIdx, idx = 0, cnt = 10) => {
 
             if(app.view.List){
                 if (idx === 0) {
@@ -76,7 +76,9 @@ export default function getApi(app) {
                 }    
             }
 
-            let fetchRes = await req(path + "?idx=" + idx + "&cnt=" + cnt, "GET");
+            let path = "/links" + app.state.menu[menuIdx].path + "?idx=" + idx + "&cnt=" + cnt;
+
+            let fetchRes = await req(path, "GET");
 
             //console.log("@@ 여기서는? " + JSON.stringify(json, null, 2))
 

@@ -47,23 +47,23 @@ const app = {
         menu : [
             {
                 label: "전체 포스트",
-                path: "/links",
+                path: "/",
             },
             {
                 label: "내가 등록한 포스트",
-                path: "/links/my",
+                path: "/my",
             },
             {
                 label: "내가 좋아하는 포스트",
-                path: "/links/like",
+                path: "/like",
             },
             {
                 label: "내가 읽은 포스트",
-                path: "/links/read",
+                path: "/read",
             },
             {
                 label: "나중에 읽을 포스트",
-                path: "/links/toread",
+                path: "/toread",
             }
         ]
     },

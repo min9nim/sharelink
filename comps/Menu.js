@@ -51,7 +51,8 @@ class Menu extends React.Component {
             app.state.isScrollLast = false;
 
             //await this.state.menu[idx].onSelect();
-            let fetchRes = await app.api.fetchList(app.state.menu[idx+1].path);
+            //let fetchRes = await app.api.fetchList(app.state.menu[idx+1].path);
+            let fetchRes = await app.api.fetchList(idx+1);
             console.log("@@ json.totalCount = " + fetchRes.totalCount)
 
             this.props.hideMenu();

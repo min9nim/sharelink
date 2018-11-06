@@ -22,7 +22,8 @@ export default class List extends React.Component {
 
   static async getInitialProps ({req}) {
     console.log("@@ 여기는 무조건 한번만 호출되는건디..?");
-    let fetchRes = await app.api.fetchList(app.state.menu[app.state.menuIdx].path);
+    //let fetchRes = await app.api.fetchList(app.state.menu[app.state.menuIdx].path);
+    let fetchRes = await app.api.fetchList(app.state.menuIdx);
     
     return {
         fetchRes
