@@ -30,9 +30,9 @@ const req = async (path, method, body) => {
 export default function getApi(app) {
     return {
         // 링크삭제
-        deleteLink: async (id) => {
-            await req("/links/" + id, 'DELETE');
-            app.state.links = app.state.links.filter(l => l.id !== id);
+        deleteLink: async (link) => {
+            await req("/links/", 'DELETE', { linkID: link.id });
+            app.state.links = app.state.links.filter(l => l.id !== link.id);
         },
 
         // 링크추가
@@ -44,7 +44,7 @@ export default function getApi(app) {
         // 링크수정
         putLink: async (link) => {
             // DB 업데이트
-            await req("/links/", "PUT", link);
+            await req("/links/", "PUT", Object.assign(link, { linkID: link.id }));
 
             // 로컬상태 업데이트
             var asisIdx = app.state.links.findIndex(l => l.id === link.id);

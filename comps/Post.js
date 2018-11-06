@@ -23,7 +23,7 @@ const remove = async (post, dom) => {
   await removeAnimation(dom, 0.2)
 
   // DB 삭제처리
-  await app.api.deleteLink(post.id);
+  await app.api.deleteLink(post);
 }
 
 const likeClick = (isLike, link) => {
