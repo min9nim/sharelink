@@ -2,7 +2,6 @@ import { withRouter } from 'next/router'
 import app from "../src/app";
 import "./Menu.scss";
 
-
 class Menu extends React.Component {
     constructor(props) {
         super(props);
@@ -40,9 +39,12 @@ class Menu extends React.Component {
 
     selectMenu(idx) {
         return async (e) => {
-            if (this.props.router.pathname === "/write") {
-                this.props.router.push("/");
-            }
+
+            // if (this.props.router.pathname === "/write") {
+            //     this.props.router.push("/");
+            // }
+
+            this.props.router.push(app.state.menu[idx+1].path);
 
             //let intro = e.target.innerText;
             //let intro = this.state.menu[idx].label;

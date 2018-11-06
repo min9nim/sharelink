@@ -14,19 +14,26 @@ export default class List extends React.Component {
     }
     app.view.List = this;
 
+    app.state.menuIdx = props.menuIdx;
     app.state.totalCount = props.fetchRes.totalCount
     app.state.isScrollLast = !props.fetchRes.hasNext
     app.state.links = props.fetchRes.links;
   }
 
 
-  static async getInitialProps ({req}) {
-    console.log("@@ 여기는 무조건 한번만 호출되는건디..?");
-    //let fetchRes = await app.api.fetchList(app.state.menu[app.state.menuIdx].path);
-    let fetchRes = await app.api.fetchList(app.state.menuIdx);
-    
+  static async getInitialProps({ req, asPath }) {
+    console.log("@@ getInitialProps ");
+    if (req) {
+      //console.log("req.cookies.token = " + req.cookies.token)
+      //console.log("asPath = " + asPath);
+      app.user.token = req.cookies.token;
+    }
+    let menuIdx = app.state.menu.findIndex(m => m.path === asPath);
+    let fetchRes = await app.api.fetchList(menuIdx);
+
     return {
-        fetchRes
+      menuIdx,
+      fetchRes
     }
   }
 
@@ -126,9 +133,9 @@ const onscroll = async () => {
     let json = await app.api.fetchList(path, app.state.links.length, PAGEROWS);
 
     //if (links.length < app.PAGEROWS) {
-    
+
     app.state.isScrollLast = !json.hasNext;
-    
+
     if (!json.hasNext) {
       console.log("All links loaded")
     }

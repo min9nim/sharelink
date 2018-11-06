@@ -61,6 +61,8 @@ global.onSignIn = (googleUser) => {
     app.user.token = id_token;
     app.state.userID = res.user.id;
 
+    document.cookie = "token="+id_token;
+
     sessionStorage.setItem("token", id_token);
     sessionStorage.setItem("userID", res.user.id);
   });
