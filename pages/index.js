@@ -47,8 +47,8 @@ export default class List extends React.Component {
 
     return (
       <Layout>
-        {/* <div className="intro">{"* " + intro + "(" + app.state.links.length + "개)"}</div> */}
-        <div className="intro">{"* " + intro}</div>
+        <div className="intro">{"* " + intro + "(" + app.state.totalCount + "개)"}</div>
+        {/* <div className="intro">{"* " + intro}</div> */}
         <ul>
           {app.state.links.map((link) => {
             return (

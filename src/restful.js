@@ -3,23 +3,28 @@ import app from "../src/app";
 
 
 const req = async (path, method, body) => {
-    global.NProgress && global.NProgress.start();
-    //console.log("@@@@ fetch 호출전 path = " + path)
-    let opt = {
-        method,
-        body: JSON.stringify(body),
-        headers: {
-            'Content-Type': 'application/json',
-            "x-access-token": app.user.token
-        }
-    };
-
-    //console.log("@@@@ fetch 호출전 app.user.token = " + JSON.stringify(opt, null, 2))
-    let res = await fetch(app.BACKEND + path, opt)
-    let json = await res.json();
-    global.NProgress && global.NProgress.done();
-
-    return json;
+    try{
+        global.NProgress && global.NProgress.start();
+        //console.log("@@@@ fetch 호출전 path = " + path)
+        let opt = {
+            method,
+            body: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json',
+                "x-access-token": app.user.token
+            }
+        };
+    
+        //console.log("@@@@ fetch 호출전 app.user.token = " + JSON.stringify(opt, null, 2))
+        let res = await fetch(app.BACKEND + path, opt)
+        let json = await res.json();
+        global.NProgress && global.NProgress.done();
+    
+        return json;
+    }catch(e){
+        console.error(e);
+        alert(e.message);
+    }
 };
 
 export default function getApi(app) {
@@ -81,6 +86,7 @@ export default function getApi(app) {
             app.state.links.push(...json.links);
 
             app.state.isScrollLast = !json.hasNext;
+            app.state.totalCount = json.totalCount;
 
             return json.links;
 

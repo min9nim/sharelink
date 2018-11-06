@@ -40,6 +40,7 @@ const app = {
     scrollTop: 0,        // 목록화면에서 현재 스크롤 위치
     state: {
         links: [],
+        totalCount: 0,
         userID: "",
         menuIdx : 0,
         isScrollLast: false,
