@@ -11,12 +11,9 @@ export default class List extends React.Component {
     super(props);
     this.state = {
       loading: true,
-      intro: "전체 포스트",
-      selectedMenu: undefined
     }
     app.view.List = this;
-
-    app.api.fetchLinks();
+    app.api.fetchList(app.state.menu[app.state.menuIdx].path);
   }
 
 
@@ -46,12 +43,11 @@ export default class List extends React.Component {
   }
 
   render() {
+    let intro = app.state.menu[app.state.menuIdx].label;
+
     return (
       <Layout>
-        {
-          this.state.intro &&
-          <div className="intro">{"* " + this.state.intro + "(" + app.state.links.length + "개)"}</div>
-        }
+        <div className="intro">{"* " + intro + "(" + app.state.links.length + "개)"}</div>
         <ul>
           {app.state.links.map((link) => {
             return (
@@ -81,7 +77,7 @@ const onscroll = async () => {
   app.scrollTop = scrollTop;
 
 
-  if (app.isScrollLast) return;
+  if (app.state.isScrollLast) return;
 
   /**
    * 18.11.05
@@ -106,26 +102,12 @@ const onscroll = async () => {
     (app.isMobileChrome() && (scrollTop + clientHeight == scrollHeight - 56))   // 모바일 크롬(55는 위에 statusbar 의 높이 때문인건가)
   ) { //스크롤이 마지막일때
 
-    let links;
-
-    if(app.view.List.state.selectedMenu){
-      links = await app.view.Menu.state.menu[app.view.List.state.selectedMenu].onSelect({
-        idx: app.state.links.length,
-        cnt: PAGEROWS,
-      });        
-    }else{
-      links = await app.api.fetchLinks({
-        idx: app.state.links.length,
-        cnt: PAGEROWS,
-      });  
-    }
-
-    if (links.length < PAGEROWS) {
+    let path = app.state.menu[app.state.menuIdx].path;
+    let links = await app.api.fetchList(path, app.state.links.length, PAGEROWS);
+    if (links.length < app.PAGEROWS) {
       console.log("Scroll has touched bottom")
-      app.isScrollLast = true;
+      app.state.isScrollLast = true;
       return;
     }
-
   }
-
-};
+}

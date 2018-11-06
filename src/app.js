@@ -41,6 +41,35 @@ const app = {
     state: {
         links: [],
         userID: "",
+        menuIdx : 0,
+        isScrollLast: false,
+        menu : [
+            {
+                label: "전체 포스트",
+                path: "/links",
+                //onSelect:  app.api.fetchLinks
+            },
+            {
+                label: "내가 등록한 포스트",
+                path: "/links/my",
+                //onSelect:  app.api.fetchMyLink
+            },
+            {
+                label: "내가 좋아하는 포스트",
+                path: "/links/like",
+                //onSelect:  app.api.fetchMyLike
+            },
+            {
+                label: "내가 읽은 포스트",
+                path: "/links/read",
+                //onSelect:  app.api.fetchMyRead
+            },
+            {
+                label: "나중에 읽을 포스트",
+                path: "/links/toread",
+                //onSelect:  app.api.fetchMyToread
+            }
+        ]
     },
     user: {
         id: "",
@@ -58,7 +87,7 @@ const app = {
     },
     view: {},          // 공유가 필요한 react 컴포넌트
     BACKEND,
-    isScrollLast: false
+    PAGEROWS: 10
 };
 
 // RESTful API 세팅
@@ -70,6 +99,7 @@ decorate(app, { state: observable });
 reaction(() => JSON.stringify(app.state.links), () => {
     app.view.List && app.view.List._ismounted && app.view.List.forceUpdate();
 });
+
 
 reaction(() => app.state.userID, async () => {
     // app.state.userID 값을 바라보며 앱의 로그인 여부를 판단한다.

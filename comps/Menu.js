@@ -11,27 +11,8 @@ class Menu extends React.Component {
         super(props);
 
         this.state = {
-            menu : [
-                {
-                    label: "내가 등록한 포스트",
-                    onSelect:  app.api.fetchMyLink
-                },
-                {
-                    label: "내가 좋아하는 포스트",
-                    onSelect:  app.api.fetchMyLike
-                },
-                {
-                    label: "내가 읽은 포스트",
-                    onSelect:  app.api.fetchMyRead
-                },
-                {
-                    label: "나중에 읽을 포스트",
-                    onSelect:  app.api.fetchMyToread
-                }
-            ]
+            menu : app.state.menu.slice(1)
         }
-
-
 
         global.document.onclick = (e) => {
             let clickMenu = [e.target.className]
@@ -90,12 +71,16 @@ class Menu extends React.Component {
             }
 
             //let intro = e.target.innerText;
-            let intro = this.state.menu[idx].label;
+            //let intro = this.state.menu[idx].label;
+            app.state.menuIdx = idx+1;
+            app.state.isScrollLast = false;
 
-            await this.state.menu[idx].onSelect();
+            //await this.state.menu[idx].onSelect();
+            await app.api.fetchList(app.state.menu[idx+1].path);
+
             this.props.hideMenu();
-            console.log("intro 세팅")
-            app.view.List.setState({ intro, selectedMenu: idx });
+            //console.log("intro 세팅");
+            //app.view.List.setState({ intro, selectedMenu: idx });
         }
     }
 

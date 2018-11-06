@@ -70,10 +70,19 @@ export default function getApi(app) {
                 app.view.List._ismounted && app.view.List.setState({loading: true})
             }
             
-            json = await req(path + "?idx=" + idx + "&cnt=" + cnt, "GET");
+            let userID = app.state.menuIdx ? "/" + app.user.id : "";
+
+            json = await req(path + userID + "?idx=" + idx + "&cnt=" + cnt, "GET");
             app.view.List.state.loading = false;
             //app.state.links = app.state.links.concat(json);
             app.state.links.push(...json);
+
+            if(json.length < app.PAGEROWS){
+                app.state.isScrollLast = true;
+            }else{
+                app.state.isScrollLast = false;
+            }
+
             return json;
 
             // if (idx === 0) {
@@ -91,21 +100,25 @@ export default function getApi(app) {
         },
 
 
-        // 내 포스트 조회
-        fetchMyLink: async () => {
-            // 목록 초기화
-            app.view.List.state.loading = true;
-            app.state.links = [];
-
-            // fetch
-            let json = await req("/links/my/" + app.user.id, "GET");
-
-            // UI 갱신
-            //app.view.List.state.loading = false;
-            app.view.List.setState({ loading: false });
-            app.state.links = json;
-
+        fetchMyLink:  async ({ idx, cnt } = {idx:0, cnt:10}) => {
+            return app.api.fetchList("/links/my/", idx, cnt);
         },
+
+        // // 내 포스트 조회
+        // fetchMyLink: async () => {
+        //     // 목록 초기화
+        //     app.view.List.state.loading = true;
+        //     app.state.links = [];
+
+        //     // fetch
+        //     let json = await req("/links/my/" + app.user.id, "GET");
+
+        //     // UI 갱신
+        //     //app.view.List.state.loading = false;
+        //     app.view.List.setState({ loading: false });
+        //     app.state.links = json;
+        // },
+
 
         // 내가 좋아하는 포스트
         fetchMyLike: async () => {
