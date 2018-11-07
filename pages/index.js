@@ -25,10 +25,11 @@ export default class List extends React.Component {
     //console.log("@@ getInitialProps ");
     if (req) {
       //console.log("req.cookies.token = " + req.cookies.token)
-      //console.log("asPath = " + asPath);
+      console.log("asPath = " + asPath);
       app.user.token = req.cookies.token;
     }
     let menuIdx = app.state.menu.findIndex(m => m.path === asPath);
+    //console.log("menuIdx = " + menuIdx);
     let fetchRes = await app.api.fetchList(menuIdx);
 
     return {
@@ -129,8 +130,8 @@ const onscroll = async () => {
     (app.isMobileChrome() && (scrollTop + clientHeight == scrollHeight - 56))   // 모바일 크롬(55는 위에 statusbar 의 높이 때문인건가)
   ) { //스크롤이 마지막일때
 
-    let path = app.state.menu[app.state.menuIdx].path;
-    let json = await app.api.fetchList(path, app.state.links.length, PAGEROWS);
+    //let path = app.state.menu[app.state.menuIdx].path;
+    let json = await app.api.fetchList(app.state.menuIdx, app.state.links.length, PAGEROWS);
 
     //if (links.length < app.PAGEROWS) {
 
