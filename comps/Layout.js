@@ -5,9 +5,11 @@ import { withRouter } from 'next/router'
 import "./Layout.scss";
 import app from '../src/app';
 
-
+let layoutProps;
 const Layout = (props) => {
-  console.log("Layout 렌더링..")
+  console.log("Layout 렌더링..");
+
+  layoutProps = props;
 
   let googleLoginBtn;
   
@@ -45,6 +47,18 @@ const Layout = (props) => {
 global.onSignIn = (googleUser) => {
   console.log("global.onSignIn 호출");
 
+  let GoogleAuth = gapi.auth2.getAuthInstance();
+
+  app.auth.signOut = () => {
+    app.state.userID = "";
+
+    return GoogleAuth.signOut().then(() => {
+      console.log("GoogleAuth.signOut() 완료 후 콜백");
+      app.state.userID = "";
+    });
+  }
+
+
   if (app.auth.isLogin()) {
     return;
   }
@@ -63,8 +77,6 @@ global.onSignIn = (googleUser) => {
 
   console.log(id_token);
 
-
-
   // console.log("ID Token: " + id_token);
 
   app.api.login(id_token).then(res => {
@@ -75,19 +87,10 @@ global.onSignIn = (googleUser) => {
     let enc = app.Base64Encode(JSON.stringify(app.user))
     document.cookie = `user=${enc}`;
     sessionStorage.setItem("user", JSON.stringify(app.user));
-    //sessionStorage.setItem("userID", res.user.id);
+    
+    layoutProps.router.push("/");
   });
-
-
-  let GoogleAuth = gapi.auth2.getAuthInstance();
-
-  app.auth.signOut = () => {
-    return GoogleAuth.signOut().then(() => {
-      app.state.userID = "";
-    });
-  }
-
-  //props.router.push("/");
+  
 };
 
 export default withRouter(Layout)

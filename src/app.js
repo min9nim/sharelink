@@ -9,6 +9,7 @@ import base64js from "base64-js";
 let BACKEND;
 //console.log("process.env.GOOGLE_CLOUD_PROJECT = " + process.env.GOOGLE_CLOUD_PROJECT)
 //console.log("process.env.NODE_ENV = " + process.env.NODE_ENV);
+
 if (process.env.NODE_ENV === "production") {
     // https://cloud.google.com/appengine/docs/flexible/nodejs/runtime
     // GCP 노드 운영환경
@@ -92,8 +93,7 @@ const app = {
                 return false;
             }
         },
-        signOut: () => { },
-        signIn: () => { }
+        signOut: () => {}
     },
     view: {},          // 공유가 필요한 react 컴포넌트
     BACKEND,
@@ -117,7 +117,8 @@ reaction(() => app.state.userID, async () => {
         console.log("로그인 됨")
     } else {
         console.log("로그아웃 됨")
-        document.cookie = "token=";
+        document.cookie = "user="
+        global.sessionStorage.setItem("user", "");
         app.user = {
             id: "",
             name: "",
@@ -129,40 +130,31 @@ reaction(() => app.state.userID, async () => {
 
     app.view.Header && app.view.Header._ismounted && app.view.Header.forceUpdate();
     app.view.List && app.view.List._ismounted && app.view.List.forceUpdate();
-
 });
 
 
 app.isDesktop = function () {
     const os = ["win16", "win32", "win64", "mac", "macintel"];
-    return os.includes(navigator.platform.toLowerCase());
+    return global.navigator && os.includes(global.navigator.platform.toLowerCase());
 }
 
-if (global.navigator) {
-    app.isMobileChrome = function () {
-        return !app.isDesktop() && global.navigator.userAgent.includes("Chrome");
-    }
+app.isMobileChrome = function () {
+    return !app.isDesktop() && global.navigator && global.navigator.userAgent.includes("Chrome");
 }
 
-function Base64Encode(str, encoding = 'utf-8') {
+app.Base64Encode = (str, encoding = 'utf-8') => {
     var bytes = new (TextEncoder || TextEncoderLite)(encoding).encode(str);
     return base64js.fromByteArray(bytes);
 }
 
-function Base64Decode(str, encoding = 'utf-8') {
+app.Base64Decode = (str, encoding = 'utf-8') => {
     var bytes = base64js.toByteArray(str);
     return new (TextDecoder || TextDecoderLite)(encoding).decode(bytes);
 }
 
-
-function getUser(req) {
+app.getUser = (req) => {
     let userStr;
-
     if (req) {
-        //console.log("req.cookies.token = " + req.cookies.token)
-        // console.log("asPath = " + asPath);
-        //app.user.token = req.cookies.token;
-        //userStr = app.b64DecodeUnicode(req.cookies.user);
         var buf = Buffer.from(req.cookies.user, 'base64');
         userStr = buf.toString('utf8');
     } else {
@@ -184,9 +176,7 @@ function getUser(req) {
     }
 }
 
-app.getUser = getUser;
-app.Base64Encode = Base64Encode;
-app.Base64Decode = Base64Decode;
+
 
 global.app = app;
 export default app;

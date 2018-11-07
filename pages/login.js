@@ -17,7 +17,7 @@ const Login = ({router}) => {
             </Head> */}
             <div className="login-wrapper">
                 <div className="login-title">
-                    아직 구글 로그인만 지원됩니다
+                    구글 로그인만 지원됩니다
                 </div>
                 <div className="login-btn">
                     <div className="g-signin2" data-onsuccess="onSignIn" ></div>
