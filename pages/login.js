@@ -1,11 +1,12 @@
 import Layout from '../comps/Layout.js';
 import { withRouter } from 'next/router'
 //import Head from 'next/head';
-//import app from "../src/app";
+import app from "../src/app";
 import "./login.scss";
 
 
-const Login = ({router}) => {
+const Login = ({ router, user }) => {
+    app.user = user;
 
     return (
         <Layout>
@@ -25,6 +26,14 @@ const Login = ({router}) => {
             </div>
         </Layout>
     )
+}
+
+Login.getInitialProps = async ({ req }) => {
+    let user = app.getUser(req);
+    console.log("@@ user = " + JSON.stringify(user));
+    return {
+        user
+    }
 }
 
 export default withRouter(Login)

@@ -126,6 +126,9 @@ reaction(() => app.state.userID, async () => {
             image: "",
             token: ""
         };
+        if(app.router && app.router.pathname.indexOf("/write") === 0){
+            app.router.push("/login");
+        }
     }
 
     app.view.Header && app.view.Header._ismounted && app.view.Header.forceUpdate();

@@ -10,6 +10,7 @@ const Layout = (props) => {
   console.log("Layout 렌더링..");
 
   layoutProps = props;
+  app.router = props.router;
 
   let googleLoginBtn;
   
@@ -80,15 +81,18 @@ global.onSignIn = (googleUser) => {
   // console.log("ID Token: " + id_token);
 
   app.api.login(id_token).then(res => {
-    app.user = res.user;
-    app.user.token = id_token;
-    app.state.userID = res.user.id;
-    //document.cookie = "token=" + id_token;
-    let enc = app.Base64Encode(JSON.stringify(app.user))
-    document.cookie = `user=${enc}`;
-    sessionStorage.setItem("user", JSON.stringify(app.user));
-    
-    layoutProps.router.push("/");
+    if(res.status === "Fail"){
+      console.log("Invalid token");
+    }else{
+      app.user = res.user;
+      app.user.token = id_token;
+      app.state.userID = res.user.id;
+      //document.cookie = "token=" + id_token;
+      let enc = app.Base64Encode(JSON.stringify(app.user))
+      document.cookie = `user=${enc}`;
+      sessionStorage.setItem("user", JSON.stringify(app.user));
+      layoutProps.router.push("/");
+    }
   });
   
 };

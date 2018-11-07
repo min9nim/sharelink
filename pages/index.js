@@ -6,9 +6,6 @@ import app from "../src/app";
 import "./index.scss";
 
 
-
-
-
 export default class List extends React.Component {
   constructor(props) {
     // console.log("List 생성자 호출")
@@ -17,7 +14,7 @@ export default class List extends React.Component {
       loading: false,
     }
     app.view.List = this;
-    
+
     app.state.userID = props.user.id;
     app.user = props.user;
 
@@ -27,12 +24,11 @@ export default class List extends React.Component {
     app.state.links = props.fetchRes.links;
   }
 
-
   static async getInitialProps({ req, asPath }) {
     //console.log("@@ getInitialProps ");
     let user = app.getUser(req);
     app.user.token = user.token;
-    
+
     let menuIdx = app.state.menu.findIndex(m => m.path === asPath);
     //console.log("menuIdx = " + menuIdx);
     let fetchRes = await app.api.fetchList(menuIdx);
@@ -45,8 +41,6 @@ export default class List extends React.Component {
       user
     }
   }
-
-
 
   componentDidMount() {
     this._ismounted = true;
