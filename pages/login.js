@@ -10,12 +10,6 @@ const Login = ({ router, user }) => {
 
     return (
         <Layout>
-            {/* <Head>
-                <meta name="google-signin-scope" content="profile email" />
-                <meta name="google-signin-client_id" content="557495610346-0d8b5e9vlnh9abpdn7rheamuck4982cg.apps.googleusercontent.com" />
-                <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
-
-            </Head> */}
             <div className="login-wrapper">
                 <div className="login-title">
                     구글 로그인만 지원됩니다
