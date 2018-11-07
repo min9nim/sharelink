@@ -7,28 +7,45 @@ import app from '../src/app';
 
 
 const Layout = (props) => {
-  
-  let token = global.sessionStorage && global.sessionStorage.getItem("token");
-  let userID = global.sessionStorage && global.sessionStorage.getItem("userID");
+  console.log("Layout 렌더링..")
+
+  //let userStr = global.sessionStorage && global.sessionStorage.getItem("user");
+  let googleLoginBtn;
+  // if (userStr) {
+  //   console.log("세션스토리지에 로그인 정보 있음")
+  //   app.user = JSON.parse(userStr);
+  //   app.state.userID = app.user.id;
+  //   googleLoginBtn = ""
+  // }else{
+  //   console.log("세션스토리지에 로그인 정보 XXX")
+  //   googleLoginBtn = <div style={{ display: "none" }} className="g-signin2" data-onsuccess="onSignIn" />
+  // }
+
+  googleLoginBtn = <div style={{ display: "none" }} className="g-signin2" data-onsuccess="onSignIn" />
+
 
   return (
     <div className="layoutStyle">
       <Head>
         <title>sharelink - 링크공유</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        
+
         <meta name="google-signin-scope" content="profile email" />
         <meta name="google-signin-client_id" content="314955303656-ohiovevqbpms4pguh82fnde7tvo9cqnb.apps.googleusercontent.com" />
         <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
-        
+
         <link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css' />
         <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
 
         <link rel="stylesheet" href="/static/css/style.css"></link>
         <link rel="stylesheet" href="/static/css/fontello.css"></link>
       </Head>
-      <div style={{ display: "none" }} className="g-signin2" data-onsuccess="onSignIn" />
-      <Header/>
+      <div>
+        <Header />
+      </div>
+      {
+        googleLoginBtn
+      }
       {props.children}
     </div>
   )
@@ -36,6 +53,8 @@ const Layout = (props) => {
 
 
 global.onSignIn = (googleUser) => {
+  console.log("global.onSignIn 호출");
+
   if (app.auth.isLogin()) {
     return;
   }
@@ -51,8 +70,8 @@ global.onSignIn = (googleUser) => {
   var id_token = googleUser.getAuthResponse().id_token;
   //console.log("@@@@ token 세팅 하고 login 호출할꺼임")
   app.user.token = id_token;
-  
-  
+
+
 
   // console.log("ID Token: " + id_token);
 
@@ -61,10 +80,10 @@ global.onSignIn = (googleUser) => {
     app.user.token = id_token;
     app.state.userID = res.user.id;
 
-    document.cookie = "token="+id_token;
+    document.cookie = "token=" + id_token;
 
-    sessionStorage.setItem("token", id_token);
-    sessionStorage.setItem("userID", res.user.id);
+    //sessionStorage.setItem("user", JSON.stringify(app.user));
+    //sessionStorage.setItem("userID", res.user.id);
   });
 
 
