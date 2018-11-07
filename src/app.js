@@ -1,14 +1,14 @@
 import { observable, reaction, decorate } from "mobx";
 import $m from "../com/util";
 import getApi from "./restful.js";
-
+import base64js from "base64-js";
 
 //console.log("process.env.PORT : " + process.env.PORT);
 //console.log("location.hostname : " + location.hostname);
 
 let BACKEND;
-console.log("process.env.GOOGLE_CLOUD_PROJECT = " + process.env.GOOGLE_CLOUD_PROJECT)
-console.log("process.env.NODE_ENV = " + process.env.NODE_ENV);
+//console.log("process.env.GOOGLE_CLOUD_PROJECT = " + process.env.GOOGLE_CLOUD_PROJECT)
+//console.log("process.env.NODE_ENV = " + process.env.NODE_ENV);
 if (process.env.NODE_ENV === "production") {
     // https://cloud.google.com/appengine/docs/flexible/nodejs/runtime
     // GCP 노드 운영환경
@@ -81,7 +81,16 @@ const app = {
     },
     auth: {// 로그인 관련
         isLogin: () => {
-            return app.state.userID !== "";
+            if(app.state.userID){
+                if(Date.now() > app.user.exp * 1000){
+                    console.log("### jwt token expired");
+                    return false;
+                }else{
+                    return true;
+                }
+            }else{
+                return false;
+            }
         },
         signOut: () => { },
         signIn: () => { }
@@ -105,8 +114,10 @@ reaction(() => JSON.stringify(app.state.links), () => {
 reaction(() => app.state.userID, async () => {
     // app.state.userID 값을 바라보며 앱의 로그인 여부를 판단한다.
     if (app.auth.isLogin()) {
-        console.log("로그인 완료")
+        console.log("로그인 됨")
     } else {
+        console.log("로그아웃 됨")
+        document.cookie = "token=";
         app.user = {
             id: "",
             name: "",
@@ -133,6 +144,18 @@ if(global.navigator){
     }    
 }
 
+function Base64Encode(str, encoding = 'utf-8') {
+    var bytes = new (TextEncoder || TextEncoderLite)(encoding).encode(str);        
+    return base64js.fromByteArray(bytes);
+}
+
+function Base64Decode(str, encoding = 'utf-8') {
+    var bytes = base64js.toByteArray(str);
+    return new (TextDecoder || TextDecoderLite)(encoding).decode(bytes);
+}
+
+app.Base64Encode = Base64Encode;
+app.Base64Decode = Base64Decode;
 
 global.app = app;
 export default app;

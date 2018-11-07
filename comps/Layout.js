@@ -9,18 +9,8 @@ import app from '../src/app';
 const Layout = (props) => {
   console.log("Layout 렌더링..")
 
-  //let userStr = global.sessionStorage && global.sessionStorage.getItem("user");
   let googleLoginBtn;
-  // if (userStr) {
-  //   console.log("세션스토리지에 로그인 정보 있음")
-  //   app.user = JSON.parse(userStr);
-  //   app.state.userID = app.user.id;
-  //   googleLoginBtn = ""
-  // }else{
-  //   console.log("세션스토리지에 로그인 정보 XXX")
-  //   googleLoginBtn = <div style={{ display: "none" }} className="g-signin2" data-onsuccess="onSignIn" />
-  // }
-
+  
   googleLoginBtn = <div style={{ display: "none" }} className="g-signin2" data-onsuccess="onSignIn" />
 
 
@@ -71,6 +61,8 @@ global.onSignIn = (googleUser) => {
   //console.log("@@@@ token 세팅 하고 login 호출할꺼임")
   app.user.token = id_token;
 
+  console.log(id_token);
+
 
 
   // console.log("ID Token: " + id_token);
@@ -79,10 +71,10 @@ global.onSignIn = (googleUser) => {
     app.user = res.user;
     app.user.token = id_token;
     app.state.userID = res.user.id;
-
-    document.cookie = "token=" + id_token;
-
-    //sessionStorage.setItem("user", JSON.stringify(app.user));
+    //document.cookie = "token=" + id_token;
+    let enc = app.Base64Encode(JSON.stringify(app.user))
+    document.cookie = `user=${enc}`;
+    sessionStorage.setItem("user", JSON.stringify(app.user));
     //sessionStorage.setItem("userID", res.user.id);
   });
 
