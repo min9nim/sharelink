@@ -9,12 +9,12 @@ import URL from "url-parse";
 
 import "./write.scss";
 
-
 class Write extends React.Component {
   constructor(props) {
     super(props);
 
-    let link = app.state.links.find(l => l.id === props.router.query.id);
+    //let link = app.state.links.find(l => l.id === props.router.query.id);
+    let link = this.props.link;
     link = Object.assign({}, link);   // 복사본을 전달
 
     this.state = link.id ? link : {
@@ -44,12 +44,25 @@ class Write extends React.Component {
     });
   }
 
-  static async getInitialProps({ req }) {
-    // console.log("@@ 여기는 서버에서만 수행되는 로직");
-    return req
-      ? { from: 'server' } // 서버에서 실행 할 시
-      : { from: 'client ' } // 클라이언트에서 실행 할 시
+  static async getInitialProps({ req, asPath, query }) {
+    let link;
+    if (req) {
+      console.log("asPath = " + asPath);
+      console.log("req.query.id = " + req.query.id);
+      app.user.token = req.cookies.token;
+      //console.log("menuIdx = " + menuIdx);
+      let fetchRes = await app.api.fetchLink(req.query.id);  
+      link = fetchRes[0]
+    }else{
+      link = app.state.links.find(l => l.id === query.id);      
+    }
+
+    return {
+      menuIdx: 0,
+      link
+    }
   }
+
 
   cancel() {
     this.props.router.push("/")
@@ -70,9 +83,6 @@ class Write extends React.Component {
       this.titleInput.focus();
       return;
     }
-
-
-
 
     // 인증을 위한 토큰 전달
     this.state.token = app.user.token;
