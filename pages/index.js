@@ -5,6 +5,10 @@ import LinkLoading from '../comps/LinkLoading.js';
 import app from "../src/app";
 import "./index.scss";
 
+
+
+
+
 export default class List extends React.Component {
   constructor(props) {
     // console.log("List 생성자 호출")
@@ -26,38 +30,12 @@ export default class List extends React.Component {
 
   static async getInitialProps({ req, asPath }) {
     //console.log("@@ getInitialProps ");
-    let user, userStr;
-    if (req) {
-      //console.log("req.cookies.token = " + req.cookies.token)
-      console.log("asPath = " + asPath);
-      //app.user.token = req.cookies.token;
-      //userStr = app.b64DecodeUnicode(req.cookies.user);
-      var buf = Buffer.from(req.cookies.user, 'base64');
-      userStr = buf.toString('utf8');
-
-    }else{
-      userStr = global.sessionStorage.getItem("user");
-    }
-
-    console.log("userStr = " + userStr);
-
-    if (userStr) {
-      user = JSON.parse(userStr);
-      if(Date.now() > user.exp * 1000){
-        console.log("[getInitialProps] 로그인 실패 : Token is expired")
-      }else{
-        console.log("[getInitialProps] 로그인 성공")
-        app.user.token = user.token;
-      }
-    }else{
-      user = {};
-      console.log("[getInitialProps] 로그인 실패 : user 정보 없음");
-    }
+    let user = app.getUser(req);
+    app.user.token = user.token;
     
     let menuIdx = app.state.menu.findIndex(m => m.path === asPath);
     //console.log("menuIdx = " + menuIdx);
     let fetchRes = await app.api.fetchList(menuIdx);
-
 
     console.log("user = " + JSON.stringify(user));
 

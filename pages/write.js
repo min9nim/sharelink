@@ -13,7 +13,9 @@ class Write extends React.Component {
   constructor(props) {
     super(props);
 
-    //let link = app.state.links.find(l => l.id === props.router.query.id);
+    app.state.userID = props.user.id;
+    app.user = props.user;    
+
     let link = this.props.link;
     link = Object.assign({}, link);   // 복사본을 전달
 
@@ -45,12 +47,11 @@ class Write extends React.Component {
   }
 
   static async getInitialProps({ req, asPath, query }) {
+    let user = app.getUser(req);
+    app.user.token = user.token;
+
     let link;
     if (req) {
-      console.log("asPath = " + asPath);
-      console.log("req.query.id = " + req.query.id);
-      app.user.token = req.cookies.token;
-      //console.log("menuIdx = " + menuIdx);
       let fetchRes = await app.api.fetchLink(req.query.id);  
       link = fetchRes[0]
     }else{
@@ -59,7 +60,8 @@ class Write extends React.Component {
 
     return {
       menuIdx: 0,
-      link
+      link,
+      user
     }
   }
 
@@ -150,9 +152,6 @@ class Write extends React.Component {
       if (this.state.image === "") {
         this.imageInput.setAttribute("placeholder", "대표 이미지가 없습니다")
       }
-
-
-
 
       // 설명세팅
       this.state.desc = desc;

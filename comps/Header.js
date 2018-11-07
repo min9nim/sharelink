@@ -32,7 +32,7 @@ class Header extends React.Component {
     //app.view.List.state.intro = "전체 포스트"
     app.state.menuIdx = 0;
     //app.api.fetchList(app.state.menu[app.state.menuIdx].path);
-    app.api.fetchList(app.state.menuIdx);
+    //app.api.fetchList(app.state.menuIdx);
   }
 
   goLogin() {

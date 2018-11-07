@@ -13,16 +13,16 @@ if (process.env.NODE_ENV === "production") {
     // https://cloud.google.com/appengine/docs/flexible/nodejs/runtime
     // GCP 노드 운영환경
 
-    if(global.location){
+    if (global.location) {
         if (global.location.hostname === "sharelink-nextjs.appspot.com") {
             BACKEND = "https://sharelink-mongoose.appspot.com";
         } else {
             BACKEND = "https://sharelink-mongoose-dev.appspot.com";
-        }   
-    }else{
-        if(process.env.GOOGLE_CLOUD_PROJECT === "sharelink-dev"){
+        }
+    } else {
+        if (process.env.GOOGLE_CLOUD_PROJECT === "sharelink-dev") {
             BACKEND = "https://sharelink-mongoose-dev.appspot.com";
-        }else{
+        } else {
             BACKEND = "https://sharelink-mongoose.appspot.com";
         }
     }
@@ -47,9 +47,9 @@ const app = {
         links: [],
         totalCount: 0,
         userID: "",
-        menuIdx : 0,
+        menuIdx: 0,
         isScrollLast: false,
-        menu : [
+        menu: [
             {
                 label: "전체 포스트",
                 path: "/",
@@ -81,14 +81,14 @@ const app = {
     },
     auth: {// 로그인 관련
         isLogin: () => {
-            if(app.state.userID){
-                if(Date.now() > app.user.exp * 1000){
+            if (app.state.userID) {
+                if (Date.now() > app.user.exp * 1000) {
                     console.log("### jwt token expired");
                     return false;
-                }else{
+                } else {
                     return true;
                 }
-            }else{
+            } else {
                 return false;
             }
         },
@@ -138,14 +138,14 @@ app.isDesktop = function () {
     return os.includes(navigator.platform.toLowerCase());
 }
 
-if(global.navigator){
+if (global.navigator) {
     app.isMobileChrome = function () {
         return !app.isDesktop() && global.navigator.userAgent.includes("Chrome");
-    }    
+    }
 }
 
 function Base64Encode(str, encoding = 'utf-8') {
-    var bytes = new (TextEncoder || TextEncoderLite)(encoding).encode(str);        
+    var bytes = new (TextEncoder || TextEncoderLite)(encoding).encode(str);
     return base64js.fromByteArray(bytes);
 }
 
@@ -154,6 +154,37 @@ function Base64Decode(str, encoding = 'utf-8') {
     return new (TextDecoder || TextDecoderLite)(encoding).decode(bytes);
 }
 
+
+function getUser(req) {
+    let userStr;
+
+    if (req) {
+        //console.log("req.cookies.token = " + req.cookies.token)
+        // console.log("asPath = " + asPath);
+        //app.user.token = req.cookies.token;
+        //userStr = app.b64DecodeUnicode(req.cookies.user);
+        var buf = Buffer.from(req.cookies.user, 'base64');
+        userStr = buf.toString('utf8');
+    } else {
+        userStr = global.sessionStorage.getItem("user");
+    }
+
+    if (userStr) {
+        let user = JSON.parse(userStr);
+        if (Date.now() > user.exp * 1000) {
+            console.log("[getInitialProps] 로그인 실패 : Token is expired")
+            return {};
+        } else {
+            console.log("[getInitialProps] 로그인 성공")
+            return user;
+        }
+    } else {
+        console.log("[getInitialProps] 로그인 실패 : user 정보 없음");
+        return {};
+    }
+}
+
+app.getUser = getUser;
 app.Base64Encode = Base64Encode;
 app.Base64Decode = Base64Decode;
 
