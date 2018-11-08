@@ -48,6 +48,25 @@ class Header extends React.Component {
     this._ismounted = false;
   }
 
+  newLink = () => {
+    app.view.Write && app.view.Write._ismounted && Object.assign(app.view.Write.state, {
+      id: "",
+      url: "",
+      title: "",
+      desc: "",
+      image: "",
+      like: [],
+      read: [],
+      toread: [],
+      author: {
+        id: app.user.id,
+        name: app.user.name
+      }
+    });
+    this.hideMenu();
+    this.props.router.push("/write");
+  }
+
   render() {
     console.log("Header 렌더링..")
     return (
@@ -63,17 +82,18 @@ class Header extends React.Component {
               ?
               // "프로필사진+이름"
               <React.Fragment>
+                <div className="add-btn" onClick={this.newLink.bind(this)}>+</div>
                 <img className="user-image" src={app.user.image}></img>
                 <div className="user-name" onClick={this.showMenu.bind(this)}>{app.user.name} <i className="icon-menu" /></div>
               </React.Fragment>
               :
-              <div className="add-btn" onClick={this.goLogin.bind(this)}><i className="icon-login" />로그인</div>
-              // "로그인버튼"
+              <div className="login-btn" onClick={this.goLogin.bind(this)}><i className="icon-login" />로그인</div>
+            // "로그인버튼"
           }
         </div>
         {
           this.state.showMenu &&
-          <Menu hideMenu={this.hideMenu.bind(this)}/>
+          <Menu hideMenu={this.hideMenu.bind(this)} newLink={this.newLink} />
         }
       </div>
     )

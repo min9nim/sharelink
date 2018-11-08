@@ -14,7 +14,7 @@ class Write extends React.Component {
     super(props);
 
     app.state.userID = props.user.id;
-    app.user = props.user;    
+    app.user = props.user;
 
     let link = this.props.link;
     link = Object.assign({}, link);   // 복사본을 전달
@@ -52,10 +52,10 @@ class Write extends React.Component {
 
     let link;
     if (req) {
-      let fetchRes = await app.api.fetchLink(req.query.id);  
+      let fetchRes = await app.api.fetchLink(req.query.id);
       link = fetchRes[0]
-    }else{
-      link = app.state.links.find(l => l.id === query.id);      
+    } else {
+      link = app.state.links.find(l => l.id === query.id);
     }
 
     return {
@@ -72,7 +72,7 @@ class Write extends React.Component {
 
   componentWillUnmount() {
     this._ismounted = false;
- }
+  }
 
   async save() {
     if (!this.state.url) {
@@ -114,8 +114,10 @@ class Write extends React.Component {
   }
 
   async handleBlur() {
-    if (this.state.url === "") return;
-    if (this.state.title !== "") return;
+    const { url, title, desc, image } = this.state;
+
+    if (url === "") return;
+    if (title && desc && image) return;
 
     const loadingMessage = "Loading.."
 
@@ -131,7 +133,14 @@ class Write extends React.Component {
       let { title, image, desc } = await app.api.webscrap(this.state.url);
 
       // 타이틀 세팅
-      this.state.title = title;
+      if (this.state.title === "") {
+        this.state.title = title;
+      }
+
+      // 설명세팅
+      if (this.state.desc === "") {
+        this.state.desc = desc;
+      }
 
       //이미지 세팅
       if (image && image.indexOf("http") === 0) {
@@ -153,28 +162,26 @@ class Write extends React.Component {
         this.imageInput.setAttribute("placeholder", "대표 이미지가 없습니다")
       }
 
-      // 설명세팅
-      this.state.desc = desc;
     } catch (e) {
       console.error(e.message);
     }
 
   }
 
-  enterSave(e){
-    if(e.key === "Enter"){
+  enterSave(e) {
+    if (e.key === "Enter") {
       this.save();
     }
   }
 
 
-  enterCancel(e){
-    if(e.key === "Enter"){
+  enterCancel(e) {
+    if (e.key === "Enter") {
       this.cancel();
     }
-  }  
+  }
 
-  initValue(e){
+  initValue(e) {
     this.state[e.target.parentNode.previousSibling.id] = ""
     e.target.parentNode.previousSibling.focus();
   }
@@ -213,7 +220,7 @@ class Write extends React.Component {
               <div className="label">대표 이미지 경로</div>
               <input placeholder="" id="image" ref={el => { this.imageInput = el; }} value={this.state.image} onChange={this.handleChange.bind(this)} />
               <div className="init-btn">
-                <i className="icon-cancel" onClick={this.initValue.bind(this)}/>
+                <i className="icon-cancel" onClick={this.initValue.bind(this)} />
               </div>
             </div>
           </div>

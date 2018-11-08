@@ -28,7 +28,7 @@ class Menu extends React.Component {
         app.view.Menu = this;
     }
 
-    async logout() {
+    logout = async () => {
         await app.auth.signOut();
         this.props.hideMenu();
     }
@@ -55,34 +55,13 @@ class Menu extends React.Component {
             //await this.state.menu[idx].onSelect();
             //let fetchRes = await app.api.fetchList(app.state.menu[idx+1].path);
             let fetchRes = await app.api.fetchList(idx+1);
-            console.log("@@ json.totalCount = " + fetchRes.totalCount)
+            // console.log("@@ json.totalCount = " + fetchRes.totalCount)
 
             this.props.hideMenu();
             //console.log("intro 세팅");
             //app.view.List.setState({ intro, selectedMenu: idx });
         }
     }
-
-
-    newLink() {
-        app.view.Write && app.view.Write._ismounted && Object.assign(app.view.Write.state, {
-            id: "",
-            url: "",
-            title: "",
-            desc: "",
-            image: "",
-            like: [],
-            read: [],
-            toread: [],
-            author: {
-                id: app.user.id,
-                name: app.user.name
-            }
-        });
-        this.props.hideMenu();
-        this.props.router.push("/write");
-    }
-
 
     render() {
         return (
@@ -112,8 +91,8 @@ class Menu extends React.Component {
 
                 </div>
                 <div className="item2">
-                    <div onClick={this.newLink.bind(this)}>등록하기</div>
-                    <div onClick={this.logout.bind(this)}>로그아웃</div>
+                    <div onClick={this.props.newLink}>등록하기</div>
+                    <div onClick={this.logout}>로그아웃</div>
                 </div>
             </div>
         )

@@ -93,7 +93,7 @@ const app = {
                 return false;
             }
         },
-        signOut: () => {}
+        signOut: () => { }
     },
     view: {},          // 공유가 필요한 react 컴포넌트
     BACKEND,
@@ -126,7 +126,7 @@ reaction(() => app.state.userID, async () => {
             image: "",
             token: ""
         };
-        if(app.router && app.router.pathname.indexOf("/write") === 0){
+        if (app.router && app.router.pathname.indexOf("/write") === 0) {
             app.router.push("/login");
         }
     }
@@ -156,24 +156,31 @@ app.Base64Decode = (str, encoding = 'utf-8') => {
 }
 
 app.getUser = (req) => {
-    let userStr;
-    if (req) {
-        userStr = Buffer.from(req.cookies.user || "", 'base64').toString('utf8');
-    } else {
-        userStr = global.sessionStorage.getItem("user");
-    }
-
-    if (userStr) {
-        let user = JSON.parse(userStr);
-        if (Date.now() > user.exp * 1000) {
-            console.log("[getInitialProps] 로그인 실패 : Token is expired")
-            return {};
+    try {
+        let userStr;
+        if (req) {
+            userStr = Buffer.from(req.cookies.user || "", 'base64').toString('utf8');
         } else {
-            console.log("[getInitialProps] 로그인 성공")
-            return user;
+            userStr = global.sessionStorage.getItem("user");
         }
-    } else {
-        console.log("[getInitialProps] 로그인 실패 : user 정보 없음");
+
+        //console.log("userStr = " + userStr);
+
+        if (userStr) {
+            let user = JSON.parse(userStr);
+            if (Date.now() > user.exp * 1000) {
+                console.log("[getInitialProps] 로그인 실패 : Token is expired")
+                return {};
+            } else {
+                console.log("[getInitialProps] 로그인 성공")
+                return user;
+            }
+        } else {
+            console.log("[getInitialProps] 로그인 실패 : user 정보 없음");
+            return {};
+        }
+    } catch (e) {
+        console.error(e);
         return {};
     }
 }
