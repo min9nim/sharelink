@@ -158,8 +158,7 @@ app.Base64Decode = (str, encoding = 'utf-8') => {
 app.getUser = (req) => {
     let userStr;
     if (req) {
-        var buf = Buffer.from(req.cookies.user, 'base64');
-        userStr = buf.toString('utf8');
+        userStr = Buffer.from(req.cookies.user || "", 'base64').toString('utf8');
     } else {
         userStr = global.sessionStorage.getItem("user");
     }
