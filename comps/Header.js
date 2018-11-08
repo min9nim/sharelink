@@ -32,7 +32,7 @@ class Header extends React.Component {
     //app.view.List.state.intro = "전체 포스트"
     app.state.menuIdx = 0;
     //app.api.fetchList(app.state.menu[app.state.menuIdx].path);
-    app.api.fetchList(app.state.menuIdx);
+    //app.api.fetchList(app.state.menuIdx);
   }
 
   goLogin() {
@@ -49,6 +49,7 @@ class Header extends React.Component {
   }
 
   render() {
+    console.log("Header 렌더링..")
     return (
       <div className="header">
         <div className="logo-wrapper">
@@ -60,12 +61,14 @@ class Header extends React.Component {
           {
             app.auth.isLogin()
               ?
+              // "프로필사진+이름"
               <React.Fragment>
                 <img className="user-image" src={app.user.image}></img>
                 <div className="user-name" onClick={this.showMenu.bind(this)}>{app.user.name} <i className="icon-menu" /></div>
               </React.Fragment>
               :
               <div className="add-btn" onClick={this.goLogin.bind(this)}><i className="icon-login" />로그인</div>
+              // "로그인버튼"
           }
         </div>
         {

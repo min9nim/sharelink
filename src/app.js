@@ -1,28 +1,29 @@
 import { observable, reaction, decorate } from "mobx";
 import $m from "../com/util";
 import getApi from "./restful.js";
-
+import base64js from "base64-js";
 
 //console.log("process.env.PORT : " + process.env.PORT);
 //console.log("location.hostname : " + location.hostname);
 
 let BACKEND;
-console.log("process.env.GOOGLE_CLOUD_PROJECT = " + process.env.GOOGLE_CLOUD_PROJECT)
-console.log("process.env.NODE_ENV = " + process.env.NODE_ENV);
+//console.log("process.env.GOOGLE_CLOUD_PROJECT = " + process.env.GOOGLE_CLOUD_PROJECT)
+//console.log("process.env.NODE_ENV = " + process.env.NODE_ENV);
+
 if (process.env.NODE_ENV === "production") {
     // https://cloud.google.com/appengine/docs/flexible/nodejs/runtime
     // GCP 노드 운영환경
 
-    if(global.location){
+    if (global.location) {
         if (global.location.hostname === "sharelink-nextjs.appspot.com") {
             BACKEND = "https://sharelink-mongoose.appspot.com";
         } else {
             BACKEND = "https://sharelink-mongoose-dev.appspot.com";
-        }   
-    }else{
-        if(process.env.GOOGLE_CLOUD_PROJECT === "sharelink-dev"){
+        }
+    } else {
+        if (process.env.GOOGLE_CLOUD_PROJECT === "sharelink-dev") {
             BACKEND = "https://sharelink-mongoose-dev.appspot.com";
-        }else{
+        } else {
             BACKEND = "https://sharelink-mongoose.appspot.com";
         }
     }
@@ -47,9 +48,9 @@ const app = {
         links: [],
         totalCount: 0,
         userID: "",
-        menuIdx : 0,
+        menuIdx: 0,
         isScrollLast: false,
-        menu : [
+        menu: [
             {
                 label: "전체 포스트",
                 path: "/",
@@ -81,10 +82,18 @@ const app = {
     },
     auth: {// 로그인 관련
         isLogin: () => {
-            return app.state.userID !== "";
+            if (app.state.userID) {
+                if (Date.now() > app.user.exp * 1000) {
+                    console.log("### jwt token expired");
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
         },
-        signOut: () => { },
-        signIn: () => { }
+        signOut: () => {}
     },
     view: {},          // 공유가 필요한 react 컴포넌트
     BACKEND,
@@ -105,8 +114,11 @@ reaction(() => JSON.stringify(app.state.links), () => {
 reaction(() => app.state.userID, async () => {
     // app.state.userID 값을 바라보며 앱의 로그인 여부를 판단한다.
     if (app.auth.isLogin()) {
-        console.log("로그인 완료")
+        console.log("로그인 됨")
     } else {
+        console.log("로그아웃 됨")
+        document.cookie = "user="
+        global.sessionStorage.setItem("user", "");
         app.user = {
             id: "",
             name: "",
@@ -114,24 +126,58 @@ reaction(() => app.state.userID, async () => {
             image: "",
             token: ""
         };
+        if(app.router && app.router.pathname.indexOf("/write") === 0){
+            app.router.push("/login");
+        }
     }
 
     app.view.Header && app.view.Header._ismounted && app.view.Header.forceUpdate();
     app.view.List && app.view.List._ismounted && app.view.List.forceUpdate();
-
 });
 
 
 app.isDesktop = function () {
     const os = ["win16", "win32", "win64", "mac", "macintel"];
-    return os.includes(navigator.platform.toLowerCase());
+    return global.navigator && os.includes(global.navigator.platform.toLowerCase());
 }
 
-if(global.navigator){
-    app.isMobileChrome = function () {
-        return !app.isDesktop() && global.navigator.userAgent.includes("Chrome");
-    }    
+app.isMobileChrome = function () {
+    return !app.isDesktop() && global.navigator && global.navigator.userAgent.includes("Chrome");
 }
+
+app.Base64Encode = (str, encoding = 'utf-8') => {
+    var bytes = new (TextEncoder || TextEncoderLite)(encoding).encode(str);
+    return base64js.fromByteArray(bytes);
+}
+
+app.Base64Decode = (str, encoding = 'utf-8') => {
+    var bytes = base64js.toByteArray(str);
+    return new (TextDecoder || TextDecoderLite)(encoding).decode(bytes);
+}
+
+app.getUser = (req) => {
+    let userStr;
+    if (req) {
+        userStr = Buffer.from(req.cookies.user || "", 'base64').toString('utf8');
+    } else {
+        userStr = global.sessionStorage.getItem("user");
+    }
+
+    if (userStr) {
+        let user = JSON.parse(userStr);
+        if (Date.now() > user.exp * 1000) {
+            console.log("[getInitialProps] 로그인 실패 : Token is expired")
+            return {};
+        } else {
+            console.log("[getInitialProps] 로그인 성공")
+            return user;
+        }
+    } else {
+        console.log("[getInitialProps] 로그인 실패 : user 정보 없음");
+        return {};
+    }
+}
+
 
 
 global.app = app;

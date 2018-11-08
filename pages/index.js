@@ -5,6 +5,7 @@ import LinkLoading from '../comps/LinkLoading.js';
 import app from "../src/app";
 import "./index.scss";
 
+
 export default class List extends React.Component {
   constructor(props) {
     // console.log("List 생성자 호출")
@@ -14,31 +15,32 @@ export default class List extends React.Component {
     }
     app.view.List = this;
 
+    app.state.userID = props.user.id;
+    app.user = props.user;
+
     app.state.menuIdx = props.menuIdx;
     app.state.totalCount = props.fetchRes.totalCount
     app.state.isScrollLast = !props.fetchRes.hasNext
     app.state.links = props.fetchRes.links;
   }
 
-
   static async getInitialProps({ req, asPath }) {
     //console.log("@@ getInitialProps ");
-    if (req) {
-      //console.log("req.cookies.token = " + req.cookies.token)
-      console.log("asPath = " + asPath);
-      app.user.token = req.cookies.token;
-    }
+    let user = app.getUser(req);
+    app.user.token = user.token;
+
     let menuIdx = app.state.menu.findIndex(m => m.path === asPath);
     //console.log("menuIdx = " + menuIdx);
     let fetchRes = await app.api.fetchList(menuIdx);
 
+    console.log("user = " + JSON.stringify(user));
+
     return {
       menuIdx,
-      fetchRes
+      fetchRes,
+      user
     }
   }
-
-
 
   componentDidMount() {
     this._ismounted = true;

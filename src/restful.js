@@ -66,7 +66,7 @@ export default function getApi(app) {
         },
 
         fetchLink : async (linkID) => {
-            let json = await req("/links/" + linkID, "GET")
+            let json = await req("/links?linkID=" + linkID, "GET")
             return json;
         },
 
