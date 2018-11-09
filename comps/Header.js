@@ -68,7 +68,7 @@ class Header extends React.Component {
   }
 
   render() {
-    console.log("Header 렌더링..")
+    // console.log("Header 렌더링..")
     return (
       <div className="header">
         <div className="logo-wrapper">
