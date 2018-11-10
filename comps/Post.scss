@@ -16,7 +16,7 @@ li {
                 font-size: 17px;
                 font-weight: bold;
                 a:-webkit-any-link {
-                    color: #333;
+                    color: #555;
                 }
             }
             .meta {
@@ -30,10 +30,13 @@ li {
                 .url {
                     color: $site-color;
                     margin: 2px 0px;
+                    font-size: 13px;
                 }
                 .author-name {
                     color: #666;
                     margin-left: 5px;
+                    font-size: 13px;
+
                 }
                 .updatedAt {
                     color: #666;
@@ -42,11 +45,11 @@ li {
     
             }
             .desc {
-                font-size: 14px;
+                font-size: 12px;
                 color: #999;
-                max-height: 32px;
+                max-height: 28px;
                 overflow: hidden;
-                line-height: 16px;            }
+                line-height: 15px;            }
             .post-menu {
                 margin-top: 11px;
                 margin-bottom: 5px;

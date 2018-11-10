@@ -5,6 +5,9 @@ import moment from "moment";
 
 import "./Post.scss";
 
+
+moment.locale("ko");  
+
 function removeAnimation(dom, delay) {
   return new Promise(function (resolve) {
     dom.style.transition = `transform ${delay}s ease-in-out`;
