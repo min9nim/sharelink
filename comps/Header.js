@@ -67,6 +67,7 @@ class Header extends React.Component {
     this.props.router.push("/write");
   }
 
+
   render() {
     // console.log("Header 렌더링..")
     return (
@@ -84,7 +85,14 @@ class Header extends React.Component {
               <React.Fragment>
                 <div className="add-btn" onClick={this.newLink.bind(this)}>+</div>
                 <img className="user-image" src={app.user.image}></img>
-                <div className="user-name" onClick={this.showMenu.bind(this)}>{app.user.name} <i className="icon-menu" /></div>
+                <div className="user-name" onClick={this.showMenu.bind(this)}>
+                  {
+                    /**
+                     * 18.11.10
+                     * 모바일에서 이름이 출력되면 왼쪽에 글등록버튼의 UI가 깨지는 문제 때문에 그냥 출력안하는 것으로 보정함
+                     */
+                    app.isDesktop() && app.user.name}<i className="icon-menu" />
+                </div>
               </React.Fragment>
               :
               <div className="login-btn" onClick={this.goLogin.bind(this)}><i className="icon-login" />로그인</div>
