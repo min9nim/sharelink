@@ -33,7 +33,7 @@ export default class List extends React.Component {
     //console.log("menuIdx = " + menuIdx);
     let fetchRes = await app.api.fetchList(menuIdx);
 
-    console.log("user = " + JSON.stringify(user));
+    //console.log("user = " + JSON.stringify(user));
 
     return {
       menuIdx,

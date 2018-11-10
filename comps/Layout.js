@@ -7,7 +7,7 @@ import app from '../src/app';
 
 let layoutProps;
 const Layout = (props) => {
-  console.log("Layout 렌더링..");
+  // console.log("Layout 렌더링..");
 
   layoutProps = props;
   app.router = props.router;

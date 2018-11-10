@@ -36,6 +36,7 @@ folder | file | desc
 /com/ | util.js| Utilities used by the app
 /com/ | style.scss| common style of app
 /static/ | * | Static resource
+/server/ | app.js | customized Nextjs server 
 
 <br>
 
