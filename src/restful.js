@@ -19,6 +19,9 @@ const req = async (path, method, body) => {
         let res = await fetch(app.BACKEND + path, opt)
         let json = await res.json();
         global.NProgress && global.NProgress.done();
+        if(json.status === "Fail"){
+            alert(json.message)
+        }
     
         return json;
     }catch(e){
@@ -31,8 +34,11 @@ export default function getApi(app) {
     return {
         // 링크삭제
         deleteLink: async (link) => {
-            await req("/links/", 'DELETE', { linkID: link.id });
-            app.state.links = app.state.links.filter(l => l.id !== link.id);
+            let json = await req("/links/", 'DELETE', { linkID: link.id });
+            if(json.status !== "Fail"){
+                app.state.links = app.state.links.filter(l => l.id !== link.id);
+            }
+            return json;
         },
 
         // 링크추가

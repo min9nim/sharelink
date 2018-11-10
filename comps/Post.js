@@ -13,6 +13,14 @@ function removeAnimation(dom, delay) {
   })
 }
 
+function cancelRemoveAnimation(dom, delay) {
+  return new Promise(function (resolve) {
+    dom.style.transition = `transform ${delay}s ease-in-out`;
+    dom.style.transform = "scaleY(1)";
+    setTimeout(resolve, delay * 1000);
+  })
+}
+
 
 const remove = async (post, dom) => {
   if (!confirm("삭제합니다")) {
@@ -23,7 +31,10 @@ const remove = async (post, dom) => {
   await removeAnimation(dom, 0.2)
 
   // DB 삭제처리
-  await app.api.deleteLink(post);
+  let json = await app.api.deleteLink(post);
+  if(json.status === "Fail"){
+    cancelRemoveAnimation(dom, 0.2)
+  }
 }
 
 const likeClick = (isLike, link) => {
@@ -100,10 +111,10 @@ const Post = ({ link }) => {
               &&
               <React.Fragment>
                 <Link href={`/write?id=${link.id}`}>
-                  <div className="edit-btn" title="수정"><i className="icon-pencil" />수정</div>
+                  <div className="edit-btn" title="수정"><i className="icon-pencil" /></div>
                 </Link>
                 <div className="delete-btn" title="삭제" onClick={() => remove(link, dom)}>
-                  <i className="icon-trash-empty" />삭제
+                  <i className="icon-trash-empty" />
               </div>
               </React.Fragment>
             }

@@ -65,7 +65,7 @@ li {
                     border-radius: 8px;
                 }
 
-                .sns-btn {
+                .sns-btn, .edit-btn, .delete-btn {
                     width: 20px;
                     font-size: 14px;
                     padding: 2px;
@@ -79,6 +79,7 @@ li {
                 .edit-btn {
                     margin-left: 15px;
                 }
+
 
                 div:hover {
                     font-weight: bold;
