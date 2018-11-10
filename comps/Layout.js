@@ -23,6 +23,11 @@ const Layout = (props) => {
         <title>sharelink - 링크공유</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
 
+        
+        {/* 로고폰트 */}
+        <link href="//db.onlinewebfonts.com/c/13b003e481c54fdf324c9ed0d312d49c?family=Colopocle" rel="stylesheet" type="text/css"/>
+
+
         <meta name="google-signin-scope" content="profile email" />
         <meta name="google-signin-client_id" content="314955303656-ohiovevqbpms4pguh82fnde7tvo9cqnb.apps.googleusercontent.com" />
         <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
