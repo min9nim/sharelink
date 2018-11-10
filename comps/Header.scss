@@ -3,7 +3,7 @@
     position: relative;
     border-bottom: 2px solid $site-color;
     display: flex;
-    //padding: 5px 0px;
+    padding: 2px 0px;
     .logo-wrapper {
         flex: 1;
         .logo {
@@ -81,5 +81,8 @@
 @include mobile() {
     .logo img {
         width: 100px;
+    }
+    .header .logo-wrapper .logo .logo-font {
+        font-size: 22px;
     }
 }
