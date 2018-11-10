@@ -50,7 +50,7 @@ folder | file | desc
 method | path | payload | desc
 --- | --- | --- | ---
 GET | /links?idx=i&cnt=n | - | get `n` lists of link from `i` index
-POST | /links | link | add new link
+POST | /links | linkObj | add new link
 GET | /links/my | userID | get list added by me
 GET | /links/like | userID | get list liked by me
 GET | /links/read |  userID | get list read by me
@@ -61,7 +61,7 @@ PUT | /links/read | userID | mark link read
 PUT | /links/unread | userID | cancel read
 PUT | /links/toread | userID | mark link toread
 PUT | /links/untoread | userID | cancel toread
-PUT | /links | link | update link
+PUT | /links | linkObj | update link
 DELETE | links | linkID | delete link 
 
 <br>
