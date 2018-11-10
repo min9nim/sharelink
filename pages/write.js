@@ -107,6 +107,10 @@ class Write extends React.Component {
   componentDidMount() {
     this._ismounted = true;
     this.urlInput.focus();
+    if(!app.auth.isLogin()){
+      alert("글등록은 로그인이 필요합니다");
+      this.props.router.push("/login");
+    }
   }
 
   handleChange(e) {

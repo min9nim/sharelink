@@ -74,7 +74,8 @@ class Header extends React.Component {
       <div className="header">
         <div className="logo-wrapper">
           <div className="logo">
-            <img src="/static/logo.png" onClick={this.logoClick.bind(this)}></img>
+            <div className="logo-font">sharelink</div>
+            {/* <img src="/static/logo.png" onClick={this.logoClick.bind(this)}></img> */}
           </div>
         </div>
         <div className="btn-wrapper">
