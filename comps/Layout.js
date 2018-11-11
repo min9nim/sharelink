@@ -51,7 +51,7 @@ const Layout = (props) => {
 
 
 global.onSignIn = (googleUser) => {
-  console.log("global.onSignIn 호출");
+  //console.log("global.onSignIn 호출");
 
   let GoogleAuth = gapi.auth2.getAuthInstance();
 

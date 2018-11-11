@@ -63,7 +63,7 @@ export default class List extends React.Component {
 
   componentWillUnmount() {
     this._ismounted = false;
-    console.log("저장된 스크롤 값 = " + app.scrollTop)
+    //console.log("저장된 스크롤 값 = " + app.scrollTop)
     global.document.body.onscroll = undefined;
   }
 

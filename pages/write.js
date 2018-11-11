@@ -36,9 +36,6 @@ class Write extends React.Component {
 
     app.view.Write = this;
 
-
-    console.log("runtime env = " + this.props.from);
-
     // mobx 설정
     decorate(this, { state: observable });
     reaction(() => JSON.stringify(this.state), () => {
