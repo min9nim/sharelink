@@ -30,7 +30,7 @@ export default class MyDocument extends Document {
 
                     {/* Fontello 아이콘 */}
                     <link rel="stylesheet" href="/static/css/style.css"></link>
-                    <link rel="stylesheet" href="/static/css/fontello.css"></link>
+                    <link rel="stylesheet" href="/static/fontello/css/fontello.css"></link>
                     <style>{`
                     /* custom! */
                         body { margin: 8px }

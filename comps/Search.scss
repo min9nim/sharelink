@@ -1,11 +1,22 @@
-
-.ipt-search{
-    border-radius: 15px;
-    width: 100%;
-    max-width: 200px;
-    height: 22px;
-    font-size: 14px;
-    color: #777;
-    padding: 0px 0px 0px 10px;
-    border: 1px solid #ddd;
+.ipt-wrapper {
+    display: flex;
+    margin-left: -28px;
+    .icon-search {
+        color: #777;
+        right: -28px;
+        position: relative;       
+        padding-top: 4px;
+    }
+    .ipt-search {
+        flex:1;
+        border-radius: 15px;
+        height: 22px;
+        min-width: 50px;
+        max-width: 200px;
+        width: 100%;
+        font-size: 14px;
+        color: #777;
+        padding: 0px 0px 0px 30px;
+        border: 1px solid #ddd;
+    }
 }

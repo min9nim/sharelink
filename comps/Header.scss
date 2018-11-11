@@ -3,6 +3,7 @@
     position: relative;
     border-bottom: 2px solid $site-color;
     display: flex;
+    flex-wrap: wrap;
     padding: 2px 0px;
     .logo-wrapper {
         flex: 1;
@@ -25,10 +26,11 @@
         flex: 1;
         padding: 2px;
         margin-right: 10px;
+        
     }
     .btn-wrapper {
         display: flex;
-        padding: 0px 3px 0px 8px;
+        padding: 0px 3px 5px 8px;
         .add-btn {
             margin-right: 15px;
             cursor: pointer;
@@ -85,5 +87,15 @@
     }
     .header .logo-wrapper .logo .logo-font {
         font-size: 22px;
-    }
+    }    
 }
+
+// @media only screen and (max-width: 415px) {
+//     .search{
+//         order: 1;
+//     }    
+// }
+
+
+
+

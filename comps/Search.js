@@ -27,7 +27,7 @@ class Search extends React.Component {
 
     handleChange(e) {
         app.state.word = e.target.value;
-        
+
         // this.setState({
         //     word: e.target.value
         // })
@@ -53,6 +53,7 @@ class Search extends React.Component {
         console.log("Search 렌더링");
         return (
             <div className="ipt-wrapper">
+                <i className="icon-search" />
                 <input className="ipt-search"
                     value={app.state.word}
                     onChange={this.handleChange.bind(this)}
