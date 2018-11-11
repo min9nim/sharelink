@@ -173,7 +173,7 @@ app.getUser = (req) => {
                 console.log("[getInitialProps] 로그인 실패 : Token is expired")
                 return {};
             } else {
-                console.log("[getInitialProps] 로그인 성공")
+                //console.log("[getInitialProps] 로그인 성공")
                 return user;
             }
         } else {

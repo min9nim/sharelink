@@ -68,6 +68,8 @@ global.onSignIn = (googleUser) => {
   if (app.auth.isLogin()) {
     return;
   }
+
+  
   var profile = googleUser.getBasicProfile();
   // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
   // console.log('Full Name: ' + profile.getName());

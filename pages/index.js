@@ -15,8 +15,12 @@ export default class List extends React.Component {
     }
     app.view.List = this;
 
-    app.state.userID = props.user.id;
-    app.user = props.user;
+    if(props.user.id){
+      app.state.userID = props.user.id;
+      app.user = props.user;
+      global.sessionStorage && global.sessionStorage.setItem("user", JSON.stringify(app.user))
+    }
+
 
     app.state.menuIdx = props.menuIdx;
     app.state.totalCount = props.fetchRes.totalCount
