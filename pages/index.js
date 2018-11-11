@@ -35,7 +35,7 @@ export default class List extends React.Component {
 
     let menuIdx = app.state.menu.findIndex(m => m.path === asPath);
     //console.log("menuIdx = " + menuIdx);
-    let fetchRes = await app.api.fetchList({menuIdx});
+    let fetchRes = await app.api.fetchList({menuIdx, word: app.state.word});
 
     //console.log("user = " + JSON.stringify(user));
 

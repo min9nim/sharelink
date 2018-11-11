@@ -77,7 +77,7 @@ export default function getApi(app) {
         },
 
 
-        fetchList: async ({ menuIdx, idx = 0, cnt = 10, word }) => {
+        fetchList: async ({ menuIdx, idx = 0, cnt = 10, word = app.state.word }) => {
 
             if (app.view.List) {
                 if (idx === 0) {
@@ -89,7 +89,7 @@ export default function getApi(app) {
             }
 
             let path = "/links" + app.state.menu[menuIdx].path + "?idx=" + idx + "&cnt=" + cnt;
-            if(word){
+            if (word) {
                 path += "&word=" + word;
             }
 
@@ -103,9 +103,9 @@ export default function getApi(app) {
 
             app.state.isScrollLast = !fetchRes.hasNext;
             app.state.totalCount = fetchRes.totalCount;
-            if(fetchRes.links.length == 0){
+            if (fetchRes.links.length == 0) {
                 app.view.List && app.view.List._ismounted && app.view.List.forceUpdate();
-            }else{
+            } else {
                 app.state.links.push(...fetchRes.links);
             }
 

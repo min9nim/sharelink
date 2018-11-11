@@ -27,7 +27,7 @@ class Search extends React.Component {
 
     handleChange(e) {
         app.state.word = e.target.value;
-
+        //this.search(e.target.value);
         // this.setState({
         //     word: e.target.value
         // })
