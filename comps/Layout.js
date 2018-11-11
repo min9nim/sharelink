@@ -12,38 +12,16 @@ const Layout = (props) => {
   layoutProps = props;
   app.router = props.router;
 
-  let googleLoginBtn;
-  
-  googleLoginBtn = <div style={{ display: "none" }} className="g-signin2" data-onsuccess="onSignIn" />
-
 
   return (
     <div className="layoutStyle">
       <Head>
         <title>sharelink - 링크공유</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-
-        
-        {/* 로고폰트 */}
-        <link href="//db.onlinewebfonts.com/c/13b003e481c54fdf324c9ed0d312d49c?family=Colopocle" rel="stylesheet" type="text/css"/>
-
-
-        <meta name="google-signin-scope" content="profile email" />
-        <meta name="google-signin-client_id" content="314955303656-ohiovevqbpms4pguh82fnde7tvo9cqnb.apps.googleusercontent.com" />
-        <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
-
-        <link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css' />
-        <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
-
-        <link rel="stylesheet" href="/static/css/style.css"></link>
-        <link rel="stylesheet" href="/static/css/fontello.css"></link>
       </Head>
       <div>
         <Header />
       </div>
-      {
-        googleLoginBtn
-      }
+      <div style={{ display: "none" }} className="g-signin2" data-onsuccess="onSignIn" />
       {props.children}
     </div>
   )
@@ -69,7 +47,7 @@ global.onSignIn = (googleUser) => {
     return;
   }
 
-  
+
   var profile = googleUser.getBasicProfile();
   // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
   // console.log('Full Name: ' + profile.getName());
@@ -88,9 +66,9 @@ global.onSignIn = (googleUser) => {
   // console.log("ID Token: " + id_token);
 
   app.api.login(id_token).then(res => {
-    if(res.status === "Fail"){
+    if (res.status === "Fail") {
       console.log("Invalid token");
-    }else{
+    } else {
       app.user = res.user;
       app.user.token = id_token;
       app.state.userID = res.user.id;
@@ -101,7 +79,7 @@ global.onSignIn = (googleUser) => {
       layoutProps.router.push("/");
     }
   });
-  
+
 };
 
 export default withRouter(Layout)
