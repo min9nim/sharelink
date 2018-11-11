@@ -50,6 +50,7 @@ const app = {
         userID: "",
         menuIdx: 0,
         isScrollLast: false,
+        word: "",               // 검색어
         menu: [
             {
                 label: "전체 포스트",
@@ -85,6 +86,7 @@ const app = {
             if (app.state.userID) {
                 if (Date.now() > app.user.exp * 1000) {
                     console.log("### jwt token expired");
+                    alert && alert("로그인 세션이 만료되었습니다");
                     return false;
                 } else {
                     return true;
@@ -110,6 +112,10 @@ reaction(() => JSON.stringify(app.state.links), () => {
     app.view.List && app.view.List._ismounted && app.view.List.forceUpdate();
 });
 
+reaction(() => JSON.stringify(app.state.word), () => {
+    app.view.Search && app.view.Search._ismounted && app.view.Search.forceUpdate();
+});
+
 
 reaction(() => app.state.userID, async () => {
     // app.state.userID 값을 바라보며 앱의 로그인 여부를 판단한다.
@@ -127,7 +133,8 @@ reaction(() => app.state.userID, async () => {
             token: ""
         };
         if (app.router && app.router.pathname.indexOf("/write") === 0) {
-            app.router.push("/login");
+            //app.router.push("/login");
+            location.href = "/login";
         }
     }
 
@@ -172,7 +179,7 @@ app.getUser = (req) => {
                 console.log("[getInitialProps] 로그인 실패 : Token is expired")
                 return {};
             } else {
-                console.log("[getInitialProps] 로그인 성공")
+                //console.log("[getInitialProps] 로그인 성공")
                 return user;
             }
         } else {

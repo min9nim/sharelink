@@ -2,6 +2,8 @@
 import "./Header.scss";
 import app from "../src/app";
 import Menu from "./Menu";
+import Search from "./Search";
+
 import { withRouter } from 'next/router'
 
 
@@ -28,15 +30,18 @@ class Header extends React.Component {
 
 
   logoClick() {
-    this.props.router.push("/");
-    //app.view.List.state.intro = "전체 포스트"
     app.state.menuIdx = 0;
-    //app.api.fetchList(app.state.menu[app.state.menuIdx].path);
-    //app.api.fetchList(app.state.menuIdx);
+    app.state.word = "";
+    this.props.router.push("/");
   }
 
   goLogin() {
-    this.props.router.push("/login");
+    //this.props.router.push("/login");
+    /**
+     * 18.11.11
+     * 화면을 뒤집으면서 이동해야 로그인버튼이 나타난다
+     */
+    location.href = "/login";
   }
 
   componentDidMount() {
@@ -74,9 +79,15 @@ class Header extends React.Component {
       <div className="header">
         <div className="logo-wrapper">
           <div className="logo">
-            <div className="logo-font">sharelink</div>
+            <div className="logo-font" onClick={this.logoClick.bind(this)}>sharelink</div>
             {/* <img src="/static/logo.png" onClick={this.logoClick.bind(this)}></img> */}
           </div>
+        </div>
+        <div className="search">
+        {
+          this.props.router.pathname === "/" &&
+          <Search />
+        }
         </div>
         <div className="btn-wrapper">
           {
@@ -92,12 +103,12 @@ class Header extends React.Component {
                      * 18.11.10
                      * 모바일에서 이름이 출력되면 왼쪽에 글등록버튼의 UI가 깨지는 문제 때문에 그냥 출력안하는 것으로 보정함
                      */
-                    app.isDesktop() && app.user.name}<i className="icon-menu" />
+                    app.isDesktop() && app.user.name}
+                    <i className="icon-menu" />
                 </div>
               </React.Fragment>
               :
               <div className="login-btn" onClick={this.goLogin.bind(this)}><i className="icon-login" />로그인</div>
-            // "로그인버튼"
           }
         </div>
         {

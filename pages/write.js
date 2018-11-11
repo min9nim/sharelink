@@ -36,9 +36,6 @@ class Write extends React.Component {
 
     app.view.Write = this;
 
-
-    console.log("runtime env = " + this.props.from);
-
     // mobx 설정
     decorate(this, { state: observable });
     reaction(() => JSON.stringify(this.state), () => {
@@ -106,10 +103,15 @@ class Write extends React.Component {
 
   componentDidMount() {
     this._ismounted = true;
-    this.urlInput.focus();
+    
+    if(this.state.url === ""){
+      this.urlInput.focus();
+    }
+
     if(!app.auth.isLogin()){
       alert("글등록은 로그인이 필요합니다");
-      this.props.router.push("/login");
+      //this.props.router.push("/login");
+      location.href = "/login";
     }
   }
 

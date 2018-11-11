@@ -2,7 +2,7 @@ import fetch from 'isomorphic-unfetch';
 import app from "../src/app";
 
 const req = async (path, method, body) => {
-    try{
+    try {
         global.NProgress && global.NProgress.start();
         //console.log("@@@@ fetch 호출전 path = " + path)
         let opt = {
@@ -13,18 +13,18 @@ const req = async (path, method, body) => {
                 "x-access-token": app.user.token
             }
         };
-    
+
         //console.log("@@@@ fetch 호출전 app.user.token = " + JSON.stringify(opt, null, 2))
         console.log("url = " + app.BACKEND + path)
         let res = await fetch(app.BACKEND + path, opt)
         let json = await res.json();
         global.NProgress && global.NProgress.done();
-        if(json.status === "Fail"){
+        if (json.status === "Fail") {
             alert(json.message)
         }
-    
+
         return json;
-    }catch(e){
+    } catch (e) {
         console.error(e);
         //global.alert && global.alert(e.message);
     }
@@ -35,7 +35,7 @@ export default function getApi(app) {
         // 링크삭제
         deleteLink: async (link) => {
             let json = await req("/links/", 'DELETE', { linkID: link.id });
-            if(json.status !== "Fail"){
+            if (json.status !== "Fail") {
                 app.state.links = app.state.links.filter(l => l.id !== link.id);
             }
             return json;
@@ -71,36 +71,43 @@ export default function getApi(app) {
             return json;
         },
 
-        fetchLink : async (linkID) => {
+        fetchLink: async (linkID) => {
             let json = await req("/links?linkID=" + linkID, "GET")
             return json;
         },
 
 
-        fetchList: async (menuIdx, idx = 0, cnt = 10) => {
+        fetchList: async ({ menuIdx, idx = 0, cnt = 10, word = app.state.word }) => {
 
-            if(app.view.List){
+            if (app.view.List) {
                 if (idx === 0) {
                     app.view.List.state.loading = true;
                     app.state.links = [];
                 } else {
                     app.view.List._ismounted && app.view.List.setState({ loading: true })
-                }    
+                }
             }
 
             let path = "/links" + app.state.menu[menuIdx].path + "?idx=" + idx + "&cnt=" + cnt;
+            if (word) {
+                path += "&word=" + word;
+            }
 
             let fetchRes = await req(path, "GET");
 
             //console.log("@@ 여기서는? " + JSON.stringify(json, null, 2))
 
-            if(app.view.List){
+            if (app.view.List) {
                 app.view.List.state.loading = false;
             }
 
             app.state.isScrollLast = !fetchRes.hasNext;
             app.state.totalCount = fetchRes.totalCount;
-            app.state.links.push(...fetchRes.links);
+            if (fetchRes.links.length == 0) {
+                app.view.List && app.view.List._ismounted && app.view.List.forceUpdate();
+            } else {
+                app.state.links.push(...fetchRes.links);
+            }
 
             return fetchRes;
 

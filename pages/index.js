@@ -15,8 +15,12 @@ export default class List extends React.Component {
     }
     app.view.List = this;
 
-    app.state.userID = props.user.id;
-    app.user = props.user;
+    if(props.user.id){
+      app.state.userID = props.user.id;
+      app.user = props.user;
+      global.sessionStorage && global.sessionStorage.setItem("user", JSON.stringify(app.user))
+    }
+
 
     app.state.menuIdx = props.menuIdx;
     app.state.totalCount = props.fetchRes.totalCount
@@ -31,7 +35,7 @@ export default class List extends React.Component {
 
     let menuIdx = app.state.menu.findIndex(m => m.path === asPath);
     //console.log("menuIdx = " + menuIdx);
-    let fetchRes = await app.api.fetchList(menuIdx);
+    let fetchRes = await app.api.fetchList({menuIdx});
 
     //console.log("user = " + JSON.stringify(user));
 
@@ -63,11 +67,12 @@ export default class List extends React.Component {
 
   componentWillUnmount() {
     this._ismounted = false;
-    console.log("저장된 스크롤 값 = " + app.scrollTop)
+    //console.log("저장된 스크롤 값 = " + app.scrollTop)
     global.document.body.onscroll = undefined;
   }
 
   render() {
+    console.log("List 렌더링")
     let intro = app.state.menu[app.state.menuIdx].label;
 
 
@@ -97,8 +102,6 @@ const onscroll = async () => {
   //   // 목록화면이 아니면 리턴  
   //   return;
   // }
-
-  const PAGEROWS = 10;
 
   // 현재 목록화면 scrollTop 의 값
   const scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
@@ -133,7 +136,11 @@ const onscroll = async () => {
   ) { //스크롤이 마지막일때
 
     //let path = app.state.menu[app.state.menuIdx].path;
-    let json = await app.api.fetchList(app.state.menuIdx, app.state.links.length, PAGEROWS);
+    let json = await app.api.fetchList({
+      menuIdx: app.state.menuIdx,
+      idx: app.state.links.length,
+      cnt: app.PAGEROWS
+    });
 
     //if (links.length < app.PAGEROWS) {
 
