@@ -50,6 +50,7 @@ const app = {
         userID: "",
         menuIdx: 0,
         isScrollLast: false,
+        word: "",               // 검색어
         menu: [
             {
                 label: "전체 포스트",
@@ -85,7 +86,7 @@ const app = {
             if (app.state.userID) {
                 if (Date.now() > app.user.exp * 1000) {
                     console.log("### jwt token expired");
-                    alert("로그인 세션이 만료되었습니다")
+                    alert && alert("로그인 세션이 만료되었습니다")
                     return false;
                 } else {
                     return true;
@@ -109,6 +110,10 @@ decorate(app, { state: observable });
 // 변화에 따른 효과를 정의
 reaction(() => JSON.stringify(app.state.links), () => {
     app.view.List && app.view.List._ismounted && app.view.List.forceUpdate();
+});
+
+reaction(() => JSON.stringify(app.state.word), () => {
+    app.view.Search && app.view.Search._ismounted && app.view.Search.forceUpdate();
 });
 
 

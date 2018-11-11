@@ -2,6 +2,8 @@
 import "./Header.scss";
 import app from "../src/app";
 import Menu from "./Menu";
+import Search from "./Search";
+
 import { withRouter } from 'next/router'
 
 
@@ -33,6 +35,7 @@ class Header extends React.Component {
     app.state.menuIdx = 0;
     //app.api.fetchList(app.state.menu[app.state.menuIdx].path);
     //app.api.fetchList(app.state.menuIdx);
+    app.state.word = "";
   }
 
   goLogin() {
@@ -77,6 +80,12 @@ class Header extends React.Component {
             <div className="logo-font" onClick={this.logoClick.bind(this)}>sharelink</div>
             {/* <img src="/static/logo.png" onClick={this.logoClick.bind(this)}></img> */}
           </div>
+        </div>
+        <div className="search">
+        {
+          this.props.router.pathname === "/" &&
+          <Search />
+        }
         </div>
         <div className="btn-wrapper">
           {
