@@ -64,23 +64,28 @@ class Search extends React.Component {
     }
 
     search = async (word) => {
-        if (this.state.mode === "search") {
-            app.api.fetchList({
-                menuIdx: app.state.menuIdx,
-                idx: 0,
-                cnt: app.PAGEROWS,
-                word
-            });
-        } else {
-            await app.api.postLink({
-                url: app.state.word,
-                author: {
-                    id: app.user.id,
-                    name: app.user.name
-                }
-            });
-            this.state.mode = "search"
-            app.state.word = "";
+        try{
+            if (this.state.mode === "search") {
+                await app.api.fetchList({
+                    menuIdx: app.state.menuIdx,
+                    idx: 0,
+                    cnt: app.PAGEROWS,
+                    word
+                });
+            } else {
+                await app.api.postLink({
+                    url: app.state.word,
+                    author: {
+                        id: app.user.id,
+                        name: app.user.name
+                    }
+                });
+                this.state.mode = "search"
+                app.state.word = "";
+            }
+        }catch(e){
+            console.log(e.message)
+            alert(e.message)
         }
     }
 
