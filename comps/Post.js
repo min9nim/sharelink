@@ -2,6 +2,7 @@ import Link from 'next/link';
 import app from '../src/app';
 //import URL from "url-parse";
 import moment from "moment";
+import $m from "../com/util.js";
 
 import "./Post.scss";
 
@@ -85,15 +86,14 @@ const Post = ({ link }) => {
       <div className="wrapper">
         <div className="left">
           <div className="title">
-            <a href={link.url} target="_blank">{link.title}</a>
+            <a href={link.url} target="_blank" dangerouslySetInnerHTML={{__html : $m.highlight(link.title, app.state.word)}}></a>
           </div>
           <div className="meta">
             <div className="url">{getHostname(link.url)}</div>
             <div className="author-name">{link.author && " | by " + link.author.name}</div>
             <div className="updatedAt">{link.updatedAt && "| " + moment(link.updatedAt).fromNow()}</div>
           </div>
-          <div className="desc">
-            {link.desc}
+          <div className="desc" dangerouslySetInnerHTML={{__html : $m.highlight(link.desc, app.state.word)}}>
           </div>
           <div className="post-menu">
             {

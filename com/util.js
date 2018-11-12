@@ -13,19 +13,19 @@ module.exports = $m;
 
 
 $m.fn = {
-    init: function(sel) {
+    init: function (sel) {
         if (typeof sel == "string") {
             this.sel = sel;
             this.doms = document.querySelectorAll(sel);
             this.length = this.doms.length;
-        } else if(sel instanceof $m.fn.init) { // $m.fn.init 객체가 들어올 경우
+        } else if (sel instanceof $m.fn.init) { // $m.fn.init 객체가 들어올 경우
             this.sel = sel.sel;
             this.doms = sel.doms;
             this.length = sel.length;
-        } else if(sel instanceof Node){ // dom이 들어올 경우
+        } else if (sel instanceof Node) { // dom이 들어올 경우
             this.doms = [sel];
             this.length = 1;
-        } else if(sel[0] instanceof Node){  // dom배열이 들어올 경우
+        } else if (sel[0] instanceof Node) {  // dom배열이 들어올 경우
             this.doms = sel;
             this.length = sel.length;
         }
@@ -34,35 +34,35 @@ $m.fn = {
         }
     },
 
-    html: function(html) {
+    html: function (html) {
         if (this.length == 0) return;
 
         if (html === undefined) {
             return this.doms[0].innerHTML;
         }
 
-        $m._each(this.doms, function(dom) {
+        $m._each(this.doms, function (dom) {
             dom.innerHTML = html;
         });
 
         return this;
     },
 
-    text: function(text) {
+    text: function (text) {
         if (this.length == 0) return;
 
         if (text === undefined) {
             return this.doms[0].textContent;
         }
 
-        $m._each(this.doms, function(dom) {
+        $m._each(this.doms, function (dom) {
             dom.textContent = text;
         });
 
         return this;
     },
 
-    css: function(name, value) {
+    css: function (name, value) {
         if (this.length == 0) return;
 
         if (value === undefined) {
@@ -76,7 +76,7 @@ $m.fn = {
             }
         }
 
-        $m._each(this.doms, function(dom) {
+        $m._each(this.doms, function (dom) {
             dom.style[name] = value;
         });
 
@@ -84,7 +84,7 @@ $m.fn = {
     },
 
 
-    position: function() {
+    position: function () {
         if (this.length == 0) return;
 
         var top = this.doms[0].style["top"];
@@ -99,7 +99,7 @@ $m.fn = {
         };
     },
 
-    parent: function(selector, ele) {
+    parent: function (selector, ele) {
         if (this.length === 0) return;
 
         if (ele === undefined) {
@@ -127,24 +127,24 @@ $m.fn = {
     },
 
 
-    animate: function() {
+    animate: function () {
 
     },
 
-    bind: function() {
+    bind: function () {
 
     },
 
 
 
-    attr: function(name, value) {
+    attr: function (name, value) {
         if (this.length == 0) return;
 
         if (value === undefined) {
             return this.doms[0].getAttribute(name);
         }
 
-        $m._each(this.doms, function(dom) {
+        $m._each(this.doms, function (dom) {
             dom.setAttribute(name, value);
         });
 
@@ -152,18 +152,18 @@ $m.fn = {
     },
 
 
-    removeAttr: function(name) {
+    removeAttr: function (name) {
         if (this.length == 0) return;
 
-        $m._each(this.doms, function(dom) {
+        $m._each(this.doms, function (dom) {
             dom.removeAttribute(name);
         });
 
         return this;
     },
 
-    addClass: function(name) {
-        $m._each(this.doms, function(dom) {
+    addClass: function (name) {
+        $m._each(this.doms, function (dom) {
             var cls = dom.getAttribute("class");
             if (cls === null) {
                 cls = name;
@@ -177,8 +177,8 @@ $m.fn = {
     },
 
 
-    removeClass: function(name) {
-        $m._each(this.doms, function(dom) {
+    removeClass: function (name) {
+        $m._each(this.doms, function (dom) {
             var cls = dom.getAttribute("class");
             if (cls === null) {
                 return this;
@@ -195,22 +195,22 @@ $m.fn = {
         return this;
     },
 
-    each: function(func) {
-        $m._each(this.doms, function(val, key, arr) {
+    each: function (func) {
+        $m._each(this.doms, function (val, key, arr) {
             func.call(val, val, key, arr);
         });
 
         return this;
     },
 
-    remove: function() {
-        $m._each(this.doms, function(dom) {
+    remove: function () {
+        $m._each(this.doms, function (dom) {
             dom.parentNode.removeChild(dom);
         });
     },
 
-    append: function(elem) {
-        $m._each(this.doms, function(dom) {
+    append: function (elem) {
+        $m._each(this.doms, function (dom) {
             if (dom.nodeType === 1 || dom.nodeType === 11 || dom.nodeType === 9) {
                 dom.appendChild($m.clone(elem));
             }
@@ -218,8 +218,8 @@ $m.fn = {
         return this;
     },
 
-    prepend: function(elem) {
-        $m._each(this.doms, function(dom) {
+    prepend: function (elem) {
+        $m._each(this.doms, function (dom) {
             if (dom.nodeType === 1 || dom.nodeType === 11 || dom.nodeType === 9) {
                 dom.insertBefore($m.clone(elem), dom.firstChild);
             }
@@ -227,35 +227,35 @@ $m.fn = {
         return this;
     },
 
-    show: function() {
-        $m._each(this.doms, function(dom) {
+    show: function () {
+        $m._each(this.doms, function (dom) {
             dom.style.display = "block";
         });
         return this;
     },
 
-    hide: function() {
-        $m._each(this.doms, function(dom) {
+    hide: function () {
+        $m._each(this.doms, function (dom) {
             dom.style.display = "none";
         });
         return this;
     },
 
-    val: function(value) {
+    val: function (value) {
         if (this.length == 0) return;
 
         if (value === undefined) {
             return this.doms[0].value;
         }
 
-        $m._each(this.doms, function(dom) {
+        $m._each(this.doms, function (dom) {
             dom.value = value;
         });
 
         return this;
     },
 
-    focus: function() {
+    focus: function () {
         if (this.length == 0) return;
 
         this.doms[0].focus();
@@ -267,7 +267,7 @@ $m.fn.init.prototype = $m.fn;
 
 
 // 유틸
-$m.clone = function(elem) {
+$m.clone = function (elem) {
     var newNode;
     if (typeof elem === "string") {
         var tmp = document.createElement("div");
@@ -279,25 +279,25 @@ $m.clone = function(elem) {
     return newNode;
 };
 
-$m.scrollTo = function(x, y) {
+$m.scrollTo = function (x, y) {
     return window.scrollTo(x, y);
 };
 
 
-$m.txtToHtml = function(str, word){
-    if(word){
-        var reg = new RegExp("("+word+")", "gi");
+$m.txtToHtml = function (str, word) {
+    if (word) {
+        var reg = new RegExp("(" + word + ")", "gi");
     }
 
-    return str.split("\n").map(function(val){
-        return val.split(" ").map(function(val){
+    return str.split("\n").map(function (val) {
+        return val.split(" ").map(function (val) {
             let newval = val;
-            if(word){ // 매칭단어 하이라이트
+            if (word) { // 매칭단어 하이라이트
                 newval = newval.replace(reg, '<span style="background-color:yellow;">$1</span>');
             }
-            if(val.indexOf("http://") == 0 || val.indexOf("https://") == 0){
+            if (val.indexOf("http://") == 0 || val.indexOf("https://") == 0) {
                 return `<a href="${val}" target="_blank">${newval}</a>`;
-            }else{
+            } else {
                 return newval;
             }
         }).join(" ").replace(/  /gi, "&nbsp;&nbsp");   // html태그를 사용하기 위해 html태그 밖에서만 공백문자를 &nbsp; 치환할 수 있도록 수정 필요
@@ -307,41 +307,41 @@ $m.txtToHtml = function(str, word){
 
 
 // 함수형 프로그래밍을 위한 함수 중심 API
-$m.html = function(selector, html) {
+$m.html = function (selector, html) {
     return $m(selector).html(html);
 }
 
-$m.css = function(selector, name, value) {
+$m.css = function (selector, name, value) {
     return $m(selector).css(name, value);
 }
 
-$m.val = function(selector, value) {
+$m.val = function (selector, value) {
     return $m(selector).val(value);
 }
 
-$m.show = function(selector){
+$m.show = function (selector) {
     return $m(selector).show();
 }
 
-$m.hide = function(selector){
+$m.hide = function (selector) {
     return $m(selector).hide();
 }
 
 
 // 함수형 프로그래밍 라이브러리
-$m._curry = function(fn) {
-    return function(a, b) {
+$m._curry = function (fn) {
+    return function (a, b) {
         return arguments.length === 2 ? fn(a, b) : b => fn(a, b);
     }
 };
 
-$m._curryr = function(fn) {
-    return function(a, b) {
+$m._curryr = function (fn) {
+    return function (a, b) {
         return arguments.length === 2 ? fn(a, b) : b => fn(b, a);
     }
 };
 
-$m._each = $m._curryr(function(list, fn) {
+$m._each = $m._curryr(function (list, fn) {
     if (typeof list !== "object" || !list) {
         return [];
     }
@@ -352,17 +352,17 @@ $m._each = $m._curryr(function(list, fn) {
     return list;
 });
 
-$m._map = $m._curryr(function(list, mapper) {
+$m._map = $m._curryr(function (list, mapper) {
     var res = [];
-    $m._each(list, function(val, key, list) {
+    $m._each(list, function (val, key, list) {
         res.push(mapper(val, key, list));
     });
     return res;
 });
 
-$m._filter = $m._curryr(function(list, predi) {
+$m._filter = $m._curryr(function (list, predi) {
     var res = [];
-    $m._each(list, function(val, key, list) {
+    $m._each(list, function (val, key, list) {
         if (predi(val, key, list)) {
             res.push(val);
         }
@@ -370,23 +370,23 @@ $m._filter = $m._curryr(function(list, predi) {
     return res;
 });
 
-$m._reduce = function(list, iter, init) {
+$m._reduce = function (list, iter, init) {
     var res = init;
     if (init === undefined) {
         res = list && list[0]; // null 체크
         list = list && list.slice(1);
     }
-    $m._each(list, function(val, key, list) {
+    $m._each(list, function (val, key, list) {
         res = iter(val, res, key, list);
     });
     return res;
 };
 
-$m._slice = function(list, begin, end) {
+$m._slice = function (list, begin, end) {
     if (typeof arguments[0] === "number") {
         var begin = arguments[0];
         var end = arguments[1];
-        return function(list) {
+        return function (list) {
             return Array.prototype.slice.call(list, begin, end);
         };
     } else {
@@ -398,46 +398,69 @@ $m._join = $m._curryr((list, delim) => Array.prototype.join.call(list, delim));
 
 $m._split = $m._curryr((str, delim) => String.prototype.split.call(str, delim));
 
-$m._go = function() {
+$m._go = function () {
     var args = arguments;
     var fns = $m._slice(args, 1);
     return $m._pipe(fns)(args[0]);
 };
 
-$m._pipe = function() {
+$m._pipe = function () {
     var fns = Array.isArray(arguments[0]) ? arguments[0] : arguments;
-    return function() {
-        return $m._reduce(fns, function(val, res, key, list) {
+    return function () {
+        return $m._reduce(fns, function (val, res, key, list) {
             return val(res);
         }, arguments[0]);
     }
 };
 
-$m._find = $m._curryr(function(list, fn) {
+$m._find = $m._curryr(function (list, fn) {
     if (typeof list !== "object" || !list) {
         return;
     }
     var keys = Object.keys(list);
     for (var i = 0; i < keys.length; i++) {
-        if(fn(list[keys[i]], keys[i], list)){
+        if (fn(list[keys[i]], keys[i], list)) {
             return list[keys[i]];
         }
     }
 });
 
-$m._findIndex = $m._curryr(function(list, fn) {
+$m._findIndex = $m._curryr(function (list, fn) {
     if (typeof list !== "object" || !list) {
         return;
     }
     var keys = Object.keys(list);
     for (var i = 0; i < keys.length; i++) {
-        if(fn(list[keys[i]], keys[i], list)){
+        if (fn(list[keys[i]], keys[i], list)) {
             return keys[i];
         }
     }
 });
 
 
-$m.removeTag = function( html ) {
+$m.removeTag = function (html) {
+    if(!html) return "";
     return html.replace(/(<([^>]+)>)/gi, "");
+}
+
+
+
+$m.isDesktop = function () {
+    const os = ["win16", "win32", "win64", "mac", "macintel"];
+    return os.includes(navigator.platform.toLowerCase());
+}
+
+$m.isMobileChrome = function () {
+    return !tp.isDesktop() && navigator.userAgent.includes("Chrome");
+}
+
+
+$m.highlight = function (txt, word) {
+    if(!txt) return "";
+
+    if (word) {
+        var reg = new RegExp("(" + word + ")", "gi");
+        txt = txt.replace(reg, '<span style="background-color:yellow;">$1</span>');
+    }
+    return txt;
 }

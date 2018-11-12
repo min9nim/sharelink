@@ -6,6 +6,8 @@ import { observable, reaction, decorate } from "mobx";
 import shortid from "shortid";
 //import Link from 'next/link';
 //import URL from "url-parse";
+import $m from "../com/util.js";
+
 
 import "./write.scss";
 
@@ -86,29 +88,37 @@ class Write extends React.Component {
     // 인증을 위한 토큰 전달
     this.state.token = app.user.token;
 
+
+    function avoidXSS(link) {
+      return Object.assign({}, link, {
+        url: $m.removeTag(link.url),
+        title: $m.removeTag(link.title),
+        desc: $m.removeTag(link.desc),
+        image: $m.removeTag(link.image)
+      });
+    }
+
     if (this.state.id) {
       // 수정할 때
-      await app.api.putLink(this.state);
+      await app.api.putLink(avoidXSS(this.state));
     } else {
       // 신규등록
       let newLink = Object.assign({}, this.state, { id: shortid.generate() });
-      await app.api.postLink(newLink);
+      await app.api.postLink(avoidXSS(newLink));
     }
 
     this.props.router.push("/");
-
-
 
   }
 
   componentDidMount() {
     this._ismounted = true;
-    
-    if(this.state.url === ""){
+
+    if (this.state.url === "") {
       this.urlInput.focus();
     }
 
-    if(!app.auth.isLogin()){
+    if (!app.auth.isLogin()) {
       alert("글등록은 로그인이 필요합니다");
       //this.props.router.push("/login");
       location.href = "/login";
