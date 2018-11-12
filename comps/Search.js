@@ -1,7 +1,7 @@
 
 import app from "../src/app";
 import { withRouter } from 'next/router'
-import * as Rx from 'rxjs';
+// import * as Rx from 'rxjs';
 
 import "./Search.scss";
 

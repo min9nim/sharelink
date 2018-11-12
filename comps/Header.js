@@ -95,7 +95,7 @@ class Header extends React.Component {
               ?
               // "프로필사진+이름"
               <React.Fragment>
-                <div className="add-btn" onClick={this.newLink.bind(this)}>+</div>
+                {/* <div className="add-btn" onClick={this.newLink.bind(this)}>+</div> */}
                 <img className="user-image" src={app.user.image}></img>
                 <div className="user-name" onClick={this.showMenu.bind(this)}>
                   {
