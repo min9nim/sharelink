@@ -1,6 +1,7 @@
 
 import app from "../src/app";
 import { withRouter } from 'next/router'
+import * as Rx from 'rxjs';
 
 import "./Search.scss";
 
@@ -15,10 +16,23 @@ class Search extends React.Component {
 
         app.view.Search = this;
 
+        // Observable 생성
+        this.text$ = new Rx.Subject();
+
     }
 
     componentDidMount() {
         this._ismounted = true;
+
+        // Obaserver 등록
+        this.text$
+        //.filter(text => text.length >= 2)
+            //.map(text => text + '!')
+            //.map(text => text + '!')
+            .subscribe(text => {
+                console.log(text);
+                app.state.word = text;
+            });
     }
 
     componentWillUnmount() {
@@ -26,11 +40,11 @@ class Search extends React.Component {
     }
 
     handleChange(e) {
-        app.state.word = e.target.value;
-        //this.search(e.target.value);
-        // this.setState({
-        //     word: e.target.value
-        // })
+        //app.state.word = e.target.value;
+
+        // 이벤트 할당
+        this.text$.next(e.target.value)
+
     }
 
     handleKeyPress(e) {
