@@ -5,7 +5,7 @@ import app from "../src/app";
 import { observable, reaction, decorate } from "mobx";
 import shortid from "shortid";
 //import Link from 'next/link';
-import URL from "url-parse";
+//import URL from "url-parse";
 
 import "./write.scss";
 
@@ -149,14 +149,16 @@ class Write extends React.Component {
       }
 
       //이미지 세팅
-      if (image && image.indexOf("http") === 0) {
-        // http 로 시작하면 그냥 사용
-        this.state.image = image;
-      } else {
-        let url = new URL(this.state.url);
-        this.state.image = url.protocol + "//" + url.hostname + image;
-        //console.log(this.state.image);
-      }
+      this.state.image = image;
+
+      // if (image && image.indexOf("http") === 0) {
+      //   // http 로 시작하면 그냥 사용
+      //   this.state.image = image;
+      // } else {
+      //   let url = new URL(this.state.url);
+      //   this.state.image = url.protocol + "//" + url.hostname + image;
+      //   //console.log(this.state.image);
+      // }
 
       if (this.state.title === "") {
         this.titleInput.setAttribute("placeholder", "글 제목을 가져올 수 없습니다")

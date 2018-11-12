@@ -45,7 +45,12 @@ export default function getApi(app) {
         postLink: async (link) => {
             let res = await req("/links", "POST", link);
             //app.state.links.push(res.output);
-            app.state.links.unshift(res.output);
+            if(res.status === "Fail"){
+                console.log("등록 실패 : " + res.message)
+                //alert("등록 실패 : " + res.message)
+            }else{
+                app.state.links.unshift(res.output);
+            }
         },
 
         // 링크수정

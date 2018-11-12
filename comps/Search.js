@@ -43,7 +43,7 @@ class Search extends React.Component {
         if (e.target.value.indexOf("http") === 0) {
             // 입력값이 http로 시작할 경우
             //this.setState({ mode: "add" })
-            this.state.mode = "word";
+            this.state.mode = "add";
         } else {
             //this.setState({ mode: "search" })
             this.state.mode = "search";
@@ -89,9 +89,12 @@ class Search extends React.Component {
         return (
             <div className="ipt-wrapper">
                 {
-                    this.state.mode === "search" ?
-                        <i className="icon-search" /> :
+                    app.auth.isLogin() && this.state.mode === "add"
+                        ?
                         <i className="icon-doc-new" />
+                        :
+                        <i className="icon-search" />
+                        
                 }
                 <input className="ipt-search"
                     value={app.state.word}
