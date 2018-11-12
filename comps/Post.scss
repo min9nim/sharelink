@@ -4,8 +4,8 @@ $img-width-mobile: 100px;
 
 li {
     list-style: none;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
     border-bottom: 1px solid #eee;
     .wrapper {
         display: flex;
@@ -47,9 +47,10 @@ li {
             .desc {
                 font-size: 12px;
                 color: #999;
-                max-height: 28px;
+                max-height: 33px;
                 overflow: hidden;
-                line-height: 15px;            }
+                line-height: 16px;
+            }
             .post-menu {
                 margin-top: 11px;
                 margin-bottom: 5px;
@@ -99,7 +100,7 @@ li {
         }
         .right {
             text-align: center;
-            margin-left: 5px;
+            margin-left: 10px;
             width: $img-width;
             img {
                 max-height: 150px;

@@ -1,6 +1,7 @@
 
 import app from "../src/app";
 import { withRouter } from 'next/router'
+// import * as Rx from 'rxjs';
 
 import "./Search.scss";
 
@@ -9,16 +10,29 @@ class Search extends React.Component {
     constructor(props) {
         super(props);
 
-        // this.state = {
-        //     word: ""
-        // }
+        this.state = {
+            mode: "search"
+        }
 
         app.view.Search = this;
+
+        // Observable 생성
+        //this.text$ = new Rx.Subject();
 
     }
 
     componentDidMount() {
         this._ismounted = true;
+
+        // Obaserver 등록
+        //this.text$
+        //.filter(text => text.length >= 2)
+        //.map(text => text + '!')
+        //.map(text => text + '!')
+        // .subscribe(text => {
+        //     console.log(text);
+        //     app.state.word = text;
+        // });
     }
 
     componentWillUnmount() {
@@ -26,11 +40,20 @@ class Search extends React.Component {
     }
 
     handleChange(e) {
+        if (e.target.value.indexOf("http") === 0) {
+            // 입력값이 http로 시작할 경우
+            //this.setState({ mode: "add" })
+            this.state.mode = "add";
+        } else {
+            //this.setState({ mode: "search" })
+            this.state.mode = "search";
+        }
+
         app.state.word = e.target.value;
-        //this.search(e.target.value);
-        // this.setState({
-        //     word: e.target.value
-        // })
+
+
+        // 이벤트 할당
+        //this.text$.next(e.target.value)
     }
 
     handleKeyPress(e) {
@@ -40,20 +63,44 @@ class Search extends React.Component {
         }
     }
 
-    search(word) {
-        app.api.fetchList({
-            menuIdx: app.state.menuIdx,
-            idx: 0,
-            cnt: app.PAGEROWS,
-            word
-        });
+    search = async (word) => {
+        try{
+            if (this.state.mode === "search") {
+                await app.api.fetchList({
+                    menuIdx: app.state.menuIdx,
+                    idx: 0,
+                    cnt: app.PAGEROWS,
+                    word
+                });
+            } else {
+                await app.api.postLink({
+                    url: app.state.word,
+                    author: {
+                        id: app.user.id,
+                        name: app.user.name
+                    }
+                });
+                this.state.mode = "search"
+                app.state.word = "";
+            }
+        }catch(e){
+            console.log(e.message)
+            alert(e.message)
+        }
     }
 
     render() {
         console.log("Search 렌더링");
         return (
             <div className="ipt-wrapper">
-                <i className="icon-search" />
+                {
+                    app.auth.isLogin() && this.state.mode === "add"
+                        ?
+                        <i className="icon-doc-new" />
+                        :
+                        <i className="icon-search" />
+                        
+                }
                 <input className="ipt-search"
                     value={app.state.word}
                     onChange={this.handleChange.bind(this)}
