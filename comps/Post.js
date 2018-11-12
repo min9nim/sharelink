@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import app from '../src/app';
-import URL from "url-parse";
+//import URL from "url-parse";
 import moment from "moment";
 
 import "./Post.scss";
@@ -67,10 +67,13 @@ const commentClick = () => {
   alert("준비 중");
 }
 
-const Post = ({ link }) => {
-  //console.log("Post 렌더링")
-  let { hostname } = new URL(link.url);
+const getHostname = (url) => {
+  let start = url.indexOf("://")+3;
+  let end = url.indexOf("/", start)
+  return url.slice(start, end);
+}
 
+const Post = ({ link }) => {
   const isLike = link.like && link.like.includes(app.user.id);
   const isRead = link.read && link.read.includes(app.user.id);
   const isToread = link.toread && link.toread.includes(app.user.id);
@@ -85,7 +88,7 @@ const Post = ({ link }) => {
             <a href={link.url} target="_blank">{link.title}</a>
           </div>
           <div className="meta">
-            <div className="url">{hostname}</div>
+            <div className="url">{getHostname(link.url)}</div>
             <div className="author-name">{link.author && " | by " + link.author.name}</div>
             <div className="updatedAt">{link.updatedAt && "| " + moment(link.updatedAt).fromNow()}</div>
           </div>
