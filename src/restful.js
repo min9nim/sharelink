@@ -43,8 +43,9 @@ export default function getApi(app) {
 
         // 링크추가
         postLink: async (link) => {
-            await req("/links", "POST", link);
-            app.state.links.push(link);
+            let res = await req("/links", "POST", link);
+            //app.state.links.push(res.output);
+            app.state.links.unshift(res.output);
         },
 
         // 링크수정

@@ -68,6 +68,7 @@ const commentClick = () => {
 }
 
 const Post = ({ link }) => {
+  console.log("Post 렌더링")
   let { hostname } = new URL(link.url);
 
   const isLike = link.like && link.like.includes(app.user.id);
@@ -110,7 +111,7 @@ const Post = ({ link }) => {
               </React.Fragment>
             }
             {
-              (link.author.id === app.user.id)
+              (link.author && link.author.id === app.user.id)
               &&
               <React.Fragment>
                 <Link href={`/write?id=${link.id}`}>
