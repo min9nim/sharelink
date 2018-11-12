@@ -87,9 +87,6 @@ export default class List extends React.Component {
         {/* <div className="intro">{"* " + intro}</div> */}
         <ul>
           {app.state.links.map((link) => {
-            if(!link){
-              return "xxxx";
-            }
             return (
               <Post key={link.id} link={link} />
             )
