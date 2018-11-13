@@ -108,9 +108,9 @@ const Post = ({ link }) => {
                 <div className={isToread ? "sns-btn marked" : "sns-btn"} title="읽을 글 표시" onClick={() => toreadClick(isToread, link)}>
                   <i className="icon-basket" />
                 </div>
-                {/* <div className="sns-btn" title="댓글" onClick={() => commentClick()}>
+                <div className="sns-btn" title="댓글" onClick={() => commentClick()}>
                   <i className="icon-comment-empty" />
-                </div> */}
+                </div>
               </React.Fragment>
             }
             {
