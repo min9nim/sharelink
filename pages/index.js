@@ -74,7 +74,7 @@ export default class List extends React.Component {
   }
 
   render() {
-    console.log("List 렌더링")
+    // console.log("List 렌더링")
     let intro = app.state.menu[app.state.menuIdx].label;
 
 

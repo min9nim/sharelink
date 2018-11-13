@@ -23,6 +23,7 @@ class Search extends React.Component {
 
     componentDidMount() {
         this._ismounted = true;
+        this.ipt_serarch.focus();
 
         // Obaserver 등록
         //this.text$
@@ -90,7 +91,7 @@ class Search extends React.Component {
     }
 
     render() {
-        console.log("Search 렌더링");
+        // console.log("Search 렌더링");
         return (
             <div className="ipt-wrapper">
                 {
@@ -102,6 +103,7 @@ class Search extends React.Component {
                         
                 }
                 <input className="ipt-search"
+                ref={el => {this.ipt_serarch = el}}
                     value={app.state.word}
                     onChange={this.handleChange.bind(this)}
                     onKeyPress={this.handleKeyPress.bind(this)} />
