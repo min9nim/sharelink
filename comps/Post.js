@@ -1,11 +1,10 @@
 import Link from 'next/link';
 import app from '../src/app';
-//import URL from "url-parse";
 import moment from "moment";
 import $m from "../com/util.js";
+import CommentWrite from "./CommentWrite";
 
 import "./Post.scss";
-
 
 moment.locale("ko");  
 
@@ -64,9 +63,6 @@ const toreadClick = (isToread, link) => {
   }
 }
 
-const commentClick = () => {
-  alert("준비 중");
-}
 
 const getHostname = (url) => {
   let start = url.indexOf("://")+3;
@@ -74,66 +70,92 @@ const getHostname = (url) => {
   return url.slice(start, end);
 }
 
-const Post = ({ link }) => {
-  const isLike = link.like && link.like.includes(app.user.id);
-  const isRead = link.read && link.read.includes(app.user.id);
-  const isToread = link.toread && link.toread.includes(app.user.id);
 
-  let dom;  // 삭제 애니메이션 처리를 취해 li 노드를 잠시 담을 임시 변수
 
-  return (
-    <li ref={el => { dom = el }}>
-      <div className="wrapper">
-        <div className="left">
-          <div className="title">
-            <a href={link.url} target="_blank" dangerouslySetInnerHTML={{__html : $m.highlight(link.title, app.state.word)}}></a>
-          </div>
-          <div className="meta">
-            <div className="url">{getHostname(link.url)}</div>
-            <div className="author-name">{link.author && " | by " + link.author.name}</div>
-            <div className="updatedAt">{link.updatedAt && "| " + moment(link.updatedAt).fromNow()}</div>
-          </div>
-          <div className="desc" dangerouslySetInnerHTML={{__html : $m.highlight(link.desc, app.state.word)}}>
-          </div>
-          <div className="post-menu">
+
+class Post extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      commentClicked : false
+    }
+  }
+
+
+  commentClick(){
+    console.log("commentClick")
+    this.setState({
+      commentClicked : !this.state.commentClicked
+    })
+  }
+  
+  render () {
+    console.log("Post 렌더링 " + this.state.commentClicked)
+      const {link} = this.props;
+      const isLike = link.like && link.like.includes(app.user.id);
+      const isRead = link.read && link.read.includes(app.user.id);
+      const isToread = link.toread && link.toread.includes(app.user.id);
+
+      let dom;  // 삭제 애니메이션 처리를 취해 li 노드를 잠시 담을 임시 변수
+
+    return (
+      <li ref={el => { dom = el }}>
+        <div className="wrapper">
+          <div className="left">
+            <div className="title">
+              <a href={link.url} target="_blank" dangerouslySetInnerHTML={{__html : $m.highlight(link.title, app.state.word)}}></a>
+            </div>
+            <div className="meta">
+              <div className="url">{getHostname(link.url)}</div>
+              <div className="author-name">{link.author && " | by " + link.author.name}</div>
+              <div className="updatedAt">{link.updatedAt && "| " + moment(link.updatedAt).fromNow()}</div>
+            </div>
+            <div className="desc" dangerouslySetInnerHTML={{__html : $m.highlight(link.desc, app.state.word)}}>
+            </div>
+            <div className="post-menu">
+              {
+                app.auth.isLogin() &&
+                <React.Fragment>
+                  <div className={isLike ? "sns-btn marked" : "sns-btn"} title="좋아요" onClick={() => likeClick(isLike, link)}>
+                    <i className="icon-thumbs-up" />
+                  </div>
+                  <div className={isRead ? "sns-btn marked" : "sns-btn"} title="읽음표시" onClick={() => readClick(isRead, link)}>
+                    <i className="icon-ok" />
+                  </div>
+                  <div className={isToread ? "sns-btn marked" : "sns-btn"} title="읽을 글 표시" onClick={() => toreadClick(isToread, link)}>
+                    <i className="icon-basket" />
+                  </div>
+                  <div className="sns-btn" title="댓글" onClick={this.commentClick.bind(this)}>
+                    <i className="icon-comment-empty" />
+                  </div>
+                </React.Fragment>
+              }
+              {
+                (link.author.id === app.user.id)
+                &&
+                <React.Fragment>
+                  <Link href={`/write?id=${link.id}`}>
+                    <div className="edit-btn" title="수정"><i className="icon-pencil" /></div>
+                  </Link>
+                  <div className="delete-btn" title="삭제" onClick={() => remove(link, dom)}>
+                    <i className="icon-trash-empty" />
+                </div>
+                </React.Fragment>
+              }
+            </div>
             {
-              app.auth.isLogin() &&
-              <React.Fragment>
-                <div className={isLike ? "sns-btn marked" : "sns-btn"} title="좋아요" onClick={() => likeClick(isLike, link)}>
-                  <i className="icon-thumbs-up" />
-                </div>
-                <div className={isRead ? "sns-btn marked" : "sns-btn"} title="읽음표시" onClick={() => readClick(isRead, link)}>
-                  <i className="icon-ok" />
-                </div>
-                <div className={isToread ? "sns-btn marked" : "sns-btn"} title="읽을 글 표시" onClick={() => toreadClick(isToread, link)}>
-                  <i className="icon-basket" />
-                </div>
-                <div className="sns-btn" title="댓글" onClick={() => commentClick()}>
-                  <i className="icon-comment-empty" />
-                </div>
-              </React.Fragment>
-            }
-            {
-              (link.author.id === app.user.id)
-              &&
-              <React.Fragment>
-                <Link href={`/write?id=${link.id}`}>
-                  <div className="edit-btn" title="수정"><i className="icon-pencil" /></div>
-                </Link>
-                <div className="delete-btn" title="삭제" onClick={() => remove(link, dom)}>
-                  <i className="icon-trash-empty" />
-              </div>
-              </React.Fragment>
+              this.state.commentClicked && 
+              <CommentWrite linkID={link.id}/>
             }
           </div>
-
+          <div className="right">
+            <img src={link.image}></img>
+          </div>
         </div>
-        <div className="right">
-          <img src={link.image}></img>
-        </div>
-      </div>
-    </li>
-  )
+      </li>
+    )
+  }
 }
 
 export default Post;

@@ -169,6 +169,21 @@ export default function getApi(app) {
             // 로컬상태 업데이트
             link.toread = link.toread.filter(userID => userID !== app.user.id);
         },
+        // 링크추가
+        postComment: async (comment) => {
+            let res = await req("/comments", "POST", comment);
+            //app.state.links.push(res.output);
+            if(res.status === "Fail"){
+                console.log("등록 실패 : " + res.message)
+                //alert("등록 실패 : " + res.message)
+            }else{
+                let link = app.state.links.find(l => l.id === comment.linkId)
+                if(!link.comments){
+                    link.comments = [];
+                }
+                link.comments.push(comment);
+            }
+        },
     };
 };
 
