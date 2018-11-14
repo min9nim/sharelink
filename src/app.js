@@ -187,7 +187,8 @@ app.getUser = (req) => {
             return {};
         }
     } catch (e) {
-        console.error(e);
+        //console.error(e);
+        console.log(e.message)
         return {};
     }
 }

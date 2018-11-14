@@ -36,6 +36,7 @@ export default function getApi(app) {
         deleteLink: async (link) => {
             let json = await req("/links/", 'DELETE', { linkID: link.id });
             if (json.status !== "Fail") {
+                app.state.totalCount--;
                 app.state.links = app.state.links.filter(l => l.id !== link.id);
             }
             return json;
@@ -49,6 +50,7 @@ export default function getApi(app) {
                 console.log("등록 실패 : " + res.message)
                 //alert("등록 실패 : " + res.message)
             }else{
+                app.state.totalCount++;
                 app.state.links.unshift(res.output);
             }
         },
