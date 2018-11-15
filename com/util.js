@@ -464,3 +464,26 @@ $m.highlight = function (txt, word) {
     }
     return txt;
 }
+
+
+
+$m.removeAnimation = (dom, delay) => {
+    return new Promise(function (resolve) {
+      dom.style.transition = `transform ${delay}s ease-in-out`;
+      dom.style.transform = "scaleY(0)";
+      setTimeout(resolve, delay * 1000);
+    })
+  }
+  
+$m.cancelRemoveAnimation = (dom, delay) => {
+    return new Promise(function (resolve) {
+        dom.style.transition = `transform ${delay}s ease-in-out`;
+        dom.style.transform = "scaleY(1)";
+        setTimeout(resolve, delay * 1000);
+    })
+}
+
+
+$m.nl2br = (str) => {
+    return str.replace(/\n/g, "<br>")
+}

@@ -181,7 +181,7 @@ export default function getApi(app) {
                 if(!link.comments){
                     link.comments = [];
                 }
-                link.comments.push(comment);
+                link.comments.push(res.output);
             }
             return res;
         },
@@ -194,7 +194,21 @@ export default function getApi(app) {
                 let comments = app.state.links[idx].comments;
                 app.state.links[idx].comments = comments.filter(c => c.id !== comment.id)
             }
+            return json;
         },
+        putComment: async (comment) => {
+            let res = await req("/comments", "PUT", comment);
+            if(res.status === "Fail"){
+                console.log("등록 실패 : " + res.message)
+                //alert("등록 실패 : " + res.message)
+            }else{
+                let linkIdx = app.state.links.findIndex(l => l.id === comment.linkID)
+                let commentIdx = app.state.links[linkIdx].comments.findIndex(c => c.id === comment.id);
+                app.state.links[linkIdx].comments[commentIdx] = comment;
+
+            }
+            return res;
+        },        
 
     };
 };

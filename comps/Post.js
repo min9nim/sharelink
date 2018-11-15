@@ -9,21 +9,6 @@ import "./Post.scss";
 
 moment.locale("ko");  
 
-function removeAnimation(dom, delay) {
-  return new Promise(function (resolve) {
-    dom.style.transition = `transform ${delay}s ease-in-out`;
-    dom.style.transform = "scaleY(0)";
-    setTimeout(resolve, delay * 1000);
-  })
-}
-
-function cancelRemoveAnimation(dom, delay) {
-  return new Promise(function (resolve) {
-    dom.style.transition = `transform ${delay}s ease-in-out`;
-    dom.style.transform = "scaleY(1)";
-    setTimeout(resolve, delay * 1000);
-  })
-}
 
 
 const remove = async (post, dom) => {
@@ -32,12 +17,13 @@ const remove = async (post, dom) => {
   }
 
   // 애니메이션 시작
-  await removeAnimation(dom, 0.2)
+  //await $m.removeAnimation(dom, 0.2)
+  $m.removeAnimation(dom, 0.2)
 
   // DB 삭제처리
   let json = await app.api.deleteLink(post);
   if(json.status === "Fail"){
-    cancelRemoveAnimation(dom, 0.2)
+    $m.cancelRemoveAnimation(dom, 0.2)
   }
 }
 
@@ -97,10 +83,8 @@ class Post extends React.Component {
       const isRead = link.read && link.read.includes(app.user.id);
       const isToread = link.toread && link.toread.includes(app.user.id);
 
-      let dom;  // 삭제 애니메이션 처리를 취해 li 노드를 잠시 담을 임시 변수
-
     return (
-      <li ref={el => { dom = el }}>
+      <li ref={el => { this.dom = el }}>
         <div className="wrapper">
           <div className="left">
             <div className="title">
@@ -138,7 +122,7 @@ class Post extends React.Component {
                   <Link href={`/write?id=${link.id}`}>
                     <div className="edit-btn" title="수정"><i className="icon-pencil" /></div>
                   </Link>
-                  <div className="delete-btn" title="삭제" onClick={() => remove(link, dom)}>
+                  <div className="delete-btn" title="삭제" onClick={() => remove(link, this.dom)}>
                     <i className="icon-trash-empty" />
                 </div>
                 </React.Fragment>

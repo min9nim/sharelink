@@ -44,13 +44,18 @@ export default class Comment extends React.Component {
         this.input.focus();
     }
 
-    async saveComment() {
-        //let comment = Object.assign({}, this.state, {id : shortid.generate()});
-        //app.api.postComment(comment);
 
+    async saveComment() {
         await app.api.postComment(this.state);
         this.setState({ comment: "" });
         this.props.commentClick();
+    }
+    
+
+    handleKeyUp(e){
+        if(e.keyCode === 13){
+            this.saveComment()
+        }
     }
 
     render() {
@@ -64,7 +69,9 @@ export default class Comment extends React.Component {
                         placeholder="댓글입력" />
                 </div>
                 <div className="save-btn">
-                    <i onClick={this.saveComment} className="icon-floppy" tabIndex="1"/>
+                    <button onKeyUp={this.handleKeyUp.bind(this)}>
+                        <i onClick={this.saveComment} className="icon-floppy"/>
+                    </button>
                 </div>
             </div>
         );
