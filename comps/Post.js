@@ -3,6 +3,7 @@ import app from '../src/app';
 import moment from "moment";
 import $m from "../com/util.js";
 import CommentWrite from "./CommentWrite";
+import CommentList from "./CommentList";
 
 import "./Post.scss";
 
@@ -84,7 +85,6 @@ class Post extends React.Component {
 
 
   commentClick(){
-    console.log("commentClick")
     this.setState({
       commentClicked : !this.state.commentClicked
     })
@@ -146,8 +146,9 @@ class Post extends React.Component {
             </div>
             {
               this.state.commentClicked && 
-              <CommentWrite linkID={link.id}/>
+              <CommentWrite linkID={link.id} commentClick={this.commentClick.bind(this)} />
             }
+            <CommentList comments={link.comments}/>
           </div>
           <div className="right">
             <img src={link.image}></img>

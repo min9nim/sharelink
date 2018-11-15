@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import shortid from "shortid";
 import "./CommentWrite.scss";
@@ -20,8 +18,8 @@ export default class Comment extends React.Component {
             author: {
                 id: app.user.id,
                 name: app.user.name
-              },
-        
+            },
+
             createAt: "",                   // 작성시간
             updatedAt: ""
         }
@@ -42,9 +40,17 @@ export default class Comment extends React.Component {
         }
     }
 
-    saveComment() {
-        let comment = Object.assign({}, this.state, {id : shortid.getnerate()});
-        app.api.postComment(comment);
+    componentDidMount() {
+        this.input.focus();
+    }
+
+    async saveComment() {
+        //let comment = Object.assign({}, this.state, {id : shortid.generate()});
+        //app.api.postComment(comment);
+
+        await app.api.postComment(this.state);
+        this.setState({ comment: "" });
+        this.props.commentClick();
     }
 
     render() {
@@ -52,12 +58,13 @@ export default class Comment extends React.Component {
             <div className="comment-write">
                 <div className="comment-wrapper">
                     <textarea id="comment"
+                        ref={el => { this.input = el }}
                         value={this.state.comment}
                         onChange={this.handleChange}
                         placeholder="댓글입력" />
                 </div>
                 <div className="save-btn">
-                    <i onClick={this.saveComment} className="icon-floppy" />
+                    <i onClick={this.saveComment} className="icon-floppy" tabIndex="1"/>
                 </div>
             </div>
         );

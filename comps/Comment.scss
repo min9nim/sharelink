@@ -1,0 +1,28 @@
+/* Comment component */
+
+.comment {
+    margin: 10px 0px;
+
+    .meta, .btn {
+        color: #aaa;
+        text-align: left;
+        font-size: 12px;
+        display: inline-block;
+    }
+
+    .btn {
+        width: 100px;
+        margin-left: 10px;
+        div {
+            margin-left: 5px;
+            display: inline;
+        }
+        .edit, .delete {
+            cursor: pointer;
+        }
+    }
+    .content {
+        color: #777;
+        font-size: 14px;
+    }    
+}

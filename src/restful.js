@@ -177,13 +177,25 @@ export default function getApi(app) {
                 console.log("등록 실패 : " + res.message)
                 //alert("등록 실패 : " + res.message)
             }else{
-                let link = app.state.links.find(l => l.id === comment.linkId)
+                let link = app.state.links.find(l => l.id === comment.linkID)
                 if(!link.comments){
                     link.comments = [];
                 }
                 link.comments.push(comment);
             }
+            return res;
         },
+        deleteComment: async (comment) => {
+            let json = await req("/comments/", 'DELETE', comment);
+            if (json.status === "Fail") {
+                console.log("댓글 삭제 실패")
+            }else{
+                let idx = app.state.links.findIndex(l => l.id === comment.linkID);
+                let comments = app.state.links[idx].comments;
+                app.state.links[idx].comments = comments.filter(c => c.id !== comment.id)
+            }
+        },
+
     };
 };
 

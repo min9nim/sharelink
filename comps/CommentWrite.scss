@@ -14,6 +14,7 @@
         display: flex;
         max-width: 300px;
         textarea {
+            color: #555;
             overflow: hidden;
             // border-top: 0px;
             // border-left: 0px;
@@ -46,6 +47,8 @@
             padding-bottom: 2px;
             padding-left: 3px;
             padding-right: 6px;
+            -moz-user-focus: normal;
+            
         }
     }
 }
