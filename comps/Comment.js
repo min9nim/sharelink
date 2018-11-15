@@ -32,19 +32,14 @@ export default class Comment extends React.Component {
         this.setState({
             editClicked: !this.state.editClicked
         }, () => {
+            // textarea 높이 조정
             if (this.state.editClicked) {
                 this.textarea.style.height = this.textarea.scrollHeight > 20
                     ? (this.textarea.scrollHeight + "px")
                     : "20px";
             }
         })
-
-
-
-
     }
-
-
 
     async editComment() {
         await app.api.putComment(Object.assign({}, this.props.comment, { comment: this.state.comment }));
