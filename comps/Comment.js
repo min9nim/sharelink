@@ -17,7 +17,7 @@ export default class Comment extends React.Component {
     }
 
     async delete(comment, dom) {
-        if (confirm("삭제합니다")) {
+        if (confirm("댓글을 삭제합니다")) {
             //await $m.removeAnimation(dom, 0.2);
             $m.removeAnimation(dom, 0.2);
 
@@ -82,7 +82,7 @@ export default class Comment extends React.Component {
                     <div className="meta">
                         {author.name} - {moment(updatedAt).format('MM/DD dd HH:mm')}
                     </div>
-                    <div className="btn">
+                    <div className="comment-menu">
                         <div className="edit" onClick={this.edit.bind(this)}>수정</div>
                         <div>|</div>
                         <div className="delete" onClick={() => this.delete(this.props.comment, this.dom)}>삭제</div>

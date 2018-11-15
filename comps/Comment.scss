@@ -2,14 +2,13 @@
 
 .comment {
     margin: 10px 0px;
-    .meta,
-    .btn {
+    .meta, .comment-menu {
         color: #aaa;
         text-align: left;
         font-size: 12px;
         display: inline-block;
     }
-    .btn {
+    .comment-menu {
         width: 100px;
         margin-left: 10px;
         div {

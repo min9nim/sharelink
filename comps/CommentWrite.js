@@ -28,7 +28,7 @@ export default class Comment extends React.Component {
 
     handleChange(e) {
         let state = {};
-        state[e.target.id] = e.target.value;
+        state[e.target.id] = e.target.value.trim();
         this.setState(state);
 
         if (e.target.id === "comment") {
