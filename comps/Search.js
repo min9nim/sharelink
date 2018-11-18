@@ -44,7 +44,11 @@ class Search extends React.Component {
         if (e.target.value.indexOf("http") === 0) {
             // 입력값이 http로 시작할 경우
             //this.setState({ mode: "add" })
-            this.state.mode = "add";
+            if(app.auth.isLogin()){
+                this.state.mode = "add";
+            }else{
+                this.state.mode = "search";
+            }
         } else {
             //this.setState({ mode: "search" })
             this.state.mode = "search";
@@ -74,6 +78,8 @@ class Search extends React.Component {
                     word
                 });
             } else {
+                if(!app.user.id) return;
+                
                 await app.api.postLink({
                     url: app.state.word,
                     author: {
