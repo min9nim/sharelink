@@ -77,7 +77,7 @@ class Post extends React.Component {
   }
   
   render () {
-    console.log("Post 렌더링 " + this.state.commentClicked)
+    // console.log("Post 렌더링 " + this.state.commentClicked)
       const {link} = this.props;
       const isLike = link.like && link.like.includes(app.user.id);
       const isRead = link.read && link.read.includes(app.user.id);
