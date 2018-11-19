@@ -76,6 +76,10 @@ export default class List extends React.Component {
   render() {
     // console.log("List 렌더링")
     let intro = app.state.menu[app.state.menuIdx].label;
+    if(app.state.word){
+      intro = `"${app.state.word}" 검색 결과`
+    }
+
 
 
     //console.log("app.state.links = " + JSON.stringify(app.state.links, null, 2))
