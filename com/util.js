@@ -487,3 +487,34 @@ $m.cancelRemoveAnimation = (dom, delay) => {
 $m.nl2br = (str) => {
     return str.replace(/\n/g, "<br>")
 }
+
+
+
+/**
+ * 18.11.19
+ * htmlspecialchars, htmlspecialchars_decode 소스출처: https://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities
+ */
+function htmlspecialchars(str) {
+    var map = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;" // ' -> &apos; for XML only
+    };
+    return str.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
+function htmlspecialchars_decode(str) {
+    var map = {
+        "&amp;": "&",
+        "&lt;": "<",
+        "&gt;": ">",
+        "&quot;": "\"",
+        "&#39;": "'"
+    };
+    return str.replace(/(&amp;|&lt;|&gt;|&quot;|&#39;)/g, function(m) { return map[m]; });
+}
+
+$m.htmlspecialchars = htmlspecialchars;
+$m.htmlspecialchars_decode = htmlspecialchars_decode;

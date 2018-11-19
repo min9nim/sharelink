@@ -88,14 +88,14 @@ class Post extends React.Component {
         <div className="wrapper">
           <div className="left">
             <div className="title">
-              <a href={link.url} target="_blank" dangerouslySetInnerHTML={{__html : $m.highlight(link.title, app.state.word)}}></a>
+              <a href={link.url} target="_blank" dangerouslySetInnerHTML={{__html : $m.highlight($m.htmlspecialchars(link.title), app.state.word)}}></a>
             </div>
             <div className="meta">
               <div className="url">{getHostname(link.url)}</div>
               <div className="author-name">{link.author && " | by " + link.author.name}</div>
               <div className="updatedAt">{link.updatedAt && "| " + moment(link.updatedAt).fromNow()}</div>
             </div>
-            <div className="desc" dangerouslySetInnerHTML={{__html : $m.highlight(link.desc, app.state.word)}}>
+            <div className="desc" dangerouslySetInnerHTML={{__html : $m.highlight($m.htmlspecialchars(link.desc), app.state.word)}}>
             </div>
             <div className="post-menu">
               {
