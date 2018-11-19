@@ -495,6 +495,8 @@ $m.nl2br = (str) => {
  * htmlspecialchars, htmlspecialchars_decode 소스출처: https://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities
  */
 function htmlspecialchars(str) {
+    if(!str) return "";
+
     var map = {
         "&": "&amp;",
         "<": "&lt;",
@@ -506,6 +508,8 @@ function htmlspecialchars(str) {
 }
 
 function htmlspecialchars_decode(str) {
+    if(!str) return "";
+    
     var map = {
         "&amp;": "&",
         "&lt;": "<",
