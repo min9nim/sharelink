@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "PORT=3000 node server/app.js",
     "dev-win": "set PORT=3000 && node server/app.js",
     "build": "next build",
     "start": "node server/app.js",
-    "start-dev": "next build && PORT=3000 npm start"
+    "start-dev": "next build && PORT=3000 npm start",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -31,5 +31,7 @@
     "rxjs": "^6.3.3",
     "shortid": "^2.2.13"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jest": "^23.6.0"
+  }
 }
