@@ -123,7 +123,7 @@ class Post extends React.Component {
                   <div className={isToread ? "sns-btn marked" : "sns-btn"} title="읽을 글 표시" onClick={() => toreadClick(isToread, link)}>
                     <i className="icon-basket" />
                   </div>
-                  <div className="sns-btn" title="댓글" onClick={this.commentClick.bind(this)}>
+                  <div className="sns-btn comment-btn" title="댓글" onClick={this.commentClick.bind(this)}>
                     <i className="icon-comment-empty" />
                   </div>
                   <div className="sns-btn" title="관련글" onClick={this.refClick.bind(this)}>
