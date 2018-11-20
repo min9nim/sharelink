@@ -1,15 +1,11 @@
 import Layout from '../comps/Layout.js';
 import { withRouter } from 'next/router'
-
 import app from "../src/app";
 import { observable, reaction, decorate } from "mobx";
 import shortid from "shortid";
-//import Link from 'next/link';
-//import URL from "url-parse";
 import $m from "../com/util.js";
-
-
 import "./write.scss";
+import { _findLink } from '../com/pure.js';
 
 class Write extends React.Component {
   constructor(props) {
@@ -54,7 +50,8 @@ class Write extends React.Component {
       let fetchRes = await app.api.fetchLink(req.query.id);
       link = fetchRes[0]
     } else {
-      link = app.state.links.find(l => l.id === query.id);
+      //link = app.state.links.find(l => l.id === query.id);
+      link = _findLink(app.state.links, query.id)
     }
 
     return {

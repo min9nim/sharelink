@@ -3,6 +3,7 @@ import app from "../src/app";
 import {_findLink} from "../com/pure";
 
 
+
 const req = async (path, method, body) => {
     try {
         global.NProgress && global.NProgress.start();
@@ -75,12 +76,17 @@ export default function getApi(app) {
         // 링크수정
         putLink: async (link) => {
             // DB 업데이트
-            await req("/links/", "PUT", Object.assign(link, { linkID: link.id }));
+            await req("/links/", "PUT", Object.assign(link, { id: link.id }));
 
             // 로컬상태 업데이트
-            var asisIdx = app.state.links.findIndex(l => l.id === link.id);
-            //app.state.links.splice(asisIdx, 1, link);
-            app.state.links[asisIdx] = link;
+            if(link.linkID){
+                let parentLink = _findLink(app.state.links, link.linkID);
+                let asisIdx = parentLink.refLinks.findIndex(l => l.id === link.id);
+                parentLink.refLinks[asisIdx] = link;
+            }else{
+                let asisIdx = app.state.links.findIndex(l => l.id === link.id);
+                app.state.links[asisIdx] = link;
+            }
         },
 
         // 글작성시 글제목/글설명/글이미지 가져오기

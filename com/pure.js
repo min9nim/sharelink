@@ -17,3 +17,5 @@ export function _findLink(links, linkID){
     
     return link;
 }
+
+//global._findLink = _findLink;
