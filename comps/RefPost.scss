@@ -31,12 +31,10 @@ $img-width-mobile: 100px;
                 .url {
                     color: $site-color-light;
                     margin: 2px 0px;
-                    font-size: 13px;
                 }
                 .author-name {
                     color: #666;
                     margin-left: 5px;
-                    font-size: 13px;
 
                 }
                 .updatedAt {
@@ -123,5 +121,19 @@ $img-width-mobile: 100px;
         img {
             max-width: $img-width-mobile;
         }
+    }
+
+    .RefPostList .right {
+        display: none;
+    }
+    .RefPostList .desc {
+        display: none;
+    }
+
+    .PostList .RefPostList > li .wrapper .left .title {
+        font-size: 14px;
+    }
+    .PostList .RefPostList > li .wrapper .left .meta {
+        font-size: 12px;
     }
 }

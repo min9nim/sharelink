@@ -125,9 +125,9 @@ class RefPost extends React.Component {
                   <div className="sns-btn comment-btn" title="댓글" onClick={this.commentClick.bind(this)}>
                     <i className="icon-comment-empty" />
                   </div>
-                  <div className="sns-btn" title="관련글" onClick={this.refClick.bind(this)}>
+                  {/* <div className="sns-btn" title="관련글" onClick={this.refClick.bind(this)}>
                     <i className="icon-doc-new" />
-                  </div>
+                  </div> */}
 
                 </React.Fragment>
               }
