@@ -64,7 +64,7 @@ global.onSignIn = (googleUser) => {
   //console.log("@@@@ token 세팅 하고 login 호출할꺼임")
   app.user.token = id_token;
 
-  console.log(id_token);
+  // console.log(id_token);
 
   // console.log("ID Token: " + id_token);
 

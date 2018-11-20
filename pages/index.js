@@ -13,10 +13,10 @@ export default class List extends React.Component {
     this.state = {
       loading: false,
     }
-    
+
     app.view.List = this;
 
-    if(props.user && props.user.id){
+    if (props.user && props.user.id) {
       app.state.userID = props.user.id;
       app.user = props.user;
       global.sessionStorage && global.sessionStorage.setItem("user", JSON.stringify(app.user))
@@ -36,7 +36,7 @@ export default class List extends React.Component {
 
     let menuIdx = app.state.menu.findIndex(m => m.path === asPath);
     //console.log("menuIdx = " + menuIdx);
-    let fetchRes = await app.api.fetchList({menuIdx});
+    let fetchRes = await app.api.fetchList({ menuIdx });
     //console.log(JSON.stringify(fetchRes, null, 2));
 
     //console.log("user = " + JSON.stringify(user));
@@ -76,6 +76,10 @@ export default class List extends React.Component {
   render() {
     // console.log("List 렌더링")
     let intro = app.state.menu[app.state.menuIdx].label;
+
+    if (app.view.Search && app.view.Search.state.mode === "search" && app.state.word) {
+      intro = `"${app.state.word}" 검색 결과`
+    }
 
 
     //console.log("app.state.links = " + JSON.stringify(app.state.links, null, 2))

@@ -169,6 +169,47 @@ export default function getApi(app) {
             // 로컬상태 업데이트
             link.toread = link.toread.filter(userID => userID !== app.user.id);
         },
+        // 링크추가
+        postComment: async (comment) => {
+            let res = await req("/comments", "POST", comment);
+            //app.state.links.push(res.output);
+            if(res.status === "Fail"){
+                console.log("등록 실패 : " + res.message)
+                //alert("등록 실패 : " + res.message)
+            }else{
+                let link = app.state.links.find(l => l.id === comment.linkID)
+                if(!link.comments){
+                    link.comments = [];
+                }
+                link.comments.push(res.output);
+            }
+            return res;
+        },
+        deleteComment: async (comment) => {
+            let json = await req("/comments/", 'DELETE', comment);
+            if (json.status === "Fail") {
+                console.log("댓글 삭제 실패")
+            }else{
+                let idx = app.state.links.findIndex(l => l.id === comment.linkID);
+                let comments = app.state.links[idx].comments;
+                app.state.links[idx].comments = comments.filter(c => c.id !== comment.id)
+            }
+            return json;
+        },
+        putComment: async (comment) => {
+            let res = await req("/comments", "PUT", comment);
+            if(res.status === "Fail"){
+                console.log("등록 실패 : " + res.message)
+                //alert("등록 실패 : " + res.message)
+            }else{
+                let linkIdx = app.state.links.findIndex(l => l.id === comment.linkID)
+                let commentIdx = app.state.links[linkIdx].comments.findIndex(c => c.id === comment.id);
+                app.state.links[linkIdx].comments[commentIdx] = comment;
+
+            }
+            return res;
+        },        
+
     };
 };
 
