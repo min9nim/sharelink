@@ -2,6 +2,7 @@ import Link from 'next/link';
 import app from '../src/app';
 import moment from "moment";
 import $m from "../com/util.js";
+import {_getHostname} from "../com/pure";
 import CommentWrite from "./CommentWrite";
 import CommentList from "./CommentList";
 import RefWrite from "./RefWrite";
@@ -54,14 +55,6 @@ const toreadClick = (isToread, link) => {
 }
 
 
-const getHostname = (url) => {
-  let start = url.indexOf("://") + 3;
-  let end = url.indexOf("/", start)
-  return url.slice(start, end);
-}
-
-
-
 
 class Post extends React.Component {
 
@@ -104,7 +97,7 @@ class Post extends React.Component {
               <a href={link.url} target="_blank" dangerouslySetInnerHTML={{ __html: $m.highlight($m.htmlspecialchars(link.title), app.state.word) }}></a>
             </div>
             <div className="meta">
-              <div className="url">{getHostname(link.url)}</div>
+              <div className="url">{_getHostname(link.url)}</div>
               <div className="author-name">{link.author && " | by " + link.author.name}</div>
               <div className="updatedAt">{link.updatedAt && "| " + moment(link.updatedAt).fromNow()}</div>
             </div>

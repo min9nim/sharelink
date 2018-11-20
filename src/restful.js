@@ -37,7 +37,7 @@ export default function getApi(app) {
     return {
         // 링크삭제
         deleteLink: async (link) => {
-            let json = await req("/links/", 'DELETE', { linkID: link.id });
+            let json = await req("/links/", 'DELETE', { id: link.id });
             if (json.status !== "Fail") {
                 app.state.totalCount--;
                 if(link.linkID){
@@ -77,6 +77,8 @@ export default function getApi(app) {
         putLink: async (link) => {
             // DB 업데이트
             await req("/links/", "PUT", Object.assign(link, { id: link.id }));
+
+            if(app.state.links.length === 0) return ;
 
             // 로컬상태 업데이트
             if(link.linkID){
