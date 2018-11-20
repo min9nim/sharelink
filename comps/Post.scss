@@ -32,12 +32,12 @@ $img-width-mobile: 100px;
                 .url {
                     color: $site-color-light;
                     margin: 2px 0px;
-                    font-size: 13px;
+                    //font-size: 13px;
                 }
                 .author-name {
                     color: #666;
                     margin-left: 5px;
-                    font-size: 13px;
+                    //font-size: 13px;
 
                 }
                 .updatedAt {
@@ -113,7 +113,7 @@ $img-width-mobile: 100px;
 }
 
 @include mobile() {
-    li .wrapper .right {
+    .PostList > li .wrapper .right {
         //width: $img-width-mobile; 
         /**
         * 18.11.02
