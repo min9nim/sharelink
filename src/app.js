@@ -86,6 +86,7 @@ const app = {
             if (app.state.userID) {
                 if (Date.now() > app.user.exp * 1000) {
                     console.log("### jwt token expired");
+                    app.state.userID = "";
                     // alert && alert("로그인 세션이 만료되었습니다");
                     return false;
                 } else {

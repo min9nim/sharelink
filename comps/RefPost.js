@@ -128,7 +128,7 @@ class RefPost extends React.Component {
                 </React.Fragment>
               }
               {
-                (link.author.id === app.user.id)
+                app.auth.isLogin() && (link.author.id === app.user.id)
                 &&
                 <React.Fragment>
                   <Link href={`/write?id=${link.id}`}>

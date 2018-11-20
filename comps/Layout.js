@@ -34,6 +34,10 @@ const Layout = (props) => {
 global.onSignIn = (googleUser) => {
   //console.log("global.onSignIn 호출");
 
+  if (app.auth.isLogin()) {
+    return;
+  }
+
   let GoogleAuth = gapi.auth2.getAuthInstance();
 
   app.auth.signOut = () => {
@@ -41,14 +45,11 @@ global.onSignIn = (googleUser) => {
 
     return GoogleAuth.signOut().then(() => {
       console.log("GoogleAuth.signOut() 완료 후 콜백");
-      app.state.userID = "";
+      //app.state.userID = "";
     });
   }
 
 
-  if (app.auth.isLogin()) {
-    return;
-  }
 
 
   var profile = googleUser.getBasicProfile();
