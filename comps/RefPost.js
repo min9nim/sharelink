@@ -5,10 +5,9 @@ import $m from "../com/util.js";
 import CommentWrite from "./CommentWrite";
 import CommentList from "./CommentList";
 import RefWrite from "./RefWrite";
-import RefPostList from "./RefPostList";
 
 
-import "./Post.scss";
+import "./RefPost.scss";
 
 moment.locale("ko");
 
@@ -63,7 +62,7 @@ const getHostname = (url) => {
 
 
 
-class Post extends React.Component {
+class RefPost extends React.Component {
 
   constructor(props) {
     super(props);
@@ -90,7 +89,7 @@ class Post extends React.Component {
   }
 
   render() {
-    // console.log("Post 렌더링 " + this.state.commentClicked)
+    // console.log("RefPost 렌더링 " + this.state.commentClicked)
     const { link } = this.props;
     const isLike = link.like && link.like.includes(app.user.id);
     const isRead = link.read && link.read.includes(app.user.id);
@@ -139,13 +138,9 @@ class Post extends React.Component {
                   <Link href={`/write?id=${link.id}`}>
                     <div className="edit-btn" title="수정"><i className="icon-pencil" /></div>
                   </Link>
-                  {
-                    (!link.refLinks || link.refLinks.length === 0)
-                    &&
-                    <div className="delete-btn" title="삭제" onClick={() => remove(link, this.dom)}>
-                      <i className="icon-trash-empty" />
-                    </div>
-                  }
+                  <div className="delete-btn" title="삭제" onClick={() => remove(link, this.dom)}>
+                    <i className="icon-trash-empty" />
+                  </div>
                 </React.Fragment>
               }
             </div>
@@ -158,21 +153,14 @@ class Post extends React.Component {
               <RefWrite linkID={link.id} refClick={this.refClick.bind(this)} />
             }
             <CommentList comments={link.comments} />
-
           </div>
           <div className="right">
             <img src={link.image}></img>
           </div>
-
         </div>
-        {
-          link.refLinks &&
-          <RefPostList refLinks={link.refLinks} />
-        }
-
       </li>
     )
   }
 }
 
-export default Post;
+export default RefPost;

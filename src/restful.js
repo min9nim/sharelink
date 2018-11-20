@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-unfetch';
 import app from "../src/app";
+import {_findLink} from "../com/pure";
+
 
 const req = async (path, method, body) => {
     try {
@@ -37,7 +39,13 @@ export default function getApi(app) {
             let json = await req("/links/", 'DELETE', { linkID: link.id });
             if (json.status !== "Fail") {
                 app.state.totalCount--;
-                app.state.links = app.state.links.filter(l => l.id !== link.id);
+                if(link.linkID){
+                    // 관련 링크를 삭제하는 경우
+                    let parentLink = app.state.links.find(l => l.id === link.linkID);
+                    parentLink.refLinks = parentLink.refLinks.filter(l => l.id !== link.id);
+                }else{
+                    app.state.links = app.state.links.filter(l => l.id !== link.id);
+                }
             }
             return json;
         },
@@ -51,7 +59,16 @@ export default function getApi(app) {
                 //alert("등록 실패 : " + res.message)
             }else{
                 app.state.totalCount++;
-                app.state.links.unshift(res.output);
+                if(res.output.linkID){
+                    // 관련글 등록인 경우
+                    let parentLink = app.state.links.find(l => l.id === res.output.linkID)
+                    if(!parentLink.refLinks){
+                        parentLink.refLinks = []
+                    }
+                    parentLink.refLinks.push(res.output);    
+                }else{
+                    app.state.links.unshift(res.output);
+                }
             }
         },
 
@@ -169,7 +186,8 @@ export default function getApi(app) {
             // 로컬상태 업데이트
             link.toread = link.toread.filter(userID => userID !== app.user.id);
         },
-        // 링크추가
+
+        // 댓글추가
         postComment: async (comment) => {
             let res = await req("/comments", "POST", comment);
             //app.state.links.push(res.output);
@@ -177,7 +195,10 @@ export default function getApi(app) {
                 console.log("등록 실패 : " + res.message)
                 //alert("등록 실패 : " + res.message)
             }else{
-                let link = app.state.links.find(l => l.id === comment.linkID)
+                //let link = app.state.links.find(l => l.id === comment.linkID)
+
+                let link = _findLink(app.state.links, comment.linkID);
+
                 if(!link.comments){
                     link.comments = [];
                 }
@@ -190,9 +211,12 @@ export default function getApi(app) {
             if (json.status === "Fail") {
                 console.log("댓글 삭제 실패")
             }else{
-                let idx = app.state.links.findIndex(l => l.id === comment.linkID);
-                let comments = app.state.links[idx].comments;
-                app.state.links[idx].comments = comments.filter(c => c.id !== comment.id)
+                // let idx = app.state.links.findIndex(l => l.id === comment.linkID);
+                // let comments = app.state.links[idx].comments;
+                // app.state.links[idx].comments = comments.filter(c => c.id !== comment.id)
+
+                let link = _findLink(app.state.links, comment.linkID)
+                link.comments = link.comments.filter(c => c.id !== comment.id)
             }
             return json;
         },
@@ -202,9 +226,14 @@ export default function getApi(app) {
                 console.log("등록 실패 : " + res.message)
                 //alert("등록 실패 : " + res.message)
             }else{
-                let linkIdx = app.state.links.findIndex(l => l.id === comment.linkID)
-                let commentIdx = app.state.links[linkIdx].comments.findIndex(c => c.id === comment.id);
-                app.state.links[linkIdx].comments[commentIdx] = comment;
+                // let linkIdx = app.state.links.findIndex(l => l.id === comment.linkID)
+                // let commentIdx = app.state.links[linkIdx].comments.findIndex(c => c.id === comment.id);
+                // app.state.links[linkIdx].comments[commentIdx] = comment;
+
+                let link = _findLink(app.state.links, comment.linkID);
+                let commentIdx = link.comments.findIndex(c => c.id === comment.id);
+                link.comments[commentIdx] = comment;
+
 
             }
             return res;

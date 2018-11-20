@@ -89,7 +89,7 @@ export default class List extends React.Component {
       <Layout>
         <div className="intro">{"* " + intro + "(" + app.state.totalCount + "개)"}</div>
         {/* <div className="intro">{"* " + intro}</div> */}
-        <ul>
+        <ul className="PostList">
           {app.state.links.map((link) => {
             return (
               <Post key={link.id} link={link} />
