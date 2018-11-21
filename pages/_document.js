@@ -16,6 +16,8 @@ export default class MyDocument extends Document {
                 <Head>
                     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
 
+                    <meta name="theme-color" content="#91171F"></meta>
+
                     {/* 로고폰트 */}
                     <link href="//db.onlinewebfonts.com/c/13b003e481c54fdf324c9ed0d312d49c?family=Colopocle" rel="stylesheet" type="text/css" />
 
