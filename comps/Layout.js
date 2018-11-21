@@ -34,10 +34,6 @@ const Layout = (props) => {
 global.onSignIn = (googleUser) => {
   //console.log("global.onSignIn 호출");
 
-  if (app.auth.isLogin()) {
-    return;
-  }
-
   let GoogleAuth = gapi.auth2.getAuthInstance();
 
   app.auth.signOut = () => {
@@ -49,7 +45,14 @@ global.onSignIn = (googleUser) => {
     });
   }
 
-
+  /**
+   * 18.11.21
+   * 아래 예외처리를 위의 signOut 함수 세팅하는 것보다 위에서 하면
+   * 로그아웃이 정상동작 않게 된다
+   */
+  if (app.auth.isLogin()) {
+    return;
+  }
 
 
   var profile = googleUser.getBasicProfile();
