@@ -86,7 +86,9 @@ const app = {
             if (app.state.userID) {
                 if (Date.now() > app.user.exp * 1000) {
                     console.log("### jwt token expired");
-                    app.state.userID = "";
+                    //app.auth.signOut();
+                    //app.state.userID = "";
+
                     // alert && alert("로그인 세션이 만료되었습니다");
                     return false;
                 } else {
@@ -121,22 +123,24 @@ reaction(() => JSON.stringify(app.state.word), () => {
 reaction(() => app.state.userID, async () => {
     // app.state.userID 값을 바라보며 앱의 로그인 여부를 판단한다.
     if (app.auth.isLogin()) {
-        console.log("로그인 됨")
+        console.log("로그인 상태")
     } else {
-        console.log("로그아웃 됨")
-        document.cookie = "user="
-        global.sessionStorage.setItem("user", "");
-        app.user = {
-            id: "",
-            name: "",
-            email: "",
-            image: "",
-            token: ""
-        };
+        
+        // document.cookie = "user="
+        // global.sessionStorage.setItem("user", "");
+        // app.user = {
+        //     id: "",
+        //     name: "",
+        //     email: "",
+        //     image: "",
+        //     token: ""
+        // };
         if (app.router && app.router.pathname.indexOf("/write") === 0) {
             //app.router.push("/login");
             location.href = "/login";
         }
+
+        console.log("로그아웃 됨")
     }
 
     app.view.Header && app.view.Header._ismounted && app.view.Header.forceUpdate();

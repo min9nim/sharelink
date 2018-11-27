@@ -35,7 +35,7 @@ export default class MyDocument extends Document {
                     <link rel="stylesheet" href="/static/fontello/css/fontello.css"></link>
                     <style>{`
                     /* custom! */
-                        body { margin: 8px }
+                    body { margin: 8px }
                     `}</style>
                 </Head>
                 <body className="custom_class">

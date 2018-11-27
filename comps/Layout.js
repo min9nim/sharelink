@@ -32,13 +32,25 @@ const Layout = (props) => {
 
 
 global.onSignIn = (googleUser) => {
-  //console.log("global.onSignIn 호출");
+  console.log("global.onSignIn 호출");
 
   let GoogleAuth = gapi.auth2.getAuthInstance();
 
   app.auth.signOut = () => {
+
+    // 애플리케이션 로그아웃처리
+    document.cookie = "user="
+    global.sessionStorage.setItem("user", "");
+    app.user = {
+        id: "",
+        name: "",
+        email: "",
+        image: "",
+        token: ""
+    };
     app.state.userID = "";
 
+    // 구글 로그아웃처리
     return GoogleAuth.signOut().then(() => {
       console.log("GoogleAuth.signOut() 완료 후 콜백");
       //app.state.userID = "";
