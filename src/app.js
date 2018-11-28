@@ -85,7 +85,7 @@ const app = {
         isLogin: () => {
             if (app.state.userID) {
                 if (Date.now() > app.user.exp * 1000) {
-                    console.log("### jwt token expired");
+                    //console.log("### jwt token expired");
                     //app.auth.signOut();
                     //app.state.userID = "";
 
