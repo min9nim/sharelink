@@ -23,7 +23,7 @@ const req = async (path, method, body) => {
         let json = await res.json();
         global.NProgress && global.NProgress.done();
         if (json.status === "Fail") {
-            alert(json.message)
+            console.log(json.message)
         }
 
         return json;
@@ -127,6 +127,11 @@ export default function getApi(app) {
             }
 
             let fetchRes = await req(path, "GET");
+            //console.log("@@@ " + JSON.stringify(fetchRes, null, 2))
+
+            if(fetchRes.status === "Fail"){
+                return ;
+            }
 
             //console.log("@@ 여기서는? " + JSON.stringify(json, null, 2))
 
