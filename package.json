@@ -32,7 +32,6 @@
     "shortid": "^2.2.13"
   },
   "devDependencies": {
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "jest": "^23.6.0"
   }
 }
