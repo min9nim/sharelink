@@ -67,7 +67,7 @@ global.onSignIn = (googleUser) => {
   }
 
 
-  var profile = googleUser.getBasicProfile();
+  let profile = googleUser.getBasicProfile();
   // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
   // console.log('Full Name: ' + profile.getName());
   // console.log('Given Name: ' + profile.getGivenName());
@@ -76,7 +76,7 @@ global.onSignIn = (googleUser) => {
   // console.log("Email: " + profile.getEmail());
 
   // The ID token you need to pass to your backend:
-  var id_token = googleUser.getAuthResponse().id_token;
+  let id_token = googleUser.getAuthResponse().id_token;
   //console.log("@@@@ token 세팅 하고 login 호출할꺼임")
   app.user.token = id_token;
 
