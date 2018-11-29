@@ -1,5 +1,8 @@
 import fetch from 'isomorphic-unfetch';
 import app from "../src/app";
+import {_findLink} from "../com/pure";
+
+
 
 const req = async (path, method, body) => {
     try {
@@ -20,7 +23,7 @@ const req = async (path, method, body) => {
         let json = await res.json();
         global.NProgress && global.NProgress.done();
         if (json.status === "Fail") {
-            alert(json.message)
+            console.log(json.message)
         }
 
         return json;
@@ -34,10 +37,16 @@ export default function getApi(app) {
     return {
         // 링크삭제
         deleteLink: async (link) => {
-            let json = await req("/links/", 'DELETE', { linkID: link.id });
+            let json = await req("/links/", 'DELETE', { id: link.id });
             if (json.status !== "Fail") {
                 app.state.totalCount--;
-                app.state.links = app.state.links.filter(l => l.id !== link.id);
+                if(link.linkID){
+                    // 관련 링크를 삭제하는 경우
+                    let parentLink = app.state.links.find(l => l.id === link.linkID);
+                    parentLink.refLinks = parentLink.refLinks.filter(l => l.id !== link.id);
+                }else{
+                    app.state.links = app.state.links.filter(l => l.id !== link.id);
+                }
             }
             return json;
         },
@@ -51,19 +60,35 @@ export default function getApi(app) {
                 //alert("등록 실패 : " + res.message)
             }else{
                 app.state.totalCount++;
-                app.state.links.unshift(res.output);
+                if(res.output.linkID){
+                    // 관련글 등록인 경우
+                    let parentLink = app.state.links.find(l => l.id === res.output.linkID)
+                    if(!parentLink.refLinks){
+                        parentLink.refLinks = []
+                    }
+                    parentLink.refLinks.push(res.output);    
+                }else{
+                    app.state.links.unshift(res.output);
+                }
             }
         },
 
         // 링크수정
         putLink: async (link) => {
             // DB 업데이트
-            await req("/links/", "PUT", Object.assign(link, { linkID: link.id }));
+            await req("/links/", "PUT", Object.assign(link, { id: link.id }));
+
+            if(app.state.links.length === 0) return ;
 
             // 로컬상태 업데이트
-            var asisIdx = app.state.links.findIndex(l => l.id === link.id);
-            //app.state.links.splice(asisIdx, 1, link);
-            app.state.links[asisIdx] = link;
+            if(link.linkID){
+                let parentLink = _findLink(app.state.links, link.linkID);
+                let asisIdx = parentLink.refLinks.findIndex(l => l.id === link.id);
+                parentLink.refLinks[asisIdx] = link;
+            }else{
+                let asisIdx = app.state.links.findIndex(l => l.id === link.id);
+                app.state.links[asisIdx] = link;
+            }
         },
 
         // 글작성시 글제목/글설명/글이미지 가져오기
@@ -102,6 +127,11 @@ export default function getApi(app) {
             }
 
             let fetchRes = await req(path, "GET");
+            //console.log("@@@ " + JSON.stringify(fetchRes, null, 2))
+
+            if(fetchRes.status === "Fail"){
+                return ;
+            }
 
             //console.log("@@ 여기서는? " + JSON.stringify(json, null, 2))
 
@@ -169,7 +199,8 @@ export default function getApi(app) {
             // 로컬상태 업데이트
             link.toread = link.toread.filter(userID => userID !== app.user.id);
         },
-        // 링크추가
+
+        // 댓글추가
         postComment: async (comment) => {
             let res = await req("/comments", "POST", comment);
             //app.state.links.push(res.output);
@@ -177,7 +208,10 @@ export default function getApi(app) {
                 console.log("등록 실패 : " + res.message)
                 //alert("등록 실패 : " + res.message)
             }else{
-                let link = app.state.links.find(l => l.id === comment.linkID)
+                //let link = app.state.links.find(l => l.id === comment.linkID)
+
+                let link = _findLink(app.state.links, comment.linkID);
+
                 if(!link.comments){
                     link.comments = [];
                 }
@@ -190,9 +224,12 @@ export default function getApi(app) {
             if (json.status === "Fail") {
                 console.log("댓글 삭제 실패")
             }else{
-                let idx = app.state.links.findIndex(l => l.id === comment.linkID);
-                let comments = app.state.links[idx].comments;
-                app.state.links[idx].comments = comments.filter(c => c.id !== comment.id)
+                // let idx = app.state.links.findIndex(l => l.id === comment.linkID);
+                // let comments = app.state.links[idx].comments;
+                // app.state.links[idx].comments = comments.filter(c => c.id !== comment.id)
+
+                let link = _findLink(app.state.links, comment.linkID)
+                link.comments = link.comments.filter(c => c.id !== comment.id)
             }
             return json;
         },
@@ -202,9 +239,14 @@ export default function getApi(app) {
                 console.log("등록 실패 : " + res.message)
                 //alert("등록 실패 : " + res.message)
             }else{
-                let linkIdx = app.state.links.findIndex(l => l.id === comment.linkID)
-                let commentIdx = app.state.links[linkIdx].comments.findIndex(c => c.id === comment.id);
-                app.state.links[linkIdx].comments[commentIdx] = comment;
+                // let linkIdx = app.state.links.findIndex(l => l.id === comment.linkID)
+                // let commentIdx = app.state.links[linkIdx].comments.findIndex(c => c.id === comment.id);
+                // app.state.links[linkIdx].comments[commentIdx] = comment;
+
+                let link = _findLink(app.state.links, comment.linkID);
+                let commentIdx = link.comments.findIndex(c => c.id === comment.id);
+                link.comments[commentIdx] = comment;
+
 
             }
             return res;

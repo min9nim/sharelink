@@ -1,37 +1,29 @@
 import React from "react";
 // import shortid from "shortid";
-import "./CommentWrite.scss";
+import "./RefWrite.scss";
 
 
-export default class CommentWrite extends React.Component {
+export default class RefWrite extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.saveComment = this.saveComment.bind(this);
-
+        this.saveRef = this.saveRef.bind(this);
 
         this.state = {
-            id: "",
             linkID: this.props.linkID,      // 링크아이디
-            commentKey: "",              // 부모 코멘트 id
-            comment: "",                // 내용
+            url: "",
             author: {
                 id: app.user.id,
                 name: app.user.name
             },
-
-            createAt: "",                   // 작성시간
-            updatedAt: ""
         }
     }
 
 
     handleChange(e) {
-        let state = {};
-        state[e.target.id] = e.target.value;
-        this.setState(state);
+        this.setState({url : e.target.value.trim()});
 
-        if (e.target.id === "comment") {
+        if (e.target.id === "ref") {
             // https://zetawiki.com/wiki/HTML_textarea_자동_높이_조절
             //console.log("e.target.scrollHeight = " + e.target.scrollHeight);
             e.target.style.height = e.target.scrollHeight > 20
@@ -45,32 +37,36 @@ export default class CommentWrite extends React.Component {
     }
 
 
-    async saveComment() {
-        await app.api.postComment(this.state);
-        this.setState({ comment: "" });
-        this.props.commentClick();
+    async saveRef() {
+
+        if(!app.user.id) return;
+                
+        let link = await app.api.postLink(this.state);
+
+        this.setState({ ref: "" });
+        this.props.refClick();
     }
     
 
     handleKeyUp(e){
         if(e.keyCode === 13){
-            this.saveComment()
+            this.saveRef()
         }
     }
 
     render() {
         return (
-            <div className="comment-write">
-                <div className="comment-wrapper">
-                    <textarea id="comment"
+            <div className="ref-write">
+                <div className="ref-wrapper">
+                    <textarea id="ref"
                         ref={el => { this.input = el }}
-                        value={this.state.comment}
+                        value={this.state.ref}
                         onChange={this.handleChange}
-                        placeholder="댓글입력" />
+                        placeholder="관련 링크입력" />
                 </div>
                 <div className="save-btn">
                     <button onKeyUp={this.handleKeyUp.bind(this)}>
-                        <i onClick={this.saveComment} className="icon-floppy"/>
+                        <i onClick={this.saveRef} className="icon-floppy"/>
                     </button>
                 </div>
             </div>

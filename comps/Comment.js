@@ -82,11 +82,15 @@ export default class Comment extends React.Component {
                     <div className="meta">
                         {author.name} - {moment(updatedAt).format('MM/DD dd HH:mm')}
                     </div>
-                    <div className="comment-menu">
-                        <div className="edit" onClick={this.edit.bind(this)}>수정</div>
-                        <div>|</div>
-                        <div className="delete" onClick={() => this.delete(this.props.comment, this.dom)}>삭제</div>
-                    </div>
+                    {
+                        this.props.comment.author.id === app.user.id
+                        &&
+                        <div className="comment-menu">
+                            <div className="edit" onClick={this.edit.bind(this)}>수정</div>
+                            <div>|</div>
+                            <div className="delete" onClick={() => this.delete(this.props.comment, this.dom)}>삭제</div>
+                        </div>
+                    }
                 </div>
                 {
                     this.state.editClicked

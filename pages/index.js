@@ -24,9 +24,11 @@ export default class List extends React.Component {
 
 
     app.state.menuIdx = props.menuIdx;
-    app.state.totalCount = props.fetchRes.totalCount
-    app.state.isScrollLast = !props.fetchRes.hasNext
-    app.state.links = props.fetchRes.links;
+    if (props.fetchRes) {
+      app.state.totalCount = props.fetchRes.totalCount
+      app.state.isScrollLast = !props.fetchRes.hasNext
+      app.state.links = props.fetchRes.links;
+    }
   }
 
   static async getInitialProps({ req, asPath }) {
@@ -89,7 +91,7 @@ export default class List extends React.Component {
       <Layout>
         <div className="intro">{"* " + intro + "(" + app.state.totalCount + "개)"}</div>
         {/* <div className="intro">{"* " + intro}</div> */}
-        <ul>
+        <ul className="PostList">
           {app.state.links.map((link) => {
             return (
               <Post key={link.id} link={link} />
@@ -104,6 +106,7 @@ export default class List extends React.Component {
 
 
 const onscroll = async () => {
+  console.log("설마 여기가 모 서버에서도 호출이 되나??")
   // if (global.location.pathname !== "/") {
   //   // 목록화면이 아니면 리턴  
   //   return;

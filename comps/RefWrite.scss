@@ -1,0 +1,48 @@
+.ref-write {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    max-width: 800px;
+    .ref-wrapper {
+        margin-left: 3px;
+        margin-right: 5px;
+        flex-grow: 1;
+        margin-bottom: auto;
+        margin-top: auto;
+        display: flex;
+        //max-width: 200px;
+        textarea {
+            font-size: 14px;
+            color: #555;
+            overflow: hidden;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            height: 20px;
+            resize: none;
+            flex:1;
+            border: 1px solid #eee;
+            min-width: 50px;
+        }
+    }
+    .save-btn {
+        width: 70px;
+        margin: 1px 0px;
+        color: #666;
+        button {
+            width: 42px;
+            border: 0px;    
+            i {
+                cursor: pointer;
+                font-size: 16px;
+                // margin-top: 20px;
+                margin-right: 3px;
+                padding-top: 3px;
+                padding-bottom: 2px;
+                padding-left: 3px;
+                padding-right: 6px;
+                -moz-user-focus: normal;
+                
+            }
+        }
+    }
+}
