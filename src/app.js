@@ -98,7 +98,26 @@ const app = {
                 return false;
             }
         },
-        signOut: () => { }
+
+        signOut: () => {
+            // 애플리케이션 로그아웃처리
+            document.cookie = "user="
+            global.sessionStorage.setItem("user", "");
+            app.user = {
+                id: "",
+                name: "",
+                email: "",
+                image: "",
+                token: ""
+            };
+            app.state.userID = "";
+        
+            // 구글 로그아웃처리
+            let GoogleAuth = gapi.auth2.getAuthInstance();
+            return GoogleAuth.signOut().then(() => {
+              console.log("GoogleAuth.signOut() 완료 후 콜백");
+            });
+          }
     },
     view: {},          // 공유가 필요한 react 컴포넌트
     BACKEND,
