@@ -66,6 +66,8 @@ global.onSignIn = (googleUser) => {
         if (res.status === "Fail") {
             console.log("Invalid token");
         } else {
+            global.GoogleAuth = global.gapi.auth2.getAuthInstance();
+
             app.user = res.user;
             app.user.token = id_token;
             app.state.userID = res.user.id;

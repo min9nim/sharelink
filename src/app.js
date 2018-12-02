@@ -82,6 +82,35 @@ const app = {
         token: ""
     },
     auth: {// 로그인 관련
+        init: () => {
+            if (global.location && !global.GoogleAuth && app.router.asPath !== "/login") {
+                gapi.load('client', {
+                    callback: function () {
+                        // console.log("gapi.client loaded")
+                        if (gapi.auth2.getAuthInstance() === null) {
+                            // 구글 로그인 초기화
+                            gapi.client.init({
+                                'apiKey': 'sharelink',
+                                'clientId': '314955303656-ohiovevqbpms4pguh82fnde7tvo9cqnb.apps.googleusercontent.com',
+                                'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
+                            }).then(() => {
+                                // console.log("gapi.client.init callback")
+                                global.GoogleAuth = global.gapi.auth2.getAuthInstance();
+                            })
+                        }
+                    },
+                    onerror: function () {
+                        // Handle loading error.
+                        alert('gapi.client failed to load!');
+                    },
+                    timeout: 5000, // 5 seconds.
+                    ontimeout: function () {
+                        // Handle timeout.
+                        alert('gapi.client could not load in a timely manner!');
+                    }
+                });
+            }
+        },
         isLogin: () => {
             if (app.state.userID) {
                 if (Date.now() > app.user.exp * 1000) {
@@ -111,13 +140,13 @@ const app = {
                 token: ""
             };
             app.state.userID = "";
-        
+
             // 구글 로그아웃처리
-            let GoogleAuth = gapi.auth2.getAuthInstance();
-            return GoogleAuth.signOut().then(() => {
-              console.log("GoogleAuth.signOut() 완료 후 콜백");
+            //let GoogleAuth = gapi.auth2.getAuthInstance();
+            return global.GoogleAuth.signOut().then(() => {
+                console.log("GoogleAuth.signOut() 완료 후 콜백");
             });
-          }
+        }
     },
     view: {},          // 공유가 필요한 react 컴포넌트
     BACKEND,
@@ -144,7 +173,7 @@ reaction(() => app.state.userID, async () => {
     if (app.auth.isLogin()) {
         console.log("로그인 상태")
     } else {
-        
+
         // document.cookie = "user="
         // global.sessionStorage.setItem("user", "");
         // app.user = {

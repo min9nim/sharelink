@@ -9,22 +9,8 @@ let layoutProps;
 const Layout = (props) => {
   // console.log("Layout 렌더링..");
 
-  // layoutProps = props;
   app.router = props.router;
-
-  if(global.location && app.router.asPath !== "/login"){
-    setTimeout(() => {
-      if (gapi.auth2.getAuthInstance() === null) {
-        // 구글 로그인 초기화
-        gapi.client.init({
-          'apiKey': 'sharelink',
-          'clientId': '314955303656-ohiovevqbpms4pguh82fnde7tvo9cqnb.apps.googleusercontent.com',
-          'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
-        })
-      }
-    }, 1000)
-  }  
-
+  app.auth.init();
 
   return (
     <div className="layoutStyle">

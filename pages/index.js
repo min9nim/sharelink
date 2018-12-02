@@ -106,7 +106,7 @@ export default class List extends React.Component {
 
 
 const onscroll = async () => {
-  console.log("설마 여기가 모 서버에서도 호출이 되나??")
+  console.log("[global.onscroll] 설마 여기가 모 서버에서도 호출이 되나??")
   // if (global.location.pathname !== "/") {
   //   // 목록화면이 아니면 리턴  
   //   return;
