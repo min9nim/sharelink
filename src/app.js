@@ -8,7 +8,7 @@ import base64js from "base64-js";
 
 let BACKEND;
 //console.log("process.env.GOOGLE_CLOUD_PROJECT = " + process.env.GOOGLE_CLOUD_PROJECT)
-//console.log("process.env.NODE_ENV = " + process.env.NODE_ENV);
+console.log("process.env.NODE_ENV = [" + process.env.NODE_ENV + "]") ;
 
 if (process.env.NODE_ENV === "production") {
     // https://cloud.google.com/appengine/docs/flexible/nodejs/runtime
