@@ -15,11 +15,7 @@ export default class MyDocument extends Document {
             <html>
                 <Head>
                     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-
                     <meta name="theme-color" content="#91171F"></meta>
-
-                    {/* 로고폰트 */}
-                    <link href="https://db.onlinewebfonts.com/c/13b003e481c54fdf324c9ed0d312d49c?family=Colopocle" rel="stylesheet" type="text/css" />
 
                     {/* 구글로그인 */}
                     <meta name="google-signin-scope" content="profile email" />
