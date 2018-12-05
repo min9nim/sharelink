@@ -96,7 +96,14 @@ const app = {
                             }).then(() => {
                                 // console.log("gapi.client.init callback")
                                 global.GoogleAuth = global.gapi.auth2.getAuthInstance();
+                                
+                                global.GoogleAuth.isSignedIn.listen(() => {console.log("sign-in state 변화 감지..")})
+
+                                //return global.GoogleAuth.signIn()
                             })
+                            // .then(GoogleUser => {
+                            //     console.log("@@ 현재 로그인 토큰 = " + GoogleUser.getAuthResponse().id_token)
+                            // })
                         }
                     },
                     onerror: function () {
