@@ -1,5 +1,6 @@
 import { observable, reaction, decorate } from "mobx";
 import $m from "../com/util";
+import {isExpired} from "../com/pure";
 import getApi from "./restful.js";
 import base64js from "base64-js";
 
@@ -120,7 +121,7 @@ const app = {
         },
         isLogin: () => {
             if (app.state.userID) {
-                if (Date.now() > app.user.exp * 1000) {
+                if (isExpired(app.user.exp * 1000)) {
                     //console.log("### jwt token expired");
                     //app.auth.signOut();
                     //app.state.userID = "";
@@ -235,7 +236,7 @@ app.getUser = (req) => {
 
         if (userStr) {
             let user = JSON.parse(userStr);
-            if (Date.now() > user.exp * 1000) {
+            if (isExpired(user.exp * 1000)){
                 console.log("[getInitialProps] 로그인 실패 : Token is expired")
                 return {};
             } else {
