@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 import app from "../src/app";
-import {_findLink} from "../com/pure";
+import { _findLink } from "../com/pure";
 
 
 
@@ -20,15 +20,20 @@ const req = async (path, method, body) => {
         //console.log("@@@@ fetch 호출전 app.user.token = " + JSON.stringify(opt, null, 2))
         console.log("url = " + app.BACKEND + path)
         let res = await fetch(app.BACKEND + path, opt)
-        let json = await res.json();
         global.NProgress && global.NProgress.done();
-        if (json.status === "Fail") {
-            console.log(json.message)
+        
+        if (res.status === 200) {
+            let json = await res.json();
+            if (json.status === "Fail") {
+                console.log(json.message)
+            }
+            return json;
+        } else {
+            throw new Error(path + " : " + "status[" + res.status + "]");
         }
-
-        return json;
     } catch (e) {
-        console.error(e);
+        //console.error(e);
+        throw e;
         //global.alert && global.alert(e.message);
     }
 };
@@ -40,11 +45,11 @@ export default function getApi(app) {
             let json = await req("/links/", 'DELETE', { id: link.id });
             if (json.status !== "Fail") {
                 app.state.totalCount--;
-                if(link.linkID){
+                if (link.linkID) {
                     // 관련 링크를 삭제하는 경우
                     let parentLink = app.state.links.find(l => l.id === link.linkID);
                     parentLink.refLinks = parentLink.refLinks.filter(l => l.id !== link.id);
-                }else{
+                } else {
                     app.state.links = app.state.links.filter(l => l.id !== link.id);
                 }
             }
@@ -55,19 +60,19 @@ export default function getApi(app) {
         postLink: async (link) => {
             let res = await req("/links", "POST", link);
             //app.state.links.push(res.output);
-            if(res.status === "Fail"){
+            if (res.status === "Fail") {
                 console.log("등록 실패 : " + res.message)
                 //alert("등록 실패 : " + res.message)
-            }else{
+            } else {
                 app.state.totalCount++;
-                if(res.output.linkID){
+                if (res.output.linkID) {
                     // 관련글 등록인 경우
                     let parentLink = app.state.links.find(l => l.id === res.output.linkID)
-                    if(!parentLink.refLinks){
+                    if (!parentLink.refLinks) {
                         parentLink.refLinks = []
                     }
-                    parentLink.refLinks.push(res.output);    
-                }else{
+                    parentLink.refLinks.push(res.output);
+                } else {
                     app.state.links.unshift(res.output);
                 }
             }
@@ -78,14 +83,14 @@ export default function getApi(app) {
             // DB 업데이트
             await req("/links/", "PUT", Object.assign(link, { id: link.id }));
 
-            if(app.state.links.length === 0) return ;
+            if (app.state.links.length === 0) return;
 
             // 로컬상태 업데이트
-            if(link.linkID){
+            if (link.linkID) {
                 let parentLink = _findLink(app.state.links, link.linkID);
                 let asisIdx = parentLink.refLinks.findIndex(l => l.id === link.id);
                 parentLink.refLinks[asisIdx] = link;
-            }else{
+            } else {
                 let asisIdx = app.state.links.findIndex(l => l.id === link.id);
                 app.state.links[asisIdx] = link;
             }
@@ -129,8 +134,8 @@ export default function getApi(app) {
             let fetchRes = await req(path, "GET");
             //console.log("@@@ " + JSON.stringify(fetchRes, null, 2))
 
-            if(fetchRes.status === "Fail"){
-                return ;
+            if (fetchRes.status === "Fail") {
+                return;
             }
 
             //console.log("@@ 여기서는? " + JSON.stringify(json, null, 2))
@@ -204,15 +209,15 @@ export default function getApi(app) {
         postComment: async (comment) => {
             let res = await req("/comments", "POST", comment);
             //app.state.links.push(res.output);
-            if(res.status === "Fail"){
+            if (res.status === "Fail") {
                 console.log("등록 실패 : " + res.message)
                 //alert("등록 실패 : " + res.message)
-            }else{
+            } else {
                 //let link = app.state.links.find(l => l.id === comment.linkID)
 
                 let link = _findLink(app.state.links, comment.linkID);
 
-                if(!link.comments){
+                if (!link.comments) {
                     link.comments = [];
                 }
                 link.comments.push(res.output);
@@ -223,7 +228,7 @@ export default function getApi(app) {
             let json = await req("/comments/", 'DELETE', comment);
             if (json.status === "Fail") {
                 console.log("댓글 삭제 실패")
-            }else{
+            } else {
                 // let idx = app.state.links.findIndex(l => l.id === comment.linkID);
                 // let comments = app.state.links[idx].comments;
                 // app.state.links[idx].comments = comments.filter(c => c.id !== comment.id)
@@ -235,10 +240,10 @@ export default function getApi(app) {
         },
         putComment: async (comment) => {
             let res = await req("/comments", "PUT", comment);
-            if(res.status === "Fail"){
+            if (res.status === "Fail") {
                 console.log("등록 실패 : " + res.message)
                 //alert("등록 실패 : " + res.message)
-            }else{
+            } else {
                 // let linkIdx = app.state.links.findIndex(l => l.id === comment.linkID)
                 // let commentIdx = app.state.links[linkIdx].comments.findIndex(c => c.id === comment.id);
                 // app.state.links[linkIdx].comments[commentIdx] = comment;
@@ -250,7 +255,7 @@ export default function getApi(app) {
 
             }
             return res;
-        },        
+        },
 
     };
 };
