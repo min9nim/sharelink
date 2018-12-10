@@ -1,5 +1,6 @@
 import { observable, reaction, decorate } from "mobx";
 import $m from "../com/util";
+import {isExpired} from "../com/pure";
 import getApi from "./restful.js";
 import base64js from "base64-js";
 
@@ -8,7 +9,7 @@ import base64js from "base64-js";
 
 let BACKEND;
 //console.log("process.env.GOOGLE_CLOUD_PROJECT = " + process.env.GOOGLE_CLOUD_PROJECT)
-//console.log("process.env.NODE_ENV = " + process.env.NODE_ENV);
+console.log("process.env.NODE_ENV = [" + process.env.NODE_ENV + "]") ;
 
 if (process.env.NODE_ENV === "production") {
     // https://cloud.google.com/appengine/docs/flexible/nodejs/runtime
@@ -82,9 +83,45 @@ const app = {
         token: ""
     },
     auth: {// 로그인 관련
+        init: () => {
+            if (global.location && !global.GoogleAuth && app.router.asPath !== "/login") {
+                gapi.load('client', {
+                    callback: function () {
+                        // console.log("gapi.client loaded")
+                        if (gapi.auth2.getAuthInstance() === null) {
+                            // 구글 로그인 초기화
+                            gapi.client.init({
+                                'apiKey': 'sharelink',
+                                'clientId': '314955303656-ohiovevqbpms4pguh82fnde7tvo9cqnb.apps.googleusercontent.com',
+                                'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
+                            }).then(() => {
+                                // console.log("gapi.client.init callback")
+                                global.GoogleAuth = global.gapi.auth2.getAuthInstance();
+                                
+                                global.GoogleAuth.isSignedIn.listen(() => {console.log("sign-in state 변화 감지..")})
+
+                                //return global.GoogleAuth.signIn()
+                            })
+                            // .then(GoogleUser => {
+                            //     console.log("@@ 현재 로그인 토큰 = " + GoogleUser.getAuthResponse().id_token)
+                            // })
+                        }
+                    },
+                    onerror: function () {
+                        // Handle loading error.
+                        alert('gapi.client failed to load!');
+                    },
+                    timeout: 5000, // 5 seconds.
+                    ontimeout: function () {
+                        // Handle timeout.
+                        alert('gapi.client could not load in a timely manner!');
+                    }
+                });
+            }
+        },
         isLogin: () => {
             if (app.state.userID) {
-                if (Date.now() > app.user.exp * 1000) {
+                if (isExpired(app.user.exp * 1000)) {
                     //console.log("### jwt token expired");
                     //app.auth.signOut();
                     //app.state.userID = "";
@@ -98,7 +135,26 @@ const app = {
                 return false;
             }
         },
-        signOut: () => { }
+
+        signOut: () => {
+            // 애플리케이션 로그아웃처리
+            document.cookie = "user="
+            global.sessionStorage.setItem("user", "");
+            app.user = {
+                id: "",
+                name: "",
+                email: "",
+                image: "",
+                token: ""
+            };
+            app.state.userID = "";
+
+            // 구글 로그아웃처리
+            //let GoogleAuth = gapi.auth2.getAuthInstance();
+            return global.GoogleAuth.signOut().then(() => {
+                console.log("GoogleAuth.signOut() 완료 후 콜백");
+            });
+        }
     },
     view: {},          // 공유가 필요한 react 컴포넌트
     BACKEND,
@@ -125,7 +181,7 @@ reaction(() => app.state.userID, async () => {
     if (app.auth.isLogin()) {
         console.log("로그인 상태")
     } else {
-        
+
         // document.cookie = "user="
         // global.sessionStorage.setItem("user", "");
         // app.user = {
@@ -180,7 +236,7 @@ app.getUser = (req) => {
 
         if (userStr) {
             let user = JSON.parse(userStr);
-            if (Date.now() > user.exp * 1000) {
+            if (isExpired(user.exp * 1000)){
                 console.log("[getInitialProps] 로그인 실패 : Token is expired")
                 return {};
             } else {

@@ -24,5 +24,9 @@ export function _getHostname(url){
     return url.slice(start, end);
 }
 
+export function isExpired(exp){
+    let month = 1000 * 60 * 60 * 24 * 30;
+    return Date.now() > exp + month;  // 만료시간을 임의로 한달 연장
+}
 
 //global._findLink = _findLink;

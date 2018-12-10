@@ -15,16 +15,14 @@ export default class MyDocument extends Document {
             <html>
                 <Head>
                     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-
                     <meta name="theme-color" content="#91171F"></meta>
-
-                    {/* 로고폰트 */}
-                    <link href="//db.onlinewebfonts.com/c/13b003e481c54fdf324c9ed0d312d49c?family=Colopocle" rel="stylesheet" type="text/css" />
 
                     {/* 구글로그인 */}
                     <meta name="google-signin-scope" content="profile email" />
                     <meta name="google-signin-client_id" content="314955303656-ohiovevqbpms4pguh82fnde7tvo9cqnb.apps.googleusercontent.com" />
-                    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+                    {/* <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script> */}
+                    <script src="https://apis.google.com/js/client:plusone.js" type="text/javascript"></script>
+
                     
                     {/* NProgress 모듈 */}
                     <link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css' />

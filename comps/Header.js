@@ -84,10 +84,10 @@ class Header extends React.Component {
           </div>
         </div>
         <div className="search">
-        {
-          this.props.router.pathname === "/" &&
-          <Search />
-        }
+          {
+            this.props.router.pathname === "/" &&
+            <Search />
+          }
         </div>
         <div className="btn-wrapper">
           {
@@ -98,13 +98,10 @@ class Header extends React.Component {
                 {/* <div className="add-btn" onClick={this.newLink.bind(this)}>+</div> */}
                 <img className="user-image" src={app.user.image}></img>
                 <div className="user-name" onClick={this.showMenu.bind(this)}>
-                  {
-                    /**
-                     * 18.11.10
-                     * 모바일에서 이름이 출력되면 왼쪽에 글등록버튼의 UI가 깨지는 문제 때문에 그냥 출력안하는 것으로 보정함
-                     */
-                    app.isDesktop() && app.user.name}
-                    <i className="icon-menu" />
+                  <div>
+                    {app.user.name}
+                  </div>
+                  <i className="icon-menu" />
                 </div>
               </React.Fragment>
               :
