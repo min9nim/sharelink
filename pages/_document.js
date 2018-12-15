@@ -23,17 +23,18 @@ export default class MyDocument extends Document {
                     {/* <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script> */}
                     <script src="https://apis.google.com/js/client:plusone.js" type="text/javascript"></script>
 
-                    
                     {/* NProgress 모듈 */}
                     <link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css' />
                     <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
 
-                    {/* Fontello 아이콘 */}
+                    {/* 공통 css */}
                     <link rel="stylesheet" href="/static/css/style.css"></link>
+
+                    {/* Fontello 아이콘 */}
                     <link rel="stylesheet" href="/static/fontello/css/fontello.css"></link>
                     <style>{`
                     /* custom! */
-                    body { margin: 8px }
+                    
                     `}</style>
                 </Head>
                 <body className="custom_class">
