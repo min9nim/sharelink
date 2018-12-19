@@ -7,8 +7,8 @@ const app = next({ dev })
 const handle = app.getRequestHandler()
 const PORT = process.env.PORT
 
-var express = require('express')
-var cookieParser = require('cookie-parser')
+const express = require('express')
+const cookieParser = require('cookie-parser')
 
 app.prepare().then(() => {
   const server = express();
