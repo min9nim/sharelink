@@ -41,7 +41,7 @@ folder | file | desc
 <br>
 
 ### React component dependency
-<img src="https://sharelink-dev.appspot.com/static/component-dependency.svg">
+<img src="https://sharelink-nextjs.appspot.com/static/component-dependency.svg">
 
 <br>
 
