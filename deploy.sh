@@ -1,15 +1,6 @@
 #!/bin/sh
-str=`git branch | grep "*"`
-echo "Current branch : " "$str"
+echo "Deploy production.."
 
 npm run build
-
-if [ "$str" == "* master" ];then
-    gcloud config set project sharelink-nextjs
-else
-    gcloud config set project sharelink-dev
-fi
-
+gcloud config set project sharelink-nextjs
 gcloud app deploy --quiet
-
-

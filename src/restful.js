@@ -1,8 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import app from "../src/app";
 import { _findLink } from "../com/pure";
-
-
 
 const req = async (path, method, body) => {
     try {

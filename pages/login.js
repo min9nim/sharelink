@@ -67,14 +67,7 @@ global.onSignIn = (googleUser) => {
             console.log("Invalid token");
         } else {
             global.GoogleAuth = global.gapi.auth2.getAuthInstance();
-
-            app.user = res.user;
-            app.user.token = id_token;
-            app.state.userID = res.user.id;
-            //document.cookie = "token=" + id_token;
-            let enc = app.Base64Encode(JSON.stringify(app.user))
-            document.cookie = `user=${enc}`;
-            sessionStorage.setItem("user", JSON.stringify(app.user));
+            app.auth.setLogin(res.user, id_token)
             app.router.push("/");
         }
     });

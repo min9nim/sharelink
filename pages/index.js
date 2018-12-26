@@ -113,7 +113,7 @@ const onscroll = async () => {
   // }
 
   // 현재 목록화면 scrollTop 의 값
-  const scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+  const scrollTop = Math.floor(Math.max(document.documentElement.scrollTop, document.body.scrollTop));
 
   // 현재 스크롤 값을 전역변수에 저장
   app.scrollTop = scrollTop;
@@ -133,15 +133,16 @@ const onscroll = async () => {
   //현재 화면 높이 값
   const clientHeight = document.documentElement.clientHeight;
 
-  //console.log("scrollTop : " + scrollTop)
-  //console.log("clientHeight : " + clientHeight)
-  //console.log("scrollHeight : " + scrollHeight)
+  // console.log("scrollTop : " + scrollTop)
+  // console.log("clientHeight : " + clientHeight)
+  // console.log("scrollHeight : " + scrollHeight)
 
 
   if (
     (scrollTop + clientHeight == scrollHeight)    // 일반적인 경우(데스크탑: 크롬/파폭, 아이폰: 사파리)
     ||
-    (app.isMobileChrome() && (scrollTop + clientHeight == scrollHeight - 56))   // 모바일 크롬(55는 위에 statusbar 의 높이 때문인건가)
+    //(app.isMobileChrome() && (scrollTop + clientHeight === scrollHeight - 56))   // 모바일 크롬(55는 위에 statusbar 의 높이 때문인건가)
+    (app.isMobileChrome() && (scrollTop + clientHeight > scrollHeight - 10))   // 모바일 크롬(55는 위에 statusbar 의 높이 때문인건가)
   ) { //스크롤이 마지막일때
 
     //let path = app.state.menu[app.state.menuIdx].path;
