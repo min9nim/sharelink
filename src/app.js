@@ -150,7 +150,7 @@ app.Base64Decode = (str, encoding = 'utf-8') => {
     return new (TextDecoder || TextDecoderLite)(encoding).decode(bytes);
 }
 
-app.getUser = (req) => {
+app.getUser = async (req) => {
     try {
         let userStr;
         if (req) {
@@ -163,13 +163,23 @@ app.getUser = (req) => {
 
         if (userStr) {
             let user = JSON.parse(userStr);
-            if (isExpired(user.exp * 1000)){
-                console.log("[getInitialProps] 로그인 실패 : Token is expired")
+            
+            app.user.token = user.token;
+            let res = await app.api.login();
+            if(res.status === "Fail"){
+                console.log(`[getInitialProps] 로그인 실패 : ${res.message}`)
                 return {};
-            } else {
-                //console.log("[getInitialProps] 로그인 성공")
+            }else{
                 return user;
             }
+            // if (isExpired(user.exp * 1000)){
+            //     console.log("[getInitialProps] 로그인 실패 : Token is expired")
+            //     return {};
+            // } else {
+            //     //console.log("[getInitialProps] 로그인 성공")
+            //     return user;
+            // }
+
         } else {
             console.log("[getInitialProps] 로그인 실패 : user 정보 없음");
             return {};

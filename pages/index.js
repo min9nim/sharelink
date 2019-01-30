@@ -8,7 +8,7 @@ import "./index.scss";
 
 export default class List extends React.Component {
   constructor(props) {
-    // console.log("List 생성자 호출")
+    console.log("List 생성자 호출")
     super(props);
     this.state = {
       loading: false,
@@ -20,8 +20,13 @@ export default class List extends React.Component {
       app.state.userID = props.user.id;
       app.user = props.user;
       global.sessionStorage && global.sessionStorage.setItem("user", JSON.stringify(app.user))
+    }else{
+      if(global.document){
+        // 클라이언트에서 실행시
+        app.auth.signOut();
+      }
+      
     }
-
 
     app.state.menuIdx = props.menuIdx;
     if (props.fetchRes) {
@@ -32,9 +37,9 @@ export default class List extends React.Component {
   }
 
   static async getInitialProps({ req, asPath }) {
-    //console.log("@@ getInitialProps ");
-    let user = app.getUser(req);
-    app.user.token = user.token;
+    console.log("@@ getInitialProps ");
+    let user = await app.getUser(req);
+    //app.user.token = user.token;
 
     let menuIdx = app.state.menu.findIndex(m => m.path === asPath);
     //console.log("menuIdx = " + menuIdx);

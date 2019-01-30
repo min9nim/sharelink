@@ -23,7 +23,7 @@ const Login = ({ router, user }) => {
 }
 
 Login.getInitialProps = async ({ req }) => {
-    let user = app.getUser(req);
+    let user = await app.getUser(req);
     console.log("@@ user = " + JSON.stringify(user));
     return {
         user
