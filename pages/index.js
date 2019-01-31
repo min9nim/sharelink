@@ -10,7 +10,7 @@ import "./index.scss";
 
 export default class List extends React.Component {
   constructor(props) {
-    $m.timelog.check("List 생성자 호출");
+    // $m.timelog.check("List 생성자 호출");
     super(props);
     this.state = {
       loading: false,
@@ -40,7 +40,7 @@ export default class List extends React.Component {
 
   static async getInitialProps({ req, asPath }) {
     // console.log("@@ getInitialProps ");
-    $m.timelog.start("getInitialProps");
+    // $m.timelog.start("getInitialProps");
 
     let menuIdx = app.state.menu.findIndex(m => m.path === asPath);
 
