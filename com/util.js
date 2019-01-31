@@ -522,3 +522,38 @@ function htmlspecialchars_decode(str) {
 
 $m.htmlspecialchars = htmlspecialchars;
 $m.htmlspecialchars_decode = htmlspecialchars_decode;
+
+
+
+
+const timelog = (function () {
+    const wrapWith = function (deco) {
+        return function (str) {
+            if (str) {
+                return deco[0] + str + deco[1];
+            } else {
+                return "";
+            }
+        }
+    }
+    const round_brackets = wrapWith("()");
+    
+    const prefix = "[timelog]"
+    let time = [];
+    let o = {
+        start: function (str) {
+            time = [Date.now()];
+            console.log(`${prefix} ${round_brackets(str)} start: ` + new Date(time[0]).toString().substr(0, 24))
+        },
+        check: function (str) {
+            time.push(Date.now())
+            let diff = time[time.length - 1] - time[time.length - 2];
+            let total = time[time.length - 1] - time[0];
+            console.log(`${prefix} ${round_brackets(str)} +${diff}ms / +${total}ms`);
+            return diff;
+        }
+    };
+    return o;
+})();
+
+$m.timelog = timelog;
