@@ -88,11 +88,16 @@ export default function getAuth(app) {
 
             // 구글 로그아웃처리
             //let GoogleAuth = gapi.auth2.getAuthInstance();
-            if(global.GoogleAuth){
-                global.GoogleAuth.signOut().then(() => {
-                    console.log("GoogleAuth.signOut() 완료 후 콜백");
-                });    
-            }
+            // if(global.GoogleAuth){
+            //     global.GoogleAuth.signOut().then(() => {
+            //         console.log("GoogleAuth.signOut() 완료 후 콜백");
+            //     });    
+            // }
+
+            global.GoogleAuth?.signOut().then(() => {
+                console.log("GoogleAuth.signOut() 완료 후 콜백");
+            });    
+
         }
     }
 }
