@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 import { _findLink } from "../com/pure";
+import $m from "../com/util";
 
 const req = async (path, method, body) => {
     try {
@@ -130,7 +131,10 @@ export default function getApi(app) {
                 path += "&word=" + word;
             }
 
+            let tl = $m.timelog.new();
+            tl.start("패치 시작")
             let fetchRes = await req(path, "GET");
+            tl.check("패치 끝")
             //console.log("@@@ " + JSON.stringify(fetchRes, null, 2))
 
             if (fetchRes.status === "Fail") {
