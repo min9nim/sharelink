@@ -12,21 +12,13 @@ let BACKEND
 console.log('process.env.NODE_ENV = [' + process.env.NODE_ENV + ']')
 
 if (process.env.NODE_ENV === 'production') {
-  // https://cloud.google.com/appengine/docs/flexible/nodejs/runtime
-  // GCP 노드 운영환경
-
-  if (global.location) {
-    if (global.location.hostname === 'sharelink-nextjs.appspot.com') {
-      BACKEND = 'https://sharelink-mongoose.appspot.com'
-    } else {
-      BACKEND = 'https://sharelink-mongoose-dev.appspot.com'
-    }
+  if (!global.location) {
+    throw Error('global.location is undefined')
+  }
+  if (global.location.hostname.includes('now.sh')) {
+    BACKEND = 'https://sharelink-mongoose.now.sh'
   } else {
-    if (process.env.GOOGLE_CLOUD_PROJECT === 'sharelink-dev') {
-      BACKEND = 'https://sharelink-mongoose-dev.appspot.com'
-    } else {
-      BACKEND = 'https://sharelink-mongoose.appspot.com'
-    }
+    throw Error('Unknown hostname')
   }
 } else {
   let location = global.location
