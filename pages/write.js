@@ -150,7 +150,18 @@ class Write extends React.Component {
     this.imageInput.setAttribute("placeholder", loadingMessage);
 
     try {
-      let { title, image, desc } = await app.api.webscrap(this.state.url);
+      const { title, image, desc } = await fetch('https://webscrap.min1.now.sh/webscrap', {
+    method: 'POST', 
+    headers:{
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      url: this.state.url
+    }),
+  }
+).then(res => res.json())
+
+      // let { title, image, desc } = await app.api.webscrap(this.state.url);
 
       // 타이틀 세팅
       if (this.state.title === "") {

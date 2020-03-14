@@ -1,0 +1,13 @@
+{
+  "javascript.format.semicolons": "remove",
+  "less.completion.completePropertyWithSemicolon": false,
+  "prettier.semi": false,
+  "javascript.format.insertSpaceAfterSemicolonInForStatements": false,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "vue"
+  ],
+  "typescript.format.semicolons": "remove",
+  "editor.formatOnSave": true
+}
