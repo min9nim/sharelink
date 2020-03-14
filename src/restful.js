@@ -132,7 +132,7 @@ export default function getApi(app) {
             }
 
             let tl = $m.timelog.new();
-            tl.start("패치 시작")
+            tl.start("패치 시작: [" +  path + "]")
             let fetchRes = await req(path, "GET");
             tl.check("패치 끝")
             //console.log("@@@ " + JSON.stringify(fetchRes, null, 2))

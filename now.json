@@ -1,0 +1,18 @@
+{
+  "public": true,
+  "version": 2,
+  "builds": [{ "src": "src/**/*.ts", "use": "@now/node@canary" }],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "src/index.ts",
+      "methods": ["POST", "OPTIONS", "GET"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    }
+  ],
+  "github": {
+    "autoJobCancelation": false
+  },
+}
