@@ -1,3 +1,6 @@
 .vscode/
+.next/
 dist/
 README.md
+deploy.sh
+deploy.sh.181219
