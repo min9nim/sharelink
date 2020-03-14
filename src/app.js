@@ -106,7 +106,7 @@ reaction(() => JSON.stringify(app.state.word), () => {
 reaction(() => app.state.userID, async () => {
     // app.state.userID 값을 바라보며 앱의 로그인 여부를 판단한다.
     if (app.auth.isLogin()) {
-        console.log("로그인 상태")
+        // console.log("로그인 상태")
     } else {
 
         // document.cookie = "user="
@@ -123,7 +123,7 @@ reaction(() => app.state.userID, async () => {
             location.href = "/login";
         }
 
-        console.log("로그아웃 됨")
+        // console.log("로그아웃 됨")
     }
 
     app.view.Header && app.view.Header._ismounted && app.view.Header.forceUpdate();
@@ -150,7 +150,7 @@ app.Base64Decode = (str, encoding = 'utf-8') => {
     return new (TextDecoder || TextDecoderLite)(encoding).decode(bytes);
 }
 
-app.getUser = (req) => {
+app.getUser = async (req) => {
     try {
         let userStr;
         if (req) {
@@ -163,13 +163,25 @@ app.getUser = (req) => {
 
         if (userStr) {
             let user = JSON.parse(userStr);
-            if (isExpired(user.exp * 1000)){
-                console.log("[getInitialProps] 로그인 실패 : Token is expired")
+            
+            app.user.token = user.token;
+            $m.timelog.start("로그인 체크");
+            let res = await app.api.login();
+            $m.timelog.check("로그인 체크 완료");
+            if(res.status === "Fail"){
+                console.log(`[getInitialProps] 로그인 실패 : ${res.message}`)
                 return {};
-            } else {
-                //console.log("[getInitialProps] 로그인 성공")
+            }else{
                 return user;
             }
+            // if (isExpired(user.exp * 1000)){
+            //     console.log("[getInitialProps] 로그인 실패 : Token is expired")
+            //     return {};
+            // } else {
+            //     //console.log("[getInitialProps] 로그인 성공")
+            //     return user;
+            // }
+
         } else {
             console.log("[getInitialProps] 로그인 실패 : user 정보 없음");
             return {};

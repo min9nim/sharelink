@@ -42,7 +42,7 @@ class Write extends React.Component {
   }
 
   static async getInitialProps({ req, asPath, query }) {
-    let user = app.getUser(req);
+    let user = await app.getUser(req);
     app.user.token = user.token;
 
     let link;

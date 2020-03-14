@@ -522,3 +522,44 @@ function htmlspecialchars_decode(str) {
 
 $m.htmlspecialchars = htmlspecialchars;
 $m.htmlspecialchars_decode = htmlspecialchars_decode;
+
+
+
+const createTimelog = function () {
+    const newDate = function(){
+        let t = new Date()
+        let o = {
+            HH: String(t.getHours()).padStart(2, "0"),
+            mm: String(t.getMinutes()).padStart(2, "0"),
+            ss: String(t.getSeconds()).padStart(2, "0"),
+            SSS: String(t.getMilliseconds()).padStart(3, "0"),
+            time: t.getTime()
+        }
+        return o;
+    }
+
+    let time = [];
+    let seq = "#" + Math.floor(Math.random()*100)
+    let o = {
+        start: function (str) {
+            let t = newDate();
+            time = [t.time];
+            console.log(`[START${seq} ${t.HH}:${t.mm}:${t.ss}:${t.SSS}] ` + str)
+            
+        },
+        check: function (str) {
+            let t = newDate();
+            time.push(t.time)
+            let diff = time[time.length - 1] - time[time.length - 2];
+            let total = time[time.length - 1] - time[0];
+            console.log(`[CHECK${seq} ${t.HH}:${t.mm}:${t.ss}:${t.SSS} +${diff}ms / +${total}ms] ` + str)
+            return diff;
+        }
+    };
+    return o;
+}
+const timelog = createTimelog();
+timelog.new = createTimelog;
+
+$m.timelog = timelog;
+

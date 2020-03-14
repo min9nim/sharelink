@@ -74,7 +74,8 @@ export default function getAuth(app) {
 
         signOut: () => {
             // 애플리케이션 로그아웃처리
-            document.cookie = "user="
+            
+            global.document.cookie = "user="
             global.sessionStorage.setItem("user", "");
             app.user = {
                 id: "",
@@ -87,9 +88,16 @@ export default function getAuth(app) {
 
             // 구글 로그아웃처리
             //let GoogleAuth = gapi.auth2.getAuthInstance();
-            return global.GoogleAuth.signOut().then(() => {
+            // if(global.GoogleAuth){
+            //     global.GoogleAuth.signOut().then(() => {
+            //         console.log("GoogleAuth.signOut() 완료 후 콜백");
+            //     });    
+            // }
+
+            global.GoogleAuth?.signOut().then(() => {
                 console.log("GoogleAuth.signOut() 완료 후 콜백");
-            });
+            });    
+
         }
     }
 }

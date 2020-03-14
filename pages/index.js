@@ -1,6 +1,8 @@
 import Layout from '../comps/Layout.js';
 import Post from '../comps/Post.js';
 import LinkLoading from '../comps/LinkLoading.js';
+import $m from "../com/util.js";
+
 
 import app from "../src/app";
 import "./index.scss";
@@ -8,7 +10,7 @@ import "./index.scss";
 
 export default class List extends React.Component {
   constructor(props) {
-    // console.log("List 생성자 호출")
+    // $m.timelog.check("List 생성자 호출");
     super(props);
     this.state = {
       loading: false,
@@ -20,8 +22,13 @@ export default class List extends React.Component {
       app.state.userID = props.user.id;
       app.user = props.user;
       global.sessionStorage && global.sessionStorage.setItem("user", JSON.stringify(app.user))
+    }else{
+      if(global.document){
+        // 클라이언트에서 실행시
+        app.auth.signOut();
+      }
+      
     }
-
 
     app.state.menuIdx = props.menuIdx;
     if (props.fetchRes) {
@@ -32,16 +39,17 @@ export default class List extends React.Component {
   }
 
   static async getInitialProps({ req, asPath }) {
-    //console.log("@@ getInitialProps ");
-    let user = app.getUser(req);
-    app.user.token = user.token;
+    // console.log("@@ getInitialProps ");
+    // $m.timelog.start("getInitialProps");
 
     let menuIdx = app.state.menu.findIndex(m => m.path === asPath);
-    //console.log("menuIdx = " + menuIdx);
-    let fetchRes = await app.api.fetchList({ menuIdx });
-    //console.log(JSON.stringify(fetchRes, null, 2));
 
-    //console.log("user = " + JSON.stringify(user));
+    //let user = await app.getUser(req);
+    //let fetchRes = await app.api.fetchList({ menuIdx });
+    let user, fetchRes;
+    [user, fetchRes] = await Promise.all([app.getUser(req), app.api.fetchList({ menuIdx })])
+
+    //console.log(JSON.stringify(fetchRes, null, 2));
 
     return {
       menuIdx,
@@ -77,6 +85,7 @@ export default class List extends React.Component {
 
   render() {
     // console.log("List 렌더링")
+    // $m.timelog.check("List 렌더링");
     let intro = app.state.menu[app.state.menuIdx].label;
 
     if (app.view.Search && app.view.Search.state.mode === "search" && app.state.word) {

@@ -1,9 +1,11 @@
 import fetch from 'isomorphic-unfetch';
 import { _findLink } from "../com/pure";
+import $m from "../com/util";
 
 const req = async (path, method, body) => {
     try {
-        global.NProgress && global.NProgress.start();
+        //global.NProgress && global.NProgress.start();
+        global.NProgress?.start();
         //console.log("@@@@ fetch 호출전 path = " + path)
         let opt = {
             method,
@@ -17,7 +19,8 @@ const req = async (path, method, body) => {
         //console.log("@@@@ fetch 호출전 app.user.token = " + JSON.stringify(opt, null, 2))
         console.log("url = " + app.BACKEND + path)
         let res = await fetch(app.BACKEND + path, opt)
-        global.NProgress && global.NProgress.done();
+        //global.NProgress && global.NProgress.done();
+        global.NProgress?.done();
         
         if (res.status === 200) {
             let json = await res.json();
@@ -128,7 +131,10 @@ export default function getApi(app) {
                 path += "&word=" + word;
             }
 
+            let tl = $m.timelog.new();
+            tl.start("패치 시작")
             let fetchRes = await req(path, "GET");
+            tl.check("패치 끝")
             //console.log("@@@ " + JSON.stringify(fetchRes, null, 2))
 
             if (fetchRes.status === "Fail") {
@@ -144,7 +150,9 @@ export default function getApi(app) {
             app.state.isScrollLast = !fetchRes.hasNext;
             app.state.totalCount = fetchRes.totalCount;
             if (fetchRes.links.length == 0) {
-                app.view.List && app.view.List._ismounted && app.view.List.forceUpdate();
+                //app.view.List && app.view.List._ismounted && app.view.List.forceUpdate();
+                app.view.List?._ismounted && app.view.List.forceUpdate();
+                fetchRes.hasNext = false;   // 18.12.31 links 길이가 0인데 hasNext 가 true로 떨어지는 경우가 있어서 보정함.
             } else {
                 app.state.links.push(...fetchRes.links);
             }
@@ -248,8 +256,6 @@ export default function getApi(app) {
                 let link = _findLink(app.state.links, comment.linkID);
                 let commentIdx = link.comments.findIndex(c => c.id === comment.id);
                 link.comments[commentIdx] = comment;
-
-
             }
             return res;
         },
