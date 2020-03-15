@@ -3,3 +3,4 @@ dist/
 README.md
 deploy.sh
 deploy.sh.181219
+.gcloudignore

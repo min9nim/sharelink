@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "PORT=3000 node src/index.js",
     "dev-win": "set PORT=3000 && node src/index.js",
-    "build": "next build",
-    "start": "node src/index.js",
+    "build": "next build && ls -al",
+    "start": "yarn build && node src/index.js",
     "start-dev": "next build && PORT=3000 npm start",
     "test": "jest"
   },
@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.2.0",
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "node-sass": "^4.13.1"
   }
 }
