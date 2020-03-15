@@ -4,5 +4,5 @@
 const withSass = require('@zeit/next-sass')
 module.exports = {
   ...withSass(),
-  distDir: '_next',
+  // distDir: '_next',
 }
