@@ -12,7 +12,7 @@ let BACKEND
 console.log('process.env.NODE_ENV = [' + process.env.NODE_ENV + ']')
 
 if (process.env.NODE_ENV === 'production') {
-  BACKEND = 'https://sharelink-mongoose.now.sh'
+  BACKEND = 'https://sharelink-api.now.sh'
 } else {
   BACKEND = 'http://localhost:3030'
 }

@@ -1,6 +1,6 @@
 {
   "name": "sharelink",
-  "version": "1.0.0-prod",
+  "version": "1.0.0-dev",
   "description": "",
   "main": "src/index.js",
   "scripts": {
