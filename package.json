@@ -2,12 +2,12 @@
   "name": "sharelink-nextjs",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "dev": "PORT=3000 node server/app.js",
-    "dev-win": "set PORT=3000 && node server/app.js",
+    "dev": "PORT=3000 node src/index.js",
+    "dev-win": "set PORT=3000 && node src/index.js",
     "build": "next build",
-    "start": "node server/app.js",
+    "start": "node src/index.js",
     "start-dev": "next build && PORT=3000 npm start",
     "test": "jest"
   },
