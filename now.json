@@ -2,12 +2,12 @@
   "public": true,
   "version": 2,
   "builds": [
-    {"src": "src/**/*.js", "use": "@now/node@canary"},
-    {"src": "public/**/*", "use": "@now/static"}
+    { "src": "src/**/*.js", "use": "@now/node@canary" },
+    { "src": "public/**/*", "use": "@now/static" }
   ],
   "routes": [
     {
-      "src": "/",
+      "src": "/.*",
       "dest": "src/index.js",
       "methods": ["POST", "OPTIONS", "GET"],
       "headers": {
