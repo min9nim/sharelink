@@ -2,10 +2,8 @@
   "public": true,
   "version": 2,
   "builds": [
-    { "src": "src/**/*.js", "use": "@now/node@canary" },
-    { "src": "static/**/*", "use": "@now/static" },
-    { "src": "_next/**/*", "use": "@now/static" },
-    { "src": ".next/**/*", "use": "@now/static" }
+    {"src": "src/**/*.js", "use": "@now/node@canary"},
+    {"src": "public/**/*", "use": "@now/static"}
   ],
   "routes": [
     {

@@ -12,23 +12,9 @@ let BACKEND
 console.log('process.env.NODE_ENV = [' + process.env.NODE_ENV + ']')
 
 if (process.env.NODE_ENV === 'production') {
-  if (!global.location) {
-    throw Error('global.location is undefined')
-  }
-  if (global.location.hostname.includes('now.sh')) {
-    BACKEND = 'https://sharelink-mongoose.now.sh'
-  } else {
-    throw Error('Unknown hostname')
-  }
+  BACKEND = 'https://sharelink-mongoose.now.sh'
 } else {
-  let location = global.location
-  if (location) {
-    // 개발환경 클라이언트
-    BACKEND = location.protocol + '//' + location.hostname + ':3030' // 모바일에서도 로컬 테스트가 가능하려면 이렇게 해야함
-  } else {
-    // 노드 서버에서 실행될 때
-    BACKEND = 'http://localhost:3030'
-  }
+  BACKEND = 'http://localhost:3030'
 }
 
 console.log('Backend server : ' + BACKEND)
