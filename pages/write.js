@@ -164,17 +164,19 @@ class Write extends React.Component {
           }),
         },
       ).then(res => res.json())
+      console.log({ title, image, desc })
 
       // let { title, image, desc } = await app.api.webscrap(this.state.url);
 
       // 타이틀 세팅
-      if (this.state.title === '') {
-        this.state.title = title
+      if (!this.state.title) {
+        // this.state.title = title
+        this.setState({ ...this.state, title })
       }
-
       // 설명세팅
-      if (this.state.desc === '') {
-        this.state.desc = desc
+      if (!this.state.desc) {
+        // this.state.desc = desc
+        this.setState({ ...this.state, desc })
       }
 
       //이미지 세팅
