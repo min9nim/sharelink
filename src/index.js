@@ -11,28 +11,24 @@ const express = require('express')
 const cookieParser = require('cookie-parser')
 
 app.prepare().then(() => {
-  const server = express();
-  server.use(cookieParser());
-  
-  server.use((req, res) => {
-    // Be sure to pass `true` as the second argument to `url.parse`.
-    // This tells it to parse the query portion of the URL.
-    const parsedUrl = parse(req.url, true)
-    const { pathname, query } = parsedUrl
+  const server = express()
+  server.use(cookieParser())
 
-    if (pathname === '/my' ) {
-      app.render(req, res, '/', query)
-    } else if (pathname === '/like') {
-      app.render(req, res, '/', query)
-    } else if (pathname === '/read') {
-      app.render(req, res, '/', query)
-    } else if (pathname === '/toread') {
-      app.render(req, res, '/', query)
-    } else {
-      handle(req, res, parsedUrl)
-    }
-  }).listen(PORT, err => {
-    if (err) throw err
-    console.log(`Next server is running http://localhost:${PORT}`)
-  })
+  server
+    .use((req, res) => {
+      // Be sure to pass `true` as the second argument to `url.parse`.
+      // This tells it to parse the query portion of the URL.
+      const parsedUrl = parse(req.url, true)
+      const { pathname, query } = parsedUrl
+
+      if (['/my', '/like', '/read', '/toread'].includes(pathname)) {
+        app.render(req, res, '/', query)
+      } else {
+        handle(req, res, parsedUrl)
+      }
+    })
+    .listen(PORT, err => {
+      if (err) throw err
+      console.log(`Next server is running http://localhost:${PORT}`)
+    })
 })
