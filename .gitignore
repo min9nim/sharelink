@@ -2,3 +2,4 @@
 _next
 node_modules
 .now
+dev-start.sh

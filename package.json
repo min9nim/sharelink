@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "next dev",
+    "dev-local": "API=local next dev",
     "dev-old": "PORT=3000 node src/index.js",
     "dev-win": "set PORT=3000 && node src/index.js",
     "build": "next build && ls -al",
