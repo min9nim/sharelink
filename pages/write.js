@@ -1,4 +1,4 @@
-import Layout from '../comps/Layout.js'
+import Layout from '../components/Layout.js'
 import { withRouter } from 'next/router'
 import app from '../src/app'
 import { observable, reaction, decorate } from 'mobx'
