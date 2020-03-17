@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "dev": "PORT=3000 node src/index.js",
+    "dev": "next dev",
+    "dev-old": "PORT=3000 node src/index.js",
     "dev-win": "set PORT=3000 && node src/index.js",
     "build": "next build && ls -al",
     "start": "yarn build && node src/index.js",
