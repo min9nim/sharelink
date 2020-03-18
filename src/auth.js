@@ -1,6 +1,23 @@
 import { isExpired } from '../com/pure'
 import createLogger, { isNode } from 'if-logger'
 
+async function onGApiLoad() {
+  const logger = createLogger({ tags: ['app.auth', 'onGApiLoad'] })
+  // 구글 로그인 초기화
+  await gapi.client.init({
+    apiKey: 'sharelink',
+    clientId:
+      '314955303656-ohiovevqbpms4pguh82fnde7tvo9cqnb.apps.googleusercontent.com',
+    scope: 'https://www.googleapis.com/auth/drive.metadata.readonly',
+  })
+  global.GoogleAuth = global.gapi.auth2.getAuthInstance()
+  logger.info('GoogleAuth initialized')
+
+  global.GoogleAuth.isSignedIn.listen(() => {
+    logger.verbose('isSignedIn listen..')
+  })
+}
+
 export default function getAuth(app) {
   const logger = createLogger({ tags: ['app.auth'] })
   return {
@@ -8,46 +25,16 @@ export default function getAuth(app) {
     init: () => {
       logger.addTags('init').debug('start')
       if (isNode() || global.GoogleAuth || app.router.asPath === '/login') {
-        createLogger().debug('gapi.load() skipped')
+        createLogger().debug('gapi.load() is not necessary')
         return
       }
 
       gapi.load('client', {
-        callback: function() {
-          // console.log("gapi.client loaded")
-          if (gapi.auth2.getAuthInstance() === null) {
-            // 구글 로그인 초기화
-            gapi.client
-              .init({
-                apiKey: 'sharelink',
-                clientId:
-                  '314955303656-ohiovevqbpms4pguh82fnde7tvo9cqnb.apps.googleusercontent.com',
-                scope:
-                  'https://www.googleapis.com/auth/drive.metadata.readonly',
-              })
-              .then(() => {
-                // console.log("gapi.client.init callback")
-                global.GoogleAuth = global.gapi.auth2.getAuthInstance()
-
-                global.GoogleAuth.isSignedIn.listen(() => {
-                  console.log('sign-in state 변화 감지..')
-                })
-
-                //return global.GoogleAuth.signIn()
-              })
-            // .then(GoogleUser => {
-            //     console.log("@@ 현재 로그인 토큰 = " + GoogleUser.getAuthResponse().id_token)
-            // })
-          }
-        },
-        onerror: function() {
-          // Handle loading error.
-          alert('gapi.client failed to load!')
-        },
-        timeout: 5000, // 5 seconds.
-        ontimeout: function() {
-          // Handle timeout.
-          alert('gapi.client could not load in a timely manner!')
+        callback: onGApiLoad,
+        onerror: logger.error,
+        timeout: 10000, // 10 seconds.
+        ontimeout() {
+          logger.warn('gapi.load timeout')
         },
       })
     },
@@ -56,11 +43,11 @@ export default function getAuth(app) {
       app.user = user
       app.user.token = id_token
       app.state.userID = user.id
-      let enc = app.Base64Encode(JSON.stringify(app.user))
+      const enc = app.Base64Encode(JSON.stringify(app.user))
 
       // 쿠키 만료일을 한달 후로 지정
-      let month = 1000 * 60 * 60 * 24 * 30
-      let exp = new Date(app.user.exp * 1000 + month).toUTCString()
+      const month = 1000 * 60 * 60 * 24 * 30
+      const exp = new Date(app.user.exp * 1000 + month).toUTCString()
       document.cookie = `user=${enc}; expires=${exp}; path=/`
 
       sessionStorage.setItem('user', JSON.stringify(app.user))
