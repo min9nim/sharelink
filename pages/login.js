@@ -3,6 +3,7 @@ import { withRouter } from 'next/router'
 //import Head from 'next/head';
 import app from '../src/app'
 import './login.scss'
+import createLogger from 'if-logger'
 
 const Login = ({ router, user }) => {
   app.user = user
@@ -27,7 +28,8 @@ Login.getInitialProps = async ({ req }) => {
   }
 }
 
-global.onSignIn = googleUser => {
+global.onSignIn = async googleUser => {
+  const logger = createLogger({ tags: ['onSignIn'] })
   console.log('global.onSignIn 호출')
 
   /**
@@ -56,15 +58,14 @@ global.onSignIn = googleUser => {
 
   // console.log("ID Token: " + id_token);
 
-  app.api.login(id_token).then(res => {
-    if (res.status === 'Fail') {
-      console.log('Invalid token')
-    } else {
-      global.GoogleAuth = global.gapi.auth2.getAuthInstance()
-      app.auth.setLogin(res.user, id_token)
-      app.router.push('/')
-    }
-  })
+  const res = await app.api.login(id_token)
+  if (res.status === 'Fail') {
+    logger.error('invalid token')
+  } else {
+    global.GoogleAuth = global.gapi.auth2.getAuthInstance()
+    app.auth.setLogin(res.user, id_token)
+    app.router.push('/')
+  }
 }
 
 export default withRouter(Login)
