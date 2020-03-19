@@ -54,41 +54,7 @@ export default function getAuth(app) {
       sessionStorage.setItem('user', JSON.stringify(app.user))
     },
 
-    isLogin: () => {
-      logger.debug('isLogin 호출...')
-      // const cookie = req.headers?.cookie
-      // const cookies = new Cookies(cookie)
-      // const state = cookies.get('user') || {}
-      // const {auth} = state
-
-      if (!app.state.userID) {
-        logger.debug('isLogin 11...')
-        if (!isNode()) {
-          logger.debug('isLogin 22...')
-          const sessionStr = sessionStorage.getItem('user')
-          if (sessionStr) {
-            logger.debug('isLogin 33...')
-            app.user = JSON.parse(sessionStr)
-            app.state.token = app.user.token
-          }
-        }
-      }
-
-      if (app.state.userID) {
-        if (isExpired(app.user.exp * 1000)) {
-          //console.log("### jwt token expired");
-          //app.auth.signOut();
-          //app.state.userID = "";
-
-          // alert && alert("로그인 세션이 만료되었습니다");
-          return false
-        } else {
-          return true
-        }
-      } else {
-        return false
-      }
-    },
+    isLogin: () => app.state.userID && !isExpired(app.user.exp * 1000),
 
     signOut: () => {
       logger.debug('signOut 처리')
