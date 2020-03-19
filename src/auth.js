@@ -1,5 +1,6 @@
 import { isExpired } from '../com/pure'
 import createLogger, { isNode } from 'if-logger'
+import Cookies from 'universal-cookie'
 
 async function onGApiLoad() {
   const logger = createLogger({ tags: ['app.auth', 'onGApiLoad'] })
@@ -54,6 +55,25 @@ export default function getAuth(app) {
     },
 
     isLogin: () => {
+      logger.debug('isLogin 호출...')
+      // const cookie = req.headers?.cookie
+      // const cookies = new Cookies(cookie)
+      // const state = cookies.get('user') || {}
+      // const {auth} = state
+
+      if (!app.state.userID) {
+        logger.debug('isLogin 11...')
+        if (!isNode()) {
+          logger.debug('isLogin 22...')
+          const sessionStr = sessionStorage.getItem('user')
+          if (sessionStr) {
+            logger.debug('isLogin 33...')
+            app.user = JSON.parse(sessionStr)
+            app.state.token = app.user.token
+          }
+        }
+      }
+
       if (app.state.userID) {
         if (isExpired(app.user.exp * 1000)) {
           //console.log("### jwt token expired");
@@ -71,6 +91,7 @@ export default function getAuth(app) {
     },
 
     signOut: () => {
+      logger.debug('signOut 처리')
       // 애플리케이션 로그아웃처리
 
       global.document.cookie = 'user='

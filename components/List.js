@@ -8,6 +8,7 @@ import $m from '../com/util.js'
 export default class List extends React.Component {
   constructor(props) {
     $m.timelog.check('List 생성자 호출')
+
     super(props)
     this.state = {
       loading: false,
@@ -47,6 +48,8 @@ export default class List extends React.Component {
       app.getUser(req),
       app.api.fetchList({ menuIdx }),
     ])
+
+    console.log('#### user', user)
 
     //console.log(JSON.stringify(fetchRes, null, 2));
 

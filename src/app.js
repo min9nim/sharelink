@@ -3,6 +3,7 @@ import $m from '../com/util'
 import getApi from './restful'
 import getAuth from './auth'
 import base64js from 'base64-js'
+import Cookies from 'universal-cookie'
 
 //console.log("process.env.PORT : " + process.env.PORT);
 //console.log("location.hostname : " + location.hostname);
@@ -145,14 +146,23 @@ app.Base64Decode = (str, encoding = 'utf-8') => {
 
 app.getUser = async req => {
   try {
+    console.log('getUser 들어오나요?')
     let userStr
     if (req) {
-      userStr = Buffer.from(req.cookies.user || '', 'base64').toString('utf8')
+      const cookie = req.headers.cookie
+      console.log('cookie', cookie)
+      userStr = cookie.split(';')[1].slice(6)
+      // const cookies = new Cookies(cookie)
+      // const userObj = cookies.get('user') || {}
+
+      // console.log('userObj', userObj)
+
+      userStr = Buffer.from(userStr || '', 'base64').toString('utf8')
     } else {
       userStr = global.sessionStorage.getItem('user')
     }
 
-    //console.log("userStr = " + userStr);
+    console.log('userStr = ' + userStr)
 
     if (userStr) {
       let user = JSON.parse(userStr)
