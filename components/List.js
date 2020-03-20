@@ -37,22 +37,11 @@ export default class List extends React.Component {
   }
 
   static async getInitialProps({ req, asPath }) {
-    console.log('@@ getInitialProps ')
-    $m.timelog.start('getInitialProps')
-
     let menuIdx = app.state.menu.findIndex(m => m.path === asPath)
-
-    //let user = await app.getUser(req);
-    //let fetchRes = await app.api.fetchList({ menuIdx });
     let [user, fetchRes] = await Promise.all([
       app.getUser(req),
       app.api.fetchList({ menuIdx }),
     ])
-
-    console.log('#### user', user)
-
-    //console.log(JSON.stringify(fetchRes, null, 2));
-
     return {
       menuIdx,
       fetchRes,
