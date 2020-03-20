@@ -74,21 +74,24 @@ class Search extends React.Component {
           cnt: app.PAGEROWS,
           word,
         })
-      } else {
-        if (!app.user.id) return
-
-        await app.api.postLink({
-          url: app.state.word,
-          author: {
-            id: app.user.id,
-            name: app.user.name,
-          },
-        })
-        this.state.mode = 'search'
-        app.state.word = ''
+        return
       }
+      if (!app.user.id) {
+        app.logger.warn(m => console.log(...m('app.user.id is undefined')))
+        return
+      }
+
+      await app.api.postLink({
+        url: app.state.word,
+        author: {
+          id: app.user.id,
+          name: app.user.name,
+        },
+      })
+      this.state.mode = 'search'
+      app.state.word = ''
     } catch (e) {
-      console.log(e.message)
+      app.looger.error(e.message)
       alert(e.message)
     }
   }
