@@ -61,6 +61,9 @@ class Search extends React.Component {
       this.search(e.target.value)
     }
   }
+  handleBlur(e) {
+    this.search(e.target.value)
+  }
 
   search = async word => {
     try {
@@ -107,6 +110,7 @@ class Search extends React.Component {
           value={app.state.word}
           onChange={this.handleChange.bind(this)}
           onKeyPress={this.handleKeyPress.bind(this)}
+          onBlur={this.handleBlur.bind(this)}
         />
       </div>
     )
