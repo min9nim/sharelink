@@ -41,6 +41,7 @@ class Write extends React.Component {
     reaction(
       () => JSON.stringify(this.state),
       () => {
+        app.logger.debug('상태 변화로 forceUpdate')
         this.forceUpdate()
       },
     )

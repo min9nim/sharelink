@@ -1,6 +1,5 @@
 import { isExpired } from '../com/pure'
 import createLogger, { isNode } from 'if-logger'
-import Cookies from 'universal-cookie'
 
 async function onGApiLoad() {
   const logger = createLogger({ tags: ['app.auth', 'onGApiLoad'] })
@@ -12,7 +11,7 @@ async function onGApiLoad() {
     scope: 'https://www.googleapis.com/auth/drive.metadata.readonly',
   })
   global.GoogleAuth = global.gapi.auth2.getAuthInstance()
-  logger.info('GoogleAuth initialized')
+  logger.debug(m => console.log(...m('GoogleAuth initialized')))
 
   global.GoogleAuth.isSignedIn.listen(() => {
     logger.verbose('isSignedIn listen..')
@@ -24,9 +23,8 @@ export default function getAuth(app) {
   return {
     // 로그인 관련
     init: () => {
-      logger.addTags('init').debug('start')
       if (isNode() || global.GoogleAuth || app.router.asPath === '/login') {
-        createLogger().debug('gapi.load() is not necessary')
+        logger.debug(m => console.log(...m('gapi.load() is not necessary')))
         return
       }
 
@@ -35,7 +33,7 @@ export default function getAuth(app) {
         onerror: logger.error,
         timeout: 10000, // 10 seconds.
         ontimeout() {
-          logger.warn('gapi.load timeout')
+          logger.debug(m => console.log(...m('gapi.load timeout')))
         },
       })
     },

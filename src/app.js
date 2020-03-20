@@ -5,7 +5,7 @@ import getAuth from './auth'
 import base64js from 'base64-js'
 import Cookies from 'universal-cookie'
 import createLogger from 'if-logger'
-const logger = createLogger().addTags('app')
+import moment from 'moment'
 
 //console.log("process.env.PORT : " + process.env.PORT);
 //console.log("location.hostname : " + location.hostname);
@@ -67,6 +67,16 @@ const app = {
   BACKEND,
   PAGEROWS: 10,
 }
+
+app.logger = createLogger({
+  tags: [
+    () =>
+      moment()
+        .utc()
+        .add(9, 'hours')
+        .format('MM/DD HH:mm:ss'),
+  ],
+})
 
 app.api = getApi(app)
 app.auth = getAuth(app)
@@ -157,7 +167,7 @@ app.getUser = async req => {
     } else {
       userStr = global.sessionStorage.getItem('user')
     }
-    logger.verbose('userStr:', userStr)
+    app.logger.verbose('userStr:', userStr)
 
     if (!userStr) {
       throw Error('[getInitialProps] 로그인 실패 : user 정보 없음')
@@ -170,7 +180,7 @@ app.getUser = async req => {
     }
     return user
   } catch (e) {
-    logger.error(e)
+    app.logger.error(e)
     return {}
   }
 }
