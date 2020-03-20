@@ -4,6 +4,8 @@ import getApi from './restful'
 import getAuth from './auth'
 import base64js from 'base64-js'
 import Cookies from 'universal-cookie'
+import createLogger from 'if-logger'
+const logger = createLogger().addTags('app')
 
 //console.log("process.env.PORT : " + process.env.PORT);
 //console.log("location.hostname : " + location.hostname);
@@ -146,51 +148,29 @@ app.Base64Decode = (str, encoding = 'utf-8') => {
 
 app.getUser = async req => {
   try {
-    console.log('getUser 들어오나요?')
     let userStr
     if (req) {
-      const cookie = req.headers.cookie
-      console.log('cookie', cookie)
-      userStr = cookie.split(';')[1].slice(6)
-      // const cookies = new Cookies(cookie)
-      // const userObj = cookies.get('user') || {}
-
-      // console.log('userObj', userObj)
-
-      userStr = Buffer.from(userStr || '', 'base64').toString('utf8')
+      const cookies = new Cookies(req.headers.cookie)
+      userStr = Buffer.from(cookies.get('user') || '', 'base64').toString(
+        'utf8',
+      )
     } else {
       userStr = global.sessionStorage.getItem('user')
     }
+    logger.verbose('userStr:', userStr)
 
-    console.log('userStr = ' + userStr)
-
-    if (userStr) {
-      let user = JSON.parse(userStr)
-
-      app.user.token = user.token
-      $m.timelog.start('로그인 체크')
-      let res = await app.api.login()
-      $m.timelog.check('로그인 체크 완료')
-      if (res.status === 'Fail') {
-        console.log(`[getInitialProps] 로그인 실패 : ${res.message}`)
-        return {}
-      } else {
-        return user
-      }
-      // if (isExpired(user.exp * 1000)){
-      //     console.log("[getInitialProps] 로그인 실패 : Token is expired")
-      //     return {};
-      // } else {
-      //     //console.log("[getInitialProps] 로그인 성공")
-      //     return user;
-      // }
-    } else {
-      console.log('[getInitialProps] 로그인 실패 : user 정보 없음')
-      return {}
+    if (!userStr) {
+      throw Error('[getInitialProps] 로그인 실패 : user 정보 없음')
     }
+    let user = JSON.parse(userStr)
+    app.user.token = user.token
+    let res = await app.api.login()
+    if (res.status === 'Fail') {
+      throw Error(`[getInitialProps] 로그인 실패 : ${res.message}`)
+    }
+    return user
   } catch (e) {
-    //console.error(e);
-    console.log(e.message)
+    logger.error(e)
     return {}
   }
 }
