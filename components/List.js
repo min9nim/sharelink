@@ -100,7 +100,7 @@ export default class List extends React.Component {
             return <Post key={link.id} link={link} />
           })}
           {this.state.loading &&
-            new Array(5).fill().map((v, i) => <LinkLoading key={i} />)}
+            [0, 1, 2, 3, 4].map(v => <LinkLoading key={v} />)}
         </ul>
       </Layout>
     )
