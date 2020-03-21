@@ -505,7 +505,7 @@ export function htmlspecialchars_decode(str) {
   })
 }
 
-const createTimelog = function() {
+export function createTimelog() {
   const newDate = function() {
     let t = new Date()
     let o = {
@@ -541,4 +541,5 @@ const createTimelog = function() {
   return o
 }
 export const timelog = createTimelog()
-timelog.new = createTimelog
+
+console.log('여기보다 빨라?', typeof createTimelog)

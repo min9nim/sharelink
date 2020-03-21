@@ -3,11 +3,11 @@ import Post from './Post.js'
 import LinkLoading from './LinkLoading.js'
 import app from '../src/app'
 import './List.scss'
-import { timelog } from '../com/util.js'
+// import { timelog } from '../com/util.js'
 
 export default class List extends React.Component {
   constructor(props) {
-    timelog.check('List 생성자 호출')
+    // timelog.check('List 생성자 호출')
 
     super(props)
     this.state = {
