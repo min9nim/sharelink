@@ -1,7 +1,6 @@
 import Layout from '../components/Layout.js'
 import { withRouter } from 'next/router'
 import app from '../src/app'
-import { observable, reaction, decorate } from 'mobx'
 import shortid from 'shortid'
 import './write.scss'
 import { _findLink, avoidXSS } from '../com/pure.js'
@@ -36,16 +35,6 @@ class Write extends React.Component {
         }
 
     app.view.Write = this
-
-    // mobx 설정
-    // decorate(this, { state: observable })
-    // reaction(
-    //   () => JSON.stringify(this.state),
-    //   () => {
-    //     app.logger.debug('상태 변화로 forceUpdate')
-    //     this.forceUpdate()
-    //   },
-    // )
   }
 
   static async getInitialProps({ req, asPath, query }) {
@@ -148,7 +137,7 @@ class Write extends React.Component {
 
     try {
       const { title, image, desc } = await webscrap(this.state.url)
-      console.log({ title, image, desc })
+      // console.log({ title, image, desc })
 
       // let { title, image, desc } = await app.api.webscrap(this.state.url);
 
