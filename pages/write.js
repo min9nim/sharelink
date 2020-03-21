@@ -62,12 +62,26 @@ class Write extends React.Component {
     }
   }
 
-  cancel() {
-    this.props.router.push('/')
-  }
-
   componentWillUnmount() {
     this._ismounted = false
+  }
+
+  componentDidMount() {
+    this._ismounted = true
+
+    if (this.state.url === '') {
+      this.urlInput.focus()
+    }
+
+    if (!app.auth.isLogin()) {
+      alert('글등록은 로그인이 필요합니다')
+      //this.props.router.push("/login");
+      location.href = '/login'
+    }
+  }
+
+  cancel() {
+    this.props.router.push('/')
   }
 
   async save() {
@@ -95,20 +109,6 @@ class Write extends React.Component {
     }
 
     this.props.router.push('/')
-  }
-
-  componentDidMount() {
-    this._ismounted = true
-
-    if (this.state.url === '') {
-      this.urlInput.focus()
-    }
-
-    if (!app.auth.isLogin()) {
-      alert('글등록은 로그인이 필요합니다')
-      //this.props.router.push("/login");
-      location.href = '/login'
-    }
   }
 
   handleChange(e) {
