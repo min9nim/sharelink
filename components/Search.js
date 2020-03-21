@@ -62,6 +62,9 @@ class Search extends React.Component {
     }
   }
   handleBlur(e) {
+    if (!e.target.value) {
+      return
+    }
     this.search(e.target.value)
   }
 
