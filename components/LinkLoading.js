@@ -5,8 +5,8 @@ const LinkLoading = props => (
     height={45}
     width={300}
     speed={2}
-    primaryColor="#f3f3f3"
-    secondaryColor="#ecebeb"
+    primary-color="#f3f3f3"
+    secondary-color="#ecebeb"
     {...props}
   >
     <rect x="0" y="12" rx="3" ry="3" width="230" height="6" />
