@@ -3,11 +3,11 @@ import { withRouter } from 'next/router'
 import app from '../src/app'
 import { observable, reaction, decorate } from 'mobx'
 import shortid from 'shortid'
-import $m from '../com/util.js'
 import './write.scss'
 import { _findLink, avoidXSS } from '../com/pure.js'
 import { getQueryParams, go } from 'mingutils'
 import { prop } from 'ramda'
+import { webscrap } from '../com/webscrap.js'
 class Write extends React.Component {
   constructor(props) {
     super(props)
@@ -143,18 +143,7 @@ class Write extends React.Component {
     this.imageInput.setAttribute('placeholder', loadingMessage)
 
     try {
-      const { title, image, desc } = await fetch(
-        'https://webscrap.now.sh/webscrap',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            url: this.state.url,
-          }),
-        },
-      ).then(res => res.json())
+      const { title, image, desc } = await webscrap(this.state.url)
       console.log({ title, image, desc })
 
       // let { title, image, desc } = await app.api.webscrap(this.state.url);
