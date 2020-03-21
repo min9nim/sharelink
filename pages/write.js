@@ -115,7 +115,7 @@ class Write extends React.Component {
     // this.state[e.target.id] = e.target.value
     const newState = { ...this.state }
     newState[e.target.id] = e.target.value
-    app.logger.addTags('handleChange').debug('newState', newState)
+    // app.logger.addTags('handleChange').debug('newState', newState)
     this.setState(newState)
   }
 
