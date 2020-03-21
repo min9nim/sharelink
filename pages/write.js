@@ -38,14 +38,14 @@ class Write extends React.Component {
     app.view.Write = this
 
     // mobx 설정
-    decorate(this, { state: observable })
-    reaction(
-      () => JSON.stringify(this.state),
-      () => {
-        app.logger.debug('상태 변화로 forceUpdate')
-        this.forceUpdate()
-      },
-    )
+    // decorate(this, { state: observable })
+    // reaction(
+    //   () => JSON.stringify(this.state),
+    //   () => {
+    //     app.logger.debug('상태 변화로 forceUpdate')
+    //     this.forceUpdate()
+    //   },
+    // )
   }
 
   static async getInitialProps({ req, asPath, query }) {
@@ -123,7 +123,11 @@ class Write extends React.Component {
   }
 
   handleChange(e) {
-    this.state[e.target.id] = e.target.value
+    // this.state[e.target.id] = e.target.value
+    const newState = { ...this.state }
+    newState[e.target.id] = e.target.value
+    app.logger.addTags('handleChange').debug('newState', newState)
+    this.setState(newState)
   }
 
   async handleBlur() {
@@ -160,7 +164,8 @@ class Write extends React.Component {
       }
 
       //이미지 세팅
-      this.state.image = image
+      // this.state.image = image
+      this.setState({ ...this.state, image })
 
       // if (image && image.indexOf("http") === 0) {
       //   // http 로 시작하면 그냥 사용
@@ -204,7 +209,10 @@ class Write extends React.Component {
   }
 
   initValue(e) {
-    this.state[e.target.parentNode.previousSibling.id] = ''
+    const newState = { ...this.state }
+    newState[e.target.parentNode.previousSibling.id] = ''
+    app.logger.addTags('initValue').debug('newState', newState)
+    this.setState(newState)
     e.target.parentNode.previousSibling.focus()
   }
 

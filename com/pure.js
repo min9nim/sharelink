@@ -1,3 +1,5 @@
+import { removeTag } from 'mingutils'
+
 export function _findLink(links, linkID) {
   let link
   for (let l of links) {
@@ -31,7 +33,7 @@ export function isExpired(exp) {
 export function avoidXSS(link) {
   return {
     ...link,
-    url: $m.removeTag(link.url),
+    url: removeTag(link.url),
     // title: $m.removeTag(link.title),
     // desc: $m.removeTag(link.desc),
     /**
@@ -41,7 +43,7 @@ export function avoidXSS(link) {
      */
     title: link.title,
     desc: link.desc,
-    image: $m.removeTag(link.image),
+    image: removeTag(link.image),
   }
 }
 
