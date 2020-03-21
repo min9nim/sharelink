@@ -6,7 +6,7 @@ import shortid from 'shortid'
 import $m from '../com/util.js'
 import './write.scss'
 import { _findLink } from '../com/pure.js'
-
+import { getQueryParams } from 'mingutils'
 class Write extends React.Component {
   constructor(props) {
     super(props)
@@ -53,7 +53,9 @@ class Write extends React.Component {
 
     let link
     if (req) {
-      let fetchRes = await app.api.fetchLink(req.query.id)
+      const query = getQueryParams(req.url)
+      app.logger.debug('query', query)
+      let fetchRes = await app.api.fetchLink(query.id)
       link = fetchRes[0]
     } else {
       //link = app.state.links.find(l => l.id === query.id);
