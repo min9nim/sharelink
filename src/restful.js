@@ -146,7 +146,7 @@ export default function getApi(app) {
         path += '&word=' + word
       }
 
-      let tl = $m.timelog.new()
+      let tl = timelog.new()
       tl.start('패치 시작: [' + path + ']')
       let fetchRes = await req(path, 'GET')
       tl.check('패치 끝')

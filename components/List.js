@@ -3,11 +3,11 @@ import Post from './Post.js'
 import LinkLoading from './LinkLoading.js'
 import app from '../src/app'
 import './List.scss'
-import $m from '../com/util.js'
+import { timelog } from '../com/util.js'
 
 export default class List extends React.Component {
   constructor(props) {
-    $m.timelog.check('List 생성자 호출')
+    timelog.check('List 생성자 호출')
 
     super(props)
     this.state = {
@@ -74,8 +74,6 @@ export default class List extends React.Component {
   }
 
   render() {
-    // console.log("List 렌더링")
-    // $m.timelog.check("List 렌더링");
     let intro = app.state.menu[app.state.menuIdx].label
 
     if (

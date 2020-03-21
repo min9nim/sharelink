@@ -471,15 +471,11 @@ $m.cancelRemoveAnimation = (dom, delay) => {
   })
 }
 
-$m.nl2br = str => {
-  return str.replace(/\n/g, '<br>')
-}
-
 /**
  * 18.11.19
  * htmlspecialchars, htmlspecialchars_decode 소스출처: https://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities
  */
-function htmlspecialchars(str) {
+export function htmlspecialchars(str) {
   if (!str) return ''
 
   var map = {
@@ -494,7 +490,7 @@ function htmlspecialchars(str) {
   })
 }
 
-function htmlspecialchars_decode(str) {
+export function htmlspecialchars_decode(str) {
   if (!str) return ''
 
   var map = {
@@ -508,9 +504,6 @@ function htmlspecialchars_decode(str) {
     return map[m]
   })
 }
-
-$m.htmlspecialchars = htmlspecialchars
-$m.htmlspecialchars_decode = htmlspecialchars_decode
 
 const createTimelog = function() {
   const newDate = function() {
@@ -547,7 +540,5 @@ const createTimelog = function() {
   }
   return o
 }
-const timelog = createTimelog()
+export const timelog = createTimelog()
 timelog.new = createTimelog
-
-$m.timelog = timelog
