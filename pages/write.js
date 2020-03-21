@@ -5,9 +5,9 @@ import { observable, reaction, decorate } from 'mobx'
 import shortid from 'shortid'
 import $m from '../com/util.js'
 import './write.scss'
-import { _findLink } from '../com/pure.js'
+import { _findLink, avoidXSS } from '../com/pure.js'
 import { getQueryParams, go } from 'mingutils'
-import {prop} from 'ramda'
+import { prop } from 'ramda'
 class Write extends React.Component {
   constructor(props) {
     super(props)
@@ -54,7 +54,12 @@ class Write extends React.Component {
 
     let link
     if (req) {
-      const fetchRes = await go(req.url, getQueryParams, prop('id'), app.api.fetchLink)
+      const fetchRes = await go(
+        req.url,
+        getQueryParams,
+        prop('id'),
+        app.api.fetchLink,
+      )
       link = fetchRes[0]
     } else {
       //link = app.state.links.find(l => l.id === query.id);
@@ -90,22 +95,6 @@ class Write extends React.Component {
 
     // 인증을 위한 토큰 전달
     this.state.token = app.user.token
-
-    function avoidXSS(link) {
-      return Object.assign({}, link, {
-        url: $m.removeTag(link.url),
-        // title: $m.removeTag(link.title),
-        // desc: $m.removeTag(link.desc),
-        /**
-         * 18.11.19
-         * title과 desc 에서는 tag 를 사용할 수 있도록 허용한다.
-         * 대신에 내용을 보여줄 때 html 태그를 인코딩하여 처리한다.
-         */
-        title: link.title,
-        desc: link.desc,
-        image: $m.removeTag(link.image),
-      })
-    }
 
     if (this.state.id) {
       // 수정할 때
