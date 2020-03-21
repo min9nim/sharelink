@@ -1,8 +1,6 @@
-function $m(sel) {
+export default function $m(sel) {
   return new $m.fn.init(sel)
 }
-
-module.exports = $m
 
 $m.fn = {
   init: function(sel) {
@@ -471,40 +469,6 @@ $m.cancelRemoveAnimation = (dom, delay) => {
   })
 }
 
-/**
- * 18.11.19
- * htmlspecialchars, htmlspecialchars_decode 소스출처: https://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities
- */
-export function htmlspecialchars(str) {
-  if (!str) return ''
-
-  var map = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;', // ' -> &apos; for XML only
-  }
-  return str.replace(/[&<>"']/g, function(m) {
-    return map[m]
-  })
-}
-
-export function htmlspecialchars_decode(str) {
-  if (!str) return ''
-
-  var map = {
-    '&amp;': '&',
-    '&lt;': '<',
-    '&gt;': '>',
-    '&quot;': '"',
-    '&#39;': "'",
-  }
-  return str.replace(/(&amp;|&lt;|&gt;|&quot;|&#39;)/g, function(m) {
-    return map[m]
-  })
-}
-
 export function createTimelog() {
   const newDate = function() {
     let t = new Date()
@@ -541,5 +505,3 @@ export function createTimelog() {
   return o
 }
 export const timelog = createTimelog()
-
-console.log('여기보다 빨라?', typeof createTimelog)

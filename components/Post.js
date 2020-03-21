@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import app from '../src/app'
 import moment from 'moment'
-import $m from '../com/util.js'
-import { _getHostname } from '../com/pure'
+import $m, { createTimelog } from '../com/util'
+import { _getHostname, htmlspecialchars } from '../com/pure'
 import CommentWrite from './CommentWrite'
 import CommentList from './CommentList'
 import RefWrite from './RefWrite'
 import RefPostList from './RefPostList'
-
+import { highlight } from 'mingutils'
 import './Post.scss'
 
 moment.locale('ko')
@@ -94,9 +94,8 @@ class Post extends React.Component {
                 href={link.url}
                 target="_blank"
                 dangerouslySetInnerHTML={{
-                  __html: $m.highlight(
-                    $m.htmlspecialchars(link.title),
-                    app.state.word,
+                  __html: highlight(app.state.word)(
+                    htmlspecialchars(link.title),
                   ),
                 }}
               ></a>
@@ -113,10 +112,7 @@ class Post extends React.Component {
             <div
               className="desc"
               dangerouslySetInnerHTML={{
-                __html: $m.highlight(
-                  $m.htmlspecialchars(link.desc),
-                  app.state.word,
-                ),
+                __html: highlight(app.state.word)(htmlspecialchars(link.desc)),
               }}
             ></div>
             <div className="post-menu">

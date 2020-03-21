@@ -1,9 +1,5 @@
 import fetch from 'isomorphic-unfetch'
 import { _findLink } from '../com/pure'
-import { createTimelog } from '../com/util'
-console.log('머지 이거 이상하네?? typeof createTimelog', typeof createTimelog)
-console.log('머지 이거 이상하네??222 typeof _findLink', typeof _findLink)
-_findLink
 
 const req = async (path, method, body) => {
   try {
