@@ -167,7 +167,7 @@ app.getUser = async req => {
     } else {
       userStr = global.sessionStorage.getItem('user')
     }
-    app.logger.verbose('userStr:', userStr)
+    // app.logger.verbose('userStr:', userStr)
 
     if (!userStr) {
       throw Error('[getInitialProps] 로그인 실패 : user 정보 없음')
