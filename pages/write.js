@@ -287,7 +287,10 @@ class Write extends React.Component {
               </div>
             </div>
             <div>
-              <div className="label">파비콘</div>
+              <div className="label">
+                파비콘
+                <img className="favicon" src={this.state.favicon} />
+              </div>
               <input
                 placeholder=""
                 id="favicon"
