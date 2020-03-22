@@ -25,6 +25,7 @@ class Write extends React.Component {
           title: '',
           desc: '',
           image: '',
+          favicon: '',
           like: [],
           read: [],
           toread: [],
@@ -136,7 +137,7 @@ class Write extends React.Component {
     this.imageInput.setAttribute('placeholder', loadingMessage)
 
     try {
-      const { title, image, desc } = await webscrap(this.state.url)
+      const { title, image, desc, favicon } = await webscrap(this.state.url)
       // console.log({ title, image, desc })
 
       // let { title, image, desc } = await app.api.webscrap(this.state.url);
@@ -144,17 +145,16 @@ class Write extends React.Component {
       // 타이틀 세팅
       if (!this.state.title) {
         // this.state.title = title
-        this.setState({ ...this.state, title })
+        this.setState({ title })
       }
       // 설명세팅
       if (!this.state.desc) {
         // this.state.desc = desc
-        this.setState({ ...this.state, desc })
+        this.setState({ desc })
       }
 
-      //이미지 세팅
-      // this.state.image = image
-      this.setState({ ...this.state, image })
+      // 이미지&파비콘 세팅
+      this.setState({ image, favicon })
 
       // if (image && image.indexOf("http") === 0) {
       //   // http 로 시작하면 그냥 사용
@@ -277,6 +277,24 @@ class Write extends React.Component {
                   this.imageInput = el
                 }}
                 value={this.state.image}
+                onChange={this.handleChange.bind(this)}
+              />
+              <div className="init-btn">
+                <i
+                  className="icon-cancel"
+                  onClick={this.initValue.bind(this)}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="label">파비콘</div>
+              <input
+                placeholder=""
+                id="favicon"
+                ref={el => {
+                  this.faviconInput = el
+                }}
+                value={this.state.favicon}
                 onChange={this.handleChange.bind(this)}
               />
               <div className="init-btn">
