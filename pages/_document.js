@@ -5,43 +5,58 @@
 import Document, { Head, Main, NextScript } from 'next/document'
 
 export default class MyDocument extends Document {
-    static async getInitialProps(ctx) {
-        const initialProps = await Document.getInitialProps(ctx)
-        return { ...initialProps }
-    }
+  static async getInitialProps(ctx) {
+    const initialProps = await Document.getInitialProps(ctx)
+    return { ...initialProps }
+  }
 
-    render() {
-        return (
-            <html>
-                <Head>
-                    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-                    <meta name="theme-color" content="#91171F"></meta>
+  render() {
+    return (
+      <html>
+        <Head>
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+          />
+          <meta name="theme-color" content="#91171F"></meta>
 
-                    {/* 구글로그인 */}
-                    <meta name="google-signin-scope" content="profile email" />
-                    <meta name="google-signin-client_id" content="314955303656-ohiovevqbpms4pguh82fnde7tvo9cqnb.apps.googleusercontent.com" />
-                    {/* <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script> */}
-                    <script src="https://apis.google.com/js/client:plusone.js" type="text/javascript"></script>
+          {/* 구글로그인 */}
+          <meta name="google-signin-scope" content="profile email" />
+          <meta
+            name="google-signin-client_id"
+            content="314955303656-ohiovevqbpms4pguh82fnde7tvo9cqnb.apps.googleusercontent.com"
+          />
+          {/* <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script> */}
+          <script
+            src="https://apis.google.com/js/client:plusone.js"
+            type="text/javascript"
+          ></script>
 
-                    {/* NProgress 모듈 */}
-                    <link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css' />
-                    <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
+          {/* NProgress 모듈 */}
+          <link
+            rel="stylesheet"
+            href="https://unpkg.com/nprogress@0.2.0/nprogress.css"
+          />
+          <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
 
-                    {/* 공통 css */}
-                    <link rel="stylesheet" href="/static/css/style.css"></link>
+          {/* 공통 css */}
+          <link rel="stylesheet" href="/static/css/style.css"></link>
 
-                    {/* Fontello 아이콘 */}
-                    <link rel="stylesheet" href="/static/fontello/css/fontello.css"></link>
-                    <style>{`
+          {/* Fontello 아이콘 */}
+          <link
+            rel="stylesheet"
+            href="/static/fontello/css/fontello.css"
+          ></link>
+          <style>{`
                     /* custom! */
                     
                     `}</style>
-                </Head>
-                <body className="custom_class">
-                    <Main />
-                    <NextScript />
-                </body>
-            </html>
-        )
-    }
+        </Head>
+        <body className="custom_class">
+          <Main />
+          <NextScript />
+        </body>
+      </html>
+    )
+  }
 }
