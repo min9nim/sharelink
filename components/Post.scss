@@ -2,8 +2,6 @@
 $img-width: 200px;
 $img-width-mobile: 100px;
 
-
-
 .PostList > li {
     list-style: none;
     margin-bottom: 20px;
@@ -43,6 +41,10 @@ $img-width-mobile: 100px;
                 .updatedAt {
                     color: #666;
                     margin-left: 5px;
+                }
+                .favicon {
+                    width: 15px;
+                    margin-right: 5px;
                 }
     
             }

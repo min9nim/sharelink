@@ -101,6 +101,7 @@ class Post extends React.Component {
               ></a>
             </div>
             <div className="meta">
+              <img className="favicon" src={link.favicon}></img>
               <div className="url">{_getHostname(link.url)}</div>
               <div className="author-name">
                 {link.author && ' | by ' + link.author.name}

@@ -24,7 +24,7 @@ export default function getAuth(app) {
     // 로그인 관련
     init: () => {
       if (isNode() || global.GoogleAuth || app.router.asPath === '/login') {
-        logger.debug(m => console.log(...m('gapi.load() is not necessary')))
+        // logger.debug(m => console.log(...m('gapi.load() is not necessary')))
         return
       }
 

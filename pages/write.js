@@ -135,6 +135,7 @@ class Write extends React.Component {
     this.titleInput.setAttribute('placeholder', loadingMessage)
     this.descInput.setAttribute('placeholder', loadingMessage)
     this.imageInput.setAttribute('placeholder', loadingMessage)
+    this.faviconInput.setAttribute('placeholder', loadingMessage)
 
     try {
       const { title, image, desc, favicon } = await webscrap(this.state.url)
