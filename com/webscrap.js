@@ -7,5 +7,12 @@ export function webscrap(url) {
     body: JSON.stringify({
       url,
     }),
-  }).then(res => res.json())
+  })
+    .then(res => res.json())
+    .then(({ status, message }) => {
+      if (status === 'Fail') {
+        throw Error(message)
+      }
+      return json
+    })
 }
