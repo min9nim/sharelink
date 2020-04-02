@@ -181,6 +181,9 @@ class Write extends React.Component {
       if (this.state.image === '') {
         this.imageInput.setAttribute('placeholder', '대표 이미지가 없습니다')
       }
+      if (this.state.favicon === '') {
+        this.faviconInput.setAttribute('placeholder', '파비콘이 없습니다')
+      }
     } catch (e) {
       this.titleInput.setAttribute('placeholder', '')
       this.descInput.setAttribute('placeholder', '')

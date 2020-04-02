@@ -9,7 +9,7 @@ export function webscrap(url) {
     }),
   })
     .then(res => res.json())
-    .then(({ status, message }) => {
+    .then(({ status, message, ...json }) => {
       if (status === 'Fail') {
         throw Error(message)
       }
