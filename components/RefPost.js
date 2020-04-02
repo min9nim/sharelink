@@ -5,6 +5,7 @@ import { _getHostname, htmlspecialchars } from '../com/pure'
 import CommentWrite from './CommentWrite'
 import CommentList from './CommentList'
 import RefWrite from './RefWrite'
+import { highlight } from 'mingutils'
 
 import './RefPost.scss'
 
@@ -92,9 +93,8 @@ class RefPost extends React.Component {
                 href={link.url}
                 target="_blank"
                 dangerouslySetInnerHTML={{
-                  __html: $m.highlight(
+                  __html: highlight(app.state.word)(
                     htmlspecialchars(link.title),
-                    app.state.word,
                   ),
                 }}
               ></a>
@@ -111,10 +111,7 @@ class RefPost extends React.Component {
             <div
               className="desc"
               dangerouslySetInnerHTML={{
-                __html: $m.highlight(
-                  htmlspecialchars(link.desc),
-                  app.state.word,
-                ),
+                __html: highlight(app.state.word)(htmlspecialchars(link.desc)),
               }}
             ></div>
             <div className="post-menu">

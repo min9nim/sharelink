@@ -443,15 +443,15 @@ $m.isMobileChrome = function() {
   return !tp.isDesktop() && navigator.userAgent.includes('Chrome')
 }
 
-$m.highlight = function(txt, word) {
-  if (!txt) return ''
+// $m.highlight = function(txt, word) {
+//   if (!txt) return ''
 
-  if (word) {
-    var reg = new RegExp('(' + word + ')', 'gi')
-    txt = txt.replace(reg, '<span style="background-color:yellow;">$1</span>')
-  }
-  return txt
-}
+//   if (word) {
+//     var reg = new RegExp('(' + word + ')', 'gi')
+//     txt = txt.replace(reg, '<span style="background-color:yellow;">$1</span>')
+//   }
+//   return txt
+// }
 
 $m.removeAnimation = (dom, delay) => {
   return new Promise(function(resolve) {
