@@ -186,8 +186,7 @@ class Write extends React.Component {
       this.descInput.setAttribute('placeholder', '')
       this.imageInput.setAttribute('placeholder', '')
       this.faviconInput.setAttribute('placeholder', '')
-      console.error(e.message)
-      alert(e.message)
+      app.logger.error(e.message)
     }
   }
 
