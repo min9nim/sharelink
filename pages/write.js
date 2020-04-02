@@ -182,7 +182,12 @@ class Write extends React.Component {
         this.imageInput.setAttribute('placeholder', '대표 이미지가 없습니다')
       }
     } catch (e) {
+      this.titleInput.setAttribute('placeholder', '')
+      this.descInput.setAttribute('placeholder', '')
+      this.imageInput.setAttribute('placeholder', '')
+      this.faviconInput.setAttribute('placeholder', '')
       console.error(e.message)
+      alert(e.message)
     }
   }
 
