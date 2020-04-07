@@ -67,6 +67,9 @@ export default class List extends React.Component {
       imageLazyLoad()
     }
   }
+  componentDidUpdate() {
+    imageLazyLoad()
+  }
 
   componentWillUnmount() {
     this._ismounted = false
@@ -107,7 +110,6 @@ export default class List extends React.Component {
 }
 
 const onscroll = async () => {
-  //console.log("[global.onscroll] 설마 여기가 모 서버에서도 호출이 되나??")
   // if (global.location.pathname !== "/") {
   //   // 목록화면이 아니면 리턴
   //   return;
@@ -146,7 +148,7 @@ const onscroll = async () => {
     //(app.isMobileChrome() && (scrollTop + clientHeight === scrollHeight - 56))   // 모바일 크롬(55는 위에 statusbar 의 높이 때문인건가)
     (app.isMobileChrome() && scrollTop + clientHeight > scrollHeight - 10) // 모바일 크롬(55는 위에 statusbar 의 높이 때문인건가)
   ) {
-    //스크롤이 마지막일때
+    console.log('api calll ')
 
     //let path = app.state.menu[app.state.menuIdx].path;
     let json = await app.api.fetchList({
@@ -165,7 +167,33 @@ const onscroll = async () => {
   }
 }
 
+const imageObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
+        return
+      }
+      const img = entry.target
+      if (img.dataset.src) {
+        img.src = img.dataset.src
+      } else {
+        img.removeAttribute('src')
+      }
+      img.removeAttribute('data-src')
+      img.classList.remove('lazy')
+      imageObserver.unobserve(img)
+    })
+  },
+  { threshold: 0.5 },
+)
+
 function imageLazyLoad() {
+  const lazyloadImages = document.querySelectorAll('.lazy')
+  console.log('lazyloadImages.length', lazyloadImages.length)
+  lazyloadImages.forEach((item) => imageObserver.observe(item))
+}
+
+function imageLazyLoadPolyfill() {
   let timeout
   function lazyload() {
     if (timeout) {
