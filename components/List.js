@@ -65,18 +65,12 @@ export default class List extends React.Component {
     // global.document.body.onscroll = onscroll
     observeDom(
       document.querySelector('.PostList > li:last-child > .wrapper'),
-      async () => {
-        console.log('마지막 요소 출현..')
-        let json = await app.api.fetchList({
+      () =>
+        app.api.fetchList({
           menuIdx: app.state.menuIdx,
           idx: app.state.links.length,
           cnt: app.PAGEROWS,
-        })
-
-        //if (links.length < app.PAGEROWS) {
-
-        // app.state.isScrollLast = !json.hasNext
-      },
+        }),
     )
 
     imageLazyLoad()
@@ -90,18 +84,13 @@ export default class List extends React.Component {
     if (!lastPost) {
       return
     }
-    observeDom(lastPost, async () => {
-      console.log('마지막 요소 출현..')
-      let json = await app.api.fetchList({
+    observeDom(lastPost, () =>
+      app.api.fetchList({
         menuIdx: app.state.menuIdx,
         idx: app.state.links.length,
         cnt: app.PAGEROWS,
-      })
-
-      //if (links.length < app.PAGEROWS) {
-
-      // app.state.isScrollLast = !json.hasNext
-    })
+      }),
+    )
   }
 
   componentWillUnmount() {
@@ -121,9 +110,6 @@ export default class List extends React.Component {
       intro = `"${app.state.word}" 검색 결과`
     }
 
-    //console.log("app.state.links = " + JSON.stringify(app.state.links, null, 2))
-
-    //console.log("@@ app.state.totalCount = " + app.state.totalCount);
     return (
       <Layout>
         <div className="intro">
@@ -139,64 +125,6 @@ export default class List extends React.Component {
         </ul>
       </Layout>
     )
-  }
-}
-
-const onscroll = async () => {
-  // if (global.location.pathname !== "/") {
-  //   // 목록화면이 아니면 리턴
-  //   return;
-  // }
-
-  // 현재 목록화면 scrollTop 의 값
-  const scrollTop = Math.floor(
-    Math.max(document.documentElement.scrollTop, document.body.scrollTop),
-  )
-
-  // 현재 스크롤 값을 전역변수에 저장
-  app.scrollTop = scrollTop
-
-  if (app.state.isScrollLast) return
-
-  /**
-   * 18.11.05
-   * 추가 10개 로드전 다시한번 요청이 올라가는 문제를 막기위해 아래 조건 추가
-   */
-  if (app.view.List.state.loading) return
-
-  //현재문서의 높이
-  const scrollHeight = Math.max(
-    document.documentElement.scrollHeight,
-    document.body.scrollHeight,
-  )
-  //현재 화면 높이 값
-  const clientHeight = document.documentElement.clientHeight
-
-  // console.log("scrollTop : " + scrollTop)
-  // console.log("clientHeight : " + clientHeight)
-  // console.log("scrollHeight : " + scrollHeight)
-
-  if (
-    scrollTop + clientHeight == scrollHeight || // 일반적인 경우(데스크탑: 크롬/파폭, 아이폰: 사파리)
-    //(app.isMobileChrome() && (scrollTop + clientHeight === scrollHeight - 56))   // 모바일 크롬(55는 위에 statusbar 의 높이 때문인건가)
-    (app.isMobileChrome() && scrollTop + clientHeight > scrollHeight - 10) // 모바일 크롬(55는 위에 statusbar 의 높이 때문인건가)
-  ) {
-    console.log('api calll ')
-
-    //let path = app.state.menu[app.state.menuIdx].path;
-    let json = await app.api.fetchList({
-      menuIdx: app.state.menuIdx,
-      idx: app.state.links.length,
-      cnt: app.PAGEROWS,
-    })
-
-    //if (links.length < app.PAGEROWS) {
-
-    app.state.isScrollLast = !json.hasNext
-
-    if (!json.hasNext) {
-      console.log('All links loaded')
-    }
   }
 }
 
@@ -226,7 +154,6 @@ function imageLazyLoad() {
     img.classList.remove('lazy')
   }
   const lazyloadImages = document.querySelectorAll('.lazy')
-  console.log('lazyloadImages.length', lazyloadImages.length)
   lazyloadImages.forEach((item) => observeDom(item, loadImage))
 }
 
