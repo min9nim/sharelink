@@ -30,29 +30,6 @@ const remove = async (post, dom) => {
   }
 }
 
-const likeClick = (isLike, link) => {
-  if (isLike) {
-    app.api.unlike(link)
-  } else {
-    app.api.like(link)
-  }
-}
-
-const readClick = (isRead, link) => {
-  if (isRead) {
-    app.api.unread(link)
-  } else {
-    app.api.read(link)
-  }
-}
-const toreadClick = (isToread, link) => {
-  if (isToread) {
-    app.api.untoread(link)
-  } else {
-    app.api.toread(link)
-  }
-}
-
 class Post extends React.Component {
   constructor(props) {
     super(props)
@@ -79,9 +56,6 @@ class Post extends React.Component {
   render() {
     // console.log("Post 렌더링 " + this.state.commentClicked)
     const { link } = this.props
-    const isLike = link.like && link.like.includes(app.user.id)
-    const isRead = link.read && link.read.includes(app.user.id)
-    const isToread = link.toread && link.toread.includes(app.user.id)
 
     return (
       <li
@@ -103,7 +77,11 @@ class Post extends React.Component {
               ></a>
             </div>
             <div className="meta">
-              <img className="lazy favicon" data-src={link.favicon}></img>
+              <img
+                className="lazy favicon"
+                data-src={link.favicon}
+                src="/static/loading.gif"
+              />
               <div className="url">{_getHostname(link.url)}</div>
               <div className="author-name">
                 {link.author && ' | by ' + link.author.name}
@@ -121,12 +99,7 @@ class Post extends React.Component {
             <div className="post-menu">
               {app.auth.isLogin() && (
                 <PostButton
-                  isLike={isLike}
-                  isRead={isRead}
-                  isToread={isToread}
-                  likeClick={() => likeClick(isLike, link)}
-                  readClick={() => readClick(isRead, link)}
-                  toreadClick={() => toreadClick(isToread, link)}
+                  link={link}
                   commentClick={() => this.commentClick()}
                   refClick={() => this.refClick()}
                 />
@@ -162,7 +135,11 @@ class Post extends React.Component {
             <CommentList comments={link.comments} />
           </div>
           <div className="right">
-            <img className="lazy" data-src={link.image}></img>
+            <img
+              className="lazy"
+              data-src={link.image}
+              src="/static/loading.gif"
+            ></img>
           </div>
         </div>
         {link.refLinks && <RefPostList refLinks={link.refLinks} />}
