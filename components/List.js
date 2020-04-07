@@ -3,7 +3,6 @@ import Post from './Post.js'
 import LinkLoading from './LinkLoading.js'
 import app from '../src/app'
 import './List.scss'
-// import { timelog } from '../com/util.js'
 
 export default class List extends React.Component {
   constructor(props) {
@@ -72,7 +71,6 @@ export default class List extends React.Component {
           cnt: app.PAGEROWS,
         }),
     )
-
     imageLazyLoad()
   }
   componentDidUpdate() {
@@ -155,37 +153,4 @@ function imageLazyLoad() {
   }
   const lazyloadImages = document.querySelectorAll('.lazy')
   lazyloadImages.forEach((item) => observeDom(item, loadImage))
-}
-
-function imageLazyLoadPolyfill() {
-  let timeout
-  function lazyload() {
-    if (timeout) {
-      clearTimeout(timeout)
-    }
-    timeout = setTimeout(function () {
-      let lazyloadImages = document.querySelectorAll('img.lazy')
-      lazyloadImages.forEach(function (img) {
-        if (img.offsetTop >= window.innerHeight + window.pageYOffset) {
-          return
-        }
-        if (img.dataset.src) {
-          img.src = img.dataset.src
-        } else {
-          img.removeAttribute('src')
-        }
-        img.removeAttribute('data-src')
-        img.classList.remove('lazy')
-      })
-      if (lazyloadImages.length == 0) {
-        document.removeEventListener('scroll', lazyload)
-        window.removeEventListener('resize', lazyload)
-        window.removeEventListener('orientationChange', lazyload)
-      }
-    }, 500)
-  }
-  lazyload()
-  document.addEventListener('scroll', lazyload)
-  window.addEventListener('resize', lazyload)
-  window.addEventListener('orientationChange', lazyload)
 }
