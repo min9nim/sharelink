@@ -1,131 +1,135 @@
-@import "../com/com.scss";
+@import '../com/com.scss';
 $img-width: 200px;
 $img-width-mobile: 100px;
 
 .PostList > li {
-    list-style: none;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    .wrapper {
+  list-style: none;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  .wrapper {
+    display: flex;
+
+    .left {
+      flex: 1;
+      .title {
+        font-size: 17px;
+        font-weight: bold;
+        a:-webkit-any-link {
+          color: #555;
+        }
+      }
+      .meta {
+        //display: flex;
+        font-size: 14px;
+        margin-top: 1px;
+        margin-bottom: 2px;
+        div {
+          display: inline-block;
+        }
+        .url {
+          color: $site-color-light;
+          margin: 2px 0px;
+          //font-size: 13px;
+        }
+        .author-name {
+          color: #666;
+          margin-left: 5px;
+          //font-size: 13px;
+        }
+        .updatedAt {
+          color: #666;
+          margin-left: 5px;
+        }
+        .favicon {
+          width: 15px;
+          margin-right: 5px;
+        }
+      }
+      .desc {
+        font-size: 12px;
+        color: #999;
+        max-height: 33px;
+        overflow: hidden;
+        line-height: 16px;
+      }
+      .post-menu {
+        // margin-top: 11px;
+        // margin-bottom: 5px;
         display: flex;
-        
-        .left {
-            flex: 1;
-            .title {
-                font-size: 17px;
-                font-weight: bold;
-                a:-webkit-any-link {
-                    color: #555;
-                }
-            }
-            .meta {
-                //display: flex;
-                font-size: 14px;
-                margin-top: 1px;
-                margin-bottom: 2px;
-                div {
-                    display: inline-block;
-                }
-                .url {
-                    color: $site-color-light;
-                    margin: 2px 0px;
-                    //font-size: 13px;
-                }
-                .author-name {
-                    color: #666;
-                    margin-left: 5px;
-                    //font-size: 13px;
 
-                }
-                .updatedAt {
-                    color: #666;
-                    margin-left: 5px;
-                }
-                .favicon {
-                    width: 15px;
-                    margin-right: 5px;
-                }
-    
-            }
-            .desc {
-                font-size: 12px;
-                color: #999;
-                max-height: 33px;
-                overflow: hidden;
-                line-height: 16px;
-            }
-            .post-menu {
-                // margin-top: 11px;
-                // margin-bottom: 5px;
-                display: flex;
-
-                div {
-                    margin-right: 5px;
-                    color: #888;
-                    font-size: 11px;
-                    width: 43px;
-                    cursor: pointer;
-                    border: 1px solid #ddd;
-                    padding: 4px;
-                    /* margin: 3px; */
-                    background-color: #fafafa;
-                    border-radius: 8px;
-                }
-
-                .sns-btn, .edit-btn, .delete-btn {
-                    margin-top: 6px;
-                    width: 20px;
-                    font-size: 14px;
-                    padding: 2px;
-                }
-
-                .marked {
-                    color: black;
-                    background-color: #ddd;
-                }
-
-                .comment-btn, .edit-btn {
-                    margin-left: 15px;
-                }
-
-
-                div:hover {
-                    font-weight: bold;
-                    color: #444;
-                }
-            }
-            a {
-                text-decoration: none;
-                font-family: "Arial";
-            }
-            a:hover {
-                opacity: 0.6;
-            }
+        div {
+          margin-right: 5px;
+          color: #888;
+          font-size: 11px;
+          width: 43px;
+          cursor: pointer;
+          border: 1px solid #ddd;
+          padding: 4px;
+          /* margin: 3px; */
+          background-color: #fafafa;
+          border-radius: 8px;
         }
-        .right {
-            text-align: center;
-            margin-left: 10px;
-            width: $img-width;
-            img {
-                max-height: 150px;
-                max-width: $img-width;
-            }
+
+        .sns-btn,
+        .edit-btn,
+        .delete-btn {
+          margin-top: 6px;
+          width: 20px;
+          font-size: 14px;
+          padding: 2px;
         }
+
+        .marked {
+          color: black;
+          background-color: #ddd;
+        }
+
+        .comment-btn,
+        .edit-btn {
+          margin-left: 15px;
+        }
+
+        div:hover {
+          font-weight: bold;
+          color: #444;
+        }
+      }
+      a {
+        text-decoration: none;
+        font-family: 'Arial';
+      }
+      a:hover {
+        opacity: 0.6;
+      }
     }
+    .right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: $img-width;
+      img {
+        max-height: 150px;
+        max-width: $img-width;
+      }
+      img.lazy {
+        width: 30px;
+      }
+    }
+  }
 }
 
 @include mobile() {
-    .PostList > li .wrapper .right {
-        //width: $img-width-mobile; 
-        /**
+  .PostList > li .wrapper .right {
+    //width: $img-width-mobile;
+    /**
         * 18.11.02
         * 모바일환경에서 이미지가 없는 경우에는 이미지영역까지 왼쪽 영역이 밀고 들어올 수 있도록 하기 위해 아래와 같이 수정함
         */
-        // 
-        width: initial;
-        img {
-            max-width: $img-width-mobile;
-        }
+    //
+    width: initial;
+    img {
+      max-width: $img-width-mobile;
     }
+  }
 }
