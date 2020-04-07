@@ -166,18 +166,15 @@ const onscroll = async () => {
 }
 
 function imageLazyLoad() {
-  var lazyloadImages = document.querySelectorAll('img.lazy')
-  console.log('imageLazyLoad', lazyloadImages)
-  var timeout
+  let timeout
   function lazyload() {
     if (timeout) {
       clearTimeout(timeout)
     }
     timeout = setTimeout(function () {
-      var lazyloadImages = document.querySelectorAll('img.lazy')
-      var scrollTop = window.pageYOffset
+      let lazyloadImages = document.querySelectorAll('img.lazy')
       lazyloadImages.forEach(function (img) {
-        if (img.offsetTop >= window.innerHeight + scrollTop) {
+        if (img.offsetTop >= window.innerHeight + window.pageYOffset) {
           return
         }
         if (img.dataset.src) {
