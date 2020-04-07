@@ -167,8 +167,23 @@ const onscroll = async () => {
   }
 }
 
+function observeDom(dom, callback) {
+  new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return
+        }
+        callback(entry.target)
+        observer.unobserve(entry.target)
+      })
+    },
+    { threshold: 0.5 },
+  ).observe(dom)
+}
+
 function imageLazyLoad() {
-  function loadImage(img) {
+  const loadImage = (img) => {
     if (img.dataset.src) {
       img.src = img.dataset.src
     } else {
@@ -177,23 +192,9 @@ function imageLazyLoad() {
     img.removeAttribute('data-src')
     img.classList.remove('lazy')
   }
-  const imageObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-          return
-        }
-        const img = entry.target
-        loadImage(img)
-        imageObserver.unobserve(img)
-      })
-    },
-    { threshold: 0.5 },
-  )
-
   const lazyloadImages = document.querySelectorAll('.lazy')
   console.log('lazyloadImages.length', lazyloadImages.length)
-  lazyloadImages.forEach((item) => imageObserver.observe(item))
+  lazyloadImages.forEach((item) => observeDom(item, loadImage))
 }
 
 function imageLazyLoadPolyfill() {
