@@ -62,13 +62,46 @@ export default class List extends React.Component {
       // console.log("이동 후스크롤 위치 값 = " + app.scrollTop);
     }, 1000)
 
-    if (global.document) {
-      global.document.body.onscroll = onscroll
-      imageLazyLoad()
-    }
+    // global.document.body.onscroll = onscroll
+    observeDom(
+      document.querySelector('.PostList > li:last-child > .wrapper'),
+      async () => {
+        console.log('마지막 요소 출현..')
+        let json = await app.api.fetchList({
+          menuIdx: app.state.menuIdx,
+          idx: app.state.links.length,
+          cnt: app.PAGEROWS,
+        })
+
+        //if (links.length < app.PAGEROWS) {
+
+        // app.state.isScrollLast = !json.hasNext
+      },
+    )
+
+    imageLazyLoad()
   }
   componentDidUpdate() {
     imageLazyLoad()
+    const lastPost = document.querySelector(
+      '.PostList > li:last-child > .wrapper',
+    )
+    console.log('lastPost', lastPost)
+    if (!lastPost) {
+      return
+    }
+    observeDom(lastPost, async () => {
+      console.log('마지막 요소 출현..')
+      let json = await app.api.fetchList({
+        menuIdx: app.state.menuIdx,
+        idx: app.state.links.length,
+        cnt: app.PAGEROWS,
+      })
+
+      //if (links.length < app.PAGEROWS) {
+
+      // app.state.isScrollLast = !json.hasNext
+    })
   }
 
   componentWillUnmount() {
