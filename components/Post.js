@@ -8,6 +8,8 @@ import CommentList from './CommentList'
 import RefWrite from './RefWrite'
 import RefPostList from './RefPostList'
 import { highlight } from 'mingutils'
+import PostButton from './PostButton'
+
 import './Post.scss'
 
 moment.locale('ko')
@@ -118,43 +120,16 @@ class Post extends React.Component {
             ></div>
             <div className="post-menu">
               {app.auth.isLogin() && (
-                <React.Fragment>
-                  <div
-                    className={isLike ? 'sns-btn marked' : 'sns-btn'}
-                    title="좋아요"
-                    onClick={() => likeClick(isLike, link)}
-                  >
-                    <i className="icon-thumbs-up" />
-                  </div>
-                  <div
-                    className={isRead ? 'sns-btn marked' : 'sns-btn'}
-                    title="읽음표시"
-                    onClick={() => readClick(isRead, link)}
-                  >
-                    <i className="icon-ok" />
-                  </div>
-                  <div
-                    className={isToread ? 'sns-btn marked' : 'sns-btn'}
-                    title="읽을 글 표시"
-                    onClick={() => toreadClick(isToread, link)}
-                  >
-                    <i className="icon-basket" />
-                  </div>
-                  <div
-                    className="sns-btn comment-btn"
-                    title="댓글"
-                    onClick={this.commentClick.bind(this)}
-                  >
-                    <i className="icon-comment-empty" />
-                  </div>
-                  <div
-                    className="sns-btn"
-                    title="관련글"
-                    onClick={this.refClick.bind(this)}
-                  >
-                    <i className="icon-doc-new" />
-                  </div>
-                </React.Fragment>
+                <PostButton
+                  isLike={isLike}
+                  isRead={isRead}
+                  isToread={isToread}
+                  likeClick={() => likeClick(isLike, link)}
+                  readClick={() => readClick(isRead, link)}
+                  toreadClick={() => toreadClick(isToread, link)}
+                  commentClick={() => this.commentClick()}
+                  refClick={() => this.refClick()}
+                />
               )}
               {app.auth.isLogin() && link.author.id === app.user.id && (
                 <React.Fragment>
