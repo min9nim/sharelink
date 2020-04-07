@@ -83,7 +83,7 @@ class Post extends React.Component {
 
     return (
       <li
-        ref={el => {
+        ref={(el) => {
           this.dom = el
         }}
       >
@@ -101,7 +101,7 @@ class Post extends React.Component {
               ></a>
             </div>
             <div className="meta">
-              <img className="favicon" src={link.favicon}></img>
+              <img className="lazy favicon" data-src={link.favicon}></img>
               <div className="url">{_getHostname(link.url)}</div>
               <div className="author-name">
                 {link.author && ' | by ' + link.author.name}
@@ -187,7 +187,7 @@ class Post extends React.Component {
             <CommentList comments={link.comments} />
           </div>
           <div className="right">
-            <img src={link.image}></img>
+            <img className="lazy" data-src={link.image}></img>
           </div>
         </div>
         {link.refLinks && <RefPostList refLinks={link.refLinks} />}

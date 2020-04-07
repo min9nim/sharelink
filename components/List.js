@@ -37,7 +37,7 @@ export default class List extends React.Component {
   }
 
   static async getInitialProps({ req, asPath }) {
-    let menuIdx = app.state.menu.findIndex(m => m.path === asPath)
+    let menuIdx = app.state.menu.findIndex((m) => m.path === asPath)
     let [user, fetchRes] = await Promise.all([
       app.getUser(req),
       app.api.fetchList({ menuIdx }),
@@ -57,13 +57,14 @@ export default class List extends React.Component {
      * delay를 줘도 스크롤 위치 보정이 잘 안된다;
      */
     // console.log("이동할 스크롤 위치 값 = " + app.scrollTop);
-    setTimeout(function() {
+    setTimeout(function () {
       app.$m.scrollTo(0, app.scrollTop) // 이전 스크롤 위치로 복원
       // console.log("이동 후스크롤 위치 값 = " + app.scrollTop);
     }, 1000)
 
     if (global.document) {
       global.document.body.onscroll = onscroll
+      imageLazyLoad()
     }
   }
 
@@ -94,11 +95,11 @@ export default class List extends React.Component {
         </div>
         {/* <div className="intro">{"* " + intro}</div> */}
         <ul className="PostList">
-          {app.state.links.map(link => {
+          {app.state.links.map((link) => {
             return <Post key={link.id} link={link} />
           })}
           {this.state.loading &&
-            [0, 1, 2, 3, 4].map(v => <LinkLoading key={v} />)}
+            [0, 1, 2, 3, 4].map((v) => <LinkLoading key={v} />)}
         </ul>
       </Layout>
     )
@@ -162,4 +163,34 @@ const onscroll = async () => {
       console.log('All links loaded')
     }
   }
+}
+
+function imageLazyLoad() {
+  var lazyloadImages = document.querySelectorAll('img.lazy')
+  console.log('imageLazyLoad', lazyloadImages)
+  var timeout
+  function lazyload() {
+    if (timeout) {
+      clearTimeout(timeout)
+    }
+    timeout = setTimeout(function () {
+      var lazyloadImages = document.querySelectorAll('img.lazy')
+      var scrollTop = window.pageYOffset
+      lazyloadImages.forEach(function (img) {
+        if (img.offsetTop < window.innerHeight + scrollTop) {
+          img.src = img.dataset.src
+          img.classList.remove('lazy')
+        }
+      })
+      if (lazyloadImages.length == 0) {
+        document.removeEventListener('scroll', lazyload)
+        window.removeEventListener('resize', lazyload)
+        window.removeEventListener('orientationChange', lazyload)
+      }
+    }, 500)
+  }
+  lazyload()
+  document.addEventListener('scroll', lazyload)
+  window.addEventListener('resize', lazyload)
+  window.addEventListener('orientationChange', lazyload)
 }
