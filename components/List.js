@@ -16,7 +16,7 @@ export default function List(props) {
   }, [props.fetchRes])
 
   useEffect(() => {
-    app.logger.debug('app.state.links 변화 감지', app.state.links.length)
+    // app.logger.debug('app.state.links 변화 감지', app.state.links.length)
     /**
      * 18.11.02
      * delay를 줘도 스크롤 위치 보정이 잘 안된다;
@@ -41,7 +41,6 @@ export default function List(props) {
     intro = `"${app.state.word}" 검색 결과`
   }
   const { links, totalCount } = props.state
-  console.log('List render', props.state, totalCount, props.state.totalCount)
 
   return (
     <Layout>
@@ -86,7 +85,7 @@ function imageLazyLoad() {
 let observingLast = false
 function infiniteLoading() {
   if (observingLast) {
-    app.logger.debug('지켜보고 있는 중', app.state.links.length, observingLast)
+    // app.logger.debug('지켜보고 있는 중', app.state.links.length, observingLast)
     return
   }
   const lastPost = document.querySelector(
@@ -96,12 +95,12 @@ function infiniteLoading() {
     app.logger.verbose('not found lastPost')
     return
   }
-  app.logger.debug(
-    '마지막 요소 지켜보기 설정:',
-    app.state.links.length,
-    observingLast,
-    lastPost,
-  )
+  // app.logger.debug(
+  //   '마지막 요소 지켜보기 설정:',
+  //   app.state.links.length,
+  //   observingLast,
+  //   lastPost,
+  // )
   observeDom(lastPost, () => {
     app.logger.debug('fetch call')
     app.api.fetchList({

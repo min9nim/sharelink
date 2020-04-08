@@ -121,19 +121,13 @@ export default function getApi(app) {
         }
       }
 
-      console.log('menuIdx', menuIdx)
       let path =
         '/links' + app.state.menu[menuIdx].path + '?idx=' + idx + '&cnt=' + cnt
       if (word) {
         path += '&word=' + word
       }
 
-      // console.log('typeof createTimelog', typeof createTimelog)
-      // let tl = createTimelog()
-      // tl.start('패치 시작: [' + path + ']')
       let fetchRes = await req(path, 'GET')
-      // tl.check('패치 끝')
-      //console.log("@@@ " + JSON.stringify(fetchRes, null, 2))
 
       if (fetchRes.status === 'Fail') {
         return
@@ -143,10 +137,7 @@ export default function getApi(app) {
       if (fetchRes.links.length == 0) {
         fetchRes.hasNext = false // 18.12.31 links 길이가 0인데 hasNext 가 true로 떨어지는 경우가 있어서 보정함.
       } else {
-        app.logger.debug('하나', app.state.links.length, fetchRes.links.length)
         app.state.links.push(...fetchRes.links)
-        app.logger.debug('둘', app.state.links.length)
-
         if (app.setState) {
           app.setState({ ...app.state })
         }
