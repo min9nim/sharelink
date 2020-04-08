@@ -2,39 +2,29 @@ import fetch from 'isomorphic-unfetch'
 import { _findLink } from '../com/pure'
 
 const req = async (path, method, body) => {
-  try {
-    //global.NProgress && global.NProgress.start();
-    global.NProgress?.start()
-    //console.log("@@@@ fetch 호출전 path = " + path)
-    let opt = {
-      method,
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-access-token': app.user.token,
-      },
-    }
-
-    //console.log("@@@@ fetch 호출전 app.user.token = " + JSON.stringify(opt, null, 2))
-    console.log('url = ' + app.BACKEND + path)
-    let res = await fetch(app.BACKEND + path, opt)
-    //global.NProgress && global.NProgress.done();
-    global.NProgress?.done()
-
-    if (res.status === 200) {
-      let json = await res.json()
-      if (json.status === 'Fail') {
-        console.log(json.message)
-      }
-      return json
-    } else {
-      throw new Error(path + ' : ' + 'status[' + res.status + ']')
-    }
-  } catch (e) {
-    //console.error(e);
-    throw e
-    //global.alert && global.alert(e.message);
+  //global.NProgress && global.NProgress.start();
+  global.NProgress?.start()
+  //console.log("@@@@ fetch 호출전 path = " + path)
+  let opt = {
+    method,
+    body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': app.user.token,
+    },
   }
+
+  let res = await fetch(app.BACKEND + path, opt)
+  global.NProgress?.done()
+
+  if (!res.ok) {
+    throw new Error(path + ' : ' + '[' + res.status + ']')
+  }
+  let json = await res.json()
+  if (json.status === 'Fail') {
+    throw Error(json.message)
+  }
+  return json
 }
 
 export default function getApi(app) {
@@ -42,17 +32,15 @@ export default function getApi(app) {
     // 링크삭제
     deleteLink: async (link) => {
       let json = await req('/links/', 'DELETE', { id: link.id })
-      if (json.status !== 'Fail') {
-        app.state.totalCount--
-        if (link.linkID) {
-          // 관련 링크를 삭제하는 경우
-          let parentLink = app.state.links.find((l) => l.id === link.linkID)
-          parentLink.refLinks = parentLink.refLinks.filter(
-            (l) => l.id !== link.id,
-          )
-        } else {
-          app.state.links = app.state.links.filter((l) => l.id !== link.id)
-        }
+      app.state.totalCount--
+      if (link.linkID) {
+        // 관련 링크를 삭제하는 경우
+        let parentLink = app.state.links.find((l) => l.id === link.linkID)
+        parentLink.refLinks = parentLink.refLinks.filter(
+          (l) => l.id !== link.id,
+        )
+      } else {
+        app.state.links = app.state.links.filter((l) => l.id !== link.id)
       }
       return json
     },
@@ -60,24 +48,16 @@ export default function getApi(app) {
     // 링크추가
     postLink: async (link) => {
       let res = await req('/links', 'POST', link)
-      //app.state.links.push(res.output);
-      if (res.status === 'Fail') {
-        console.log('등록 실패 : ' + res.message)
-        //alert("등록 실패 : " + res.message)
-      } else {
-        app.state.totalCount++
-        if (res.output.linkID) {
-          // 관련글 등록인 경우
-          let parentLink = app.state.links.find(
-            (l) => l.id === res.output.linkID,
-          )
-          if (!parentLink.refLinks) {
-            parentLink.refLinks = []
-          }
-          parentLink.refLinks.push(res.output)
-        } else {
-          app.state.links.unshift(res.output)
+      app.state.totalCount++
+      if (res.output.linkID) {
+        // 관련글 등록인 경우
+        let parentLink = app.state.links.find((l) => l.id === res.output.linkID)
+        if (!parentLink.refLinks) {
+          parentLink.refLinks = []
         }
+        parentLink.refLinks.push(res.output)
+      } else {
+        app.state.links.unshift(res.output)
       }
     },
 
