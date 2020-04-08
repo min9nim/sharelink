@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import app from '../src/app'
 import moment from 'moment'
 import { _getHostname, htmlspecialchars } from '../com/pure'
@@ -6,50 +5,10 @@ import CommentWrite from './CommentWrite'
 import CommentList from './CommentList'
 import RefWrite from './RefWrite'
 import { highlight } from 'mingutils'
-import $m from '../com/util'
-
+import PostButton from './PostButton'
 import './RefPost.scss'
 
 moment.locale('ko')
-
-const remove = async (post, dom) => {
-  if (!confirm('삭제합니다')) {
-    return
-  }
-
-  // 애니메이션 시작
-  //await $m.removeAnimation(dom, 0.2)
-  $m.removeAnimation(dom, 0.2)
-
-  // DB 삭제처리
-  let json = await app.api.deleteLink(post)
-  if (json.status === 'Fail') {
-    $m.cancelRemoveAnimation(dom, 0.2)
-  }
-}
-
-const likeClick = (isLike, link) => {
-  if (isLike) {
-    app.api.unlike(link)
-  } else {
-    app.api.like(link)
-  }
-}
-
-const readClick = (isRead, link) => {
-  if (isRead) {
-    app.api.unread(link)
-  } else {
-    app.api.read(link)
-  }
-}
-const toreadClick = (isToread, link) => {
-  if (isToread) {
-    app.api.untoread(link)
-  } else {
-    app.api.toread(link)
-  }
-}
 
 class RefPost extends React.Component {
   constructor(props) {
@@ -75,18 +34,10 @@ class RefPost extends React.Component {
   }
 
   render() {
-    // console.log("RefPost 렌더링 " + this.state.commentClicked)
     const { link } = this.props
-    const isLike = link.like && link.like.includes(app.user.id)
-    const isRead = link.read && link.read.includes(app.user.id)
-    const isToread = link.toread && link.toread.includes(app.user.id)
 
     return (
-      <li
-        ref={(el) => {
-          this.dom = el
-        }}
-      >
+      <li id={link.id}>
         <div className="wrapper">
           <div className="left">
             <div className="title">
@@ -117,55 +68,11 @@ class RefPost extends React.Component {
             ></div>
             <div className="post-menu">
               {app.auth.isLogin() && (
-                <React.Fragment>
-                  <div
-                    className={isLike ? 'sns-btn marked' : 'sns-btn'}
-                    title="좋아요"
-                    onClick={() => likeClick(isLike, link)}
-                  >
-                    <i className="icon-thumbs-up" />
-                  </div>
-                  <div
-                    className={isRead ? 'sns-btn marked' : 'sns-btn'}
-                    title="읽음표시"
-                    onClick={() => readClick(isRead, link)}
-                  >
-                    <i className="icon-ok" />
-                  </div>
-                  <div
-                    className={isToread ? 'sns-btn marked' : 'sns-btn'}
-                    title="읽을 글 표시"
-                    onClick={() => toreadClick(isToread, link)}
-                  >
-                    <i className="icon-basket" />
-                  </div>
-                  <div
-                    className="sns-btn comment-btn"
-                    title="댓글"
-                    onClick={this.commentClick.bind(this)}
-                  >
-                    <i className="icon-comment-empty" />
-                  </div>
-                  {/* <div className="sns-btn" title="관련글" onClick={this.refClick.bind(this)}>
-                    <i className="icon-doc-new" />
-                  </div> */}
-                </React.Fragment>
-              )}
-              {app.auth.isLogin() && link.author.id === app.user.id && (
-                <React.Fragment>
-                  <Link href={`/write?id=${link.id}`}>
-                    <div className="edit-btn" title="수정">
-                      <i className="icon-pencil" />
-                    </div>
-                  </Link>
-                  <div
-                    className="delete-btn"
-                    title="삭제"
-                    onClick={() => remove(link, this.dom)}
-                  >
-                    <i className="icon-trash-empty" />
-                  </div>
-                </React.Fragment>
+                <PostButton
+                  link={link}
+                  commentClick={() => this.commentClick()}
+                  refClick={() => this.refClick()}
+                />
               )}
             </div>
             {this.state.commentClicked && (
