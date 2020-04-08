@@ -1,7 +1,5 @@
-import Link from 'next/link'
 import app from '../src/app'
 import moment from 'moment'
-import $m, { createTimelog } from '../com/util'
 import { _getHostname, htmlspecialchars } from '../com/pure'
 import CommentWrite from './CommentWrite'
 import CommentList from './CommentList'
@@ -79,6 +77,7 @@ export default class Post extends React.Component {
             <div className="post-menu">
               {app.auth.isLogin() && (
                 <PostButton
+                  isChild={this.props.isChild}
                   link={link}
                   commentClick={() => this.commentClick()}
                   refClick={() => this.refClick()}
