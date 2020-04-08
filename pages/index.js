@@ -1,34 +1,30 @@
 import List from '../components/List.js'
 import app from '../src/app'
 import { useState, useEffect } from 'react'
+import { isNode } from 'if-logger'
 
 export default function Index(props) {
   const [state, setState] = useState({ ...app.state, ...props.fetchRes })
-  app.logger.debug(
-    'Index 렌더',
-    state.links.length,
-    props.fetchRes.links.length,
-  )
+  // app.logger.debug(
+  //   'Index 렌더',
+  //   state.links.length,
+  //   props.fetchRes.links.length,
+  // )
   app.setState = setState
 
   useEffect(() => {
-    if (props.user?.id) {
-      app.state.userID = props.user.id
-      app.user = props.user
-      global.sessionStorage &&
-        global.sessionStorage.setItem('user', JSON.stringify(app.user))
-    } else {
-      if (global.document) {
-        // 클라이언트에서 실행시
-        app.auth.signOut()
+    if (!props.user?.id) {
+      if (isNode()) {
+        return
       }
+      app.auth.signOut()
+      return
     }
+    app.state.userID = props.user.id
+    app.user = props.user
+    global.sessionStorage?.setItem('user', JSON.stringify(app.user))
   }, [props.user])
 
-  useEffect(() => {
-    app.logger.debug('Index useEffect')
-    setState({ ...state, ...props.fetchRes })
-  }, [props.fetchRes])
   return <List state={state} />
 }
 
@@ -44,37 +40,3 @@ Index.getInitialProps = async ({ req, asPath }) => {
     user,
   }
 }
-
-// export default class Index extends React.Component {
-//   constructor(props) {
-//     console.log('Index  생성자 ', props)
-//     super(props)
-//     app.state.totalCount = props.fetchRes.totalCount
-//   }
-//   componentDidMount() {
-//     console.log('Index  componentDidMount ', this.props)
-
-//     app.view.Index = this
-//     this._ismounted = true
-//   }
-//   componentWillUnmount() {
-//     this._ismounted = false
-//   }
-//   static async getInitialProps({ req, asPath }) {
-//     let menuIdx = app.state.menu.findIndex((m) => m.path === asPath)
-//     let [user, fetchRes] = await Promise.all([
-//       app.getUser(req),
-//       app.api.fetchList({ menuIdx }),
-//     ])
-//     return {
-//       menuIdx,
-//       fetchRes,
-//       user,
-//     }
-//   }
-
-//   render() {
-//     console.log('Index render', app.state)
-//     return <List {...this.props} state={app.state} />
-//   }
-// }

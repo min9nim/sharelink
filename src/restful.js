@@ -139,30 +139,16 @@ export default function getApi(app) {
         return
       }
 
-      //console.log("@@ 여기서는? " + JSON.stringify(json, null, 2))
-
-      if (app.view.List) {
-        app.view.List.state.loading = false
-      }
-
       app.state.totalCount = fetchRes.totalCount
       if (fetchRes.links.length == 0) {
-        //app.view.List && app.view.List._ismounted && app.view.List.forceUpdate();
-        app.view.List?._ismounted && app.view.List.forceUpdate()
         fetchRes.hasNext = false // 18.12.31 links 길이가 0인데 hasNext 가 true로 떨어지는 경우가 있어서 보정함.
       } else {
         app.logger.debug('하나', app.state.links.length, fetchRes.links.length)
         app.state.links.push(...fetchRes.links)
-        // app.state.links = app.state.links.concat(fetchRes.links)
         app.logger.debug('둘', app.state.links.length)
 
         if (app.setState) {
-          app.logger.debug('셋-1', app.state.links.length)
-          // const newLink = app.state.links.concat(fetchRes.links)
           app.setState({ ...app.state })
-          app.logger.debug('셋-2', app.state.links.length)
-          // app.state = state
-        } else {
         }
       }
 
