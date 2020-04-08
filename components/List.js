@@ -68,7 +68,6 @@ export default class List extends React.Component {
 
   componentWillUnmount() {
     this._ismounted = false
-    //console.log("저장된 스크롤 값 = " + app.scrollTop)
     global.document.body.onscroll = undefined
   }
 
@@ -130,21 +129,21 @@ function imageLazyLoad() {
 let observingLast = false
 function infiniteLoading() {
   if (observingLast) {
-    app.logger.debug('지켜보고 있는 중', app.state.links.length, observingLast)
+    // app.logger.debug('지켜보고 있는 중', app.state.links.length, observingLast)
     return
   }
   const lastPost = document.querySelector(
     '.PostList > li:last-child > .wrapper',
   )
   if (!lastPost) {
-    app.logger.verbose('not found lastPost')
+    // app.logger.verbose('not found lastPost')
     return
   }
-  app.logger.debug(
-    '마지막 요소 지켜보기 설정:',
-    app.state.links.length,
-    observingLast,
-  )
+  // app.logger.debug(
+  //   '마지막 요소 지켜보기 설정:',
+  //   app.state.links.length,
+  //   observingLast,
+  // )
   observeDom(lastPost, () => {
     app.api.fetchList({
       menuIdx: app.state.menuIdx,
