@@ -31,7 +31,6 @@ const app = {
     totalCount: 0,
     userID: '',
     menuIdx: 0,
-    isScrollLast: false,
     word: '', // 검색어
     menu: [
       {
@@ -69,13 +68,7 @@ const app = {
 }
 
 app.logger = createLogger({
-  tags: [
-    () =>
-      moment()
-        .utc()
-        .add(9, 'hours')
-        .format('MM/DD HH:mm:ss'),
-  ],
+  tags: [() => moment().utc().add(9, 'hours').format('MM/DD HH:mm:ss')],
 })
 
 app.api = getApi(app)
@@ -131,14 +124,14 @@ reaction(
   },
 )
 
-app.isDesktop = function() {
+app.isDesktop = function () {
   const os = ['win16', 'win32', 'win64', 'mac', 'macintel']
   return (
     global.navigator && os.includes(global.navigator.platform.toLowerCase())
   )
 }
 
-app.isMobileChrome = function() {
+app.isMobileChrome = function () {
   return (
     !app.isDesktop() &&
     global.navigator &&
@@ -156,7 +149,7 @@ app.Base64Decode = (str, encoding = 'utf-8') => {
   return new (TextDecoder || TextDecoderLite)(encoding).decode(bytes)
 }
 
-app.getUser = async req => {
+app.getUser = async (req) => {
   try {
     let userStr
     if (req) {

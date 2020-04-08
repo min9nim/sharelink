@@ -10,7 +10,7 @@ class Menu extends React.Component {
       menu: app.state.menu.slice(1),
     }
 
-    global.document.onclick = e => {
+    global.document.onclick = (e) => {
       let clickMenu = [e.target.className]
 
       if (e.target.parentNode) {
@@ -38,12 +38,11 @@ class Menu extends React.Component {
   }
 
   selectMenu(idx) {
-    return async e => {
+    return async (e) => {
       this.props.router.push(app.state.menu[idx + 1].path)
 
       app.state.menuIdx = idx + 1
       app.state.totalCount = '?'
-      app.state.isScrollLast = false
 
       //   let fetchRes = await app.api.fetchList({ menuIdx: idx + 1 })
 

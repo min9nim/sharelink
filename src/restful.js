@@ -40,25 +40,25 @@ const req = async (path, method, body) => {
 export default function getApi(app) {
   return {
     // 링크삭제
-    deleteLink: async link => {
+    deleteLink: async (link) => {
       let json = await req('/links/', 'DELETE', { id: link.id })
       if (json.status !== 'Fail') {
         app.state.totalCount--
         if (link.linkID) {
           // 관련 링크를 삭제하는 경우
-          let parentLink = app.state.links.find(l => l.id === link.linkID)
+          let parentLink = app.state.links.find((l) => l.id === link.linkID)
           parentLink.refLinks = parentLink.refLinks.filter(
-            l => l.id !== link.id,
+            (l) => l.id !== link.id,
           )
         } else {
-          app.state.links = app.state.links.filter(l => l.id !== link.id)
+          app.state.links = app.state.links.filter((l) => l.id !== link.id)
         }
       }
       return json
     },
 
     // 링크추가
-    postLink: async link => {
+    postLink: async (link) => {
       let res = await req('/links', 'POST', link)
       //app.state.links.push(res.output);
       if (res.status === 'Fail') {
@@ -68,7 +68,9 @@ export default function getApi(app) {
         app.state.totalCount++
         if (res.output.linkID) {
           // 관련글 등록인 경우
-          let parentLink = app.state.links.find(l => l.id === res.output.linkID)
+          let parentLink = app.state.links.find(
+            (l) => l.id === res.output.linkID,
+          )
           if (!parentLink.refLinks) {
             parentLink.refLinks = []
           }
@@ -80,7 +82,7 @@ export default function getApi(app) {
     },
 
     // 링크수정
-    putLink: async link => {
+    putLink: async (link) => {
       // DB 업데이트
       await req('/links/', 'PUT', Object.assign(link, { id: link.id }))
 
@@ -89,16 +91,16 @@ export default function getApi(app) {
       // 로컬상태 업데이트
       if (link.linkID) {
         let parentLink = _findLink(app.state.links, link.linkID)
-        let asisIdx = parentLink.refLinks.findIndex(l => l.id === link.id)
+        let asisIdx = parentLink.refLinks.findIndex((l) => l.id === link.id)
         parentLink.refLinks[asisIdx] = link
       } else {
-        let asisIdx = app.state.links.findIndex(l => l.id === link.id)
+        let asisIdx = app.state.links.findIndex((l) => l.id === link.id)
         app.state.links[asisIdx] = link
       }
     },
 
     // 글작성시 글제목/글설명/글이미지 가져오기
-    webscrap: async url => {
+    webscrap: async (url) => {
       // let json = await req("/webscrap", "POST", { url })
       const json = await fetch('https://webscrap.now.sh/webscrap', {
         method: 'POST',
@@ -108,7 +110,7 @@ export default function getApi(app) {
         body: JSON.stringify({
           url,
         }),
-      }).then(res => res.json())
+      }).then((res) => res.json())
       return json
     },
 
@@ -119,7 +121,7 @@ export default function getApi(app) {
       return json
     },
 
-    fetchLink: async linkID => {
+    fetchLink: async (linkID) => {
       let json = await req('/links?linkID=' + linkID, 'GET')
       return json
     },
@@ -162,7 +164,6 @@ export default function getApi(app) {
         app.view.List.state.loading = false
       }
 
-      app.state.isScrollLast = !fetchRes.hasNext
       app.state.totalCount = fetchRes.totalCount
       if (fetchRes.links.length == 0) {
         //app.view.List && app.view.List._ismounted && app.view.List.forceUpdate();
@@ -176,7 +177,7 @@ export default function getApi(app) {
     },
 
     // 좋아요
-    like: async link => {
+    like: async (link) => {
       // DB 업데이트
       await req('/links/like/', 'PUT', { linkID: link.id })
 
@@ -184,15 +185,15 @@ export default function getApi(app) {
       link.like.push(app.user.id)
     },
     // 좋아요 취소
-    unlike: async link => {
+    unlike: async (link) => {
       // DB 업데이트
       let res = await req('/links/unlike/', 'PUT', { linkID: link.id })
 
       // 로컬상태 업데이트
-      link.like = link.like.filter(userID => userID !== app.user.id)
+      link.like = link.like.filter((userID) => userID !== app.user.id)
     },
     // 읽음 표시
-    read: async link => {
+    read: async (link) => {
       // DB 업데이트
       let res = await req('/links/read/', 'PUT', { linkID: link.id })
 
@@ -200,15 +201,15 @@ export default function getApi(app) {
       link.read.push(app.user.id)
     },
     // 읽음표시 취소
-    unread: async link => {
+    unread: async (link) => {
       // DB 업데이트
       await req('/links/unread/', 'PUT', { linkID: link.id })
 
       // 로컬상태 업데이트
-      link.read = link.read.filter(userID => userID !== app.user.id)
+      link.read = link.read.filter((userID) => userID !== app.user.id)
     },
     // 읽을 글 표시
-    toread: async link => {
+    toread: async (link) => {
       // DB 업데이트
       await req('/links/toread/', 'PUT', { linkID: link.id })
 
@@ -216,16 +217,16 @@ export default function getApi(app) {
       link.toread.push(app.user.id)
     },
     // 읽을 글 표시 취소
-    untoread: async link => {
+    untoread: async (link) => {
       // DB 업데이트
       await req('/links/untoread/', 'PUT', { linkID: link.id })
 
       // 로컬상태 업데이트
-      link.toread = link.toread.filter(userID => userID !== app.user.id)
+      link.toread = link.toread.filter((userID) => userID !== app.user.id)
     },
 
     // 댓글추가
-    postComment: async comment => {
+    postComment: async (comment) => {
       let res = await req('/comments', 'POST', comment)
       //app.state.links.push(res.output);
       if (res.status === 'Fail') {
@@ -243,7 +244,7 @@ export default function getApi(app) {
       }
       return res
     },
-    deleteComment: async comment => {
+    deleteComment: async (comment) => {
       let json = await req('/comments/', 'DELETE', comment)
       if (json.status === 'Fail') {
         console.log('댓글 삭제 실패')
@@ -253,11 +254,11 @@ export default function getApi(app) {
         // app.state.links[idx].comments = comments.filter(c => c.id !== comment.id)
 
         let link = _findLink(app.state.links, comment.linkID)
-        link.comments = link.comments.filter(c => c.id !== comment.id)
+        link.comments = link.comments.filter((c) => c.id !== comment.id)
       }
       return json
     },
-    putComment: async comment => {
+    putComment: async (comment) => {
       let res = await req('/comments', 'PUT', comment)
       if (res.status === 'Fail') {
         console.log('등록 실패 : ' + res.message)
@@ -268,7 +269,7 @@ export default function getApi(app) {
         // app.state.links[linkIdx].comments[commentIdx] = comment;
 
         let link = _findLink(app.state.links, comment.linkID)
-        let commentIdx = link.comments.findIndex(c => c.id === comment.id)
+        let commentIdx = link.comments.findIndex((c) => c.id === comment.id)
         link.comments[commentIdx] = comment
       }
       return res

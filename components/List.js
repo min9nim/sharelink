@@ -30,7 +30,6 @@ export default class List extends React.Component {
     app.state.menuIdx = props.menuIdx
     if (props.fetchRes) {
       app.state.totalCount = props.fetchRes.totalCount
-      app.state.isScrollLast = !props.fetchRes.hasNext
       app.state.links = props.fetchRes.links
     }
   }
