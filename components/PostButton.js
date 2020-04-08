@@ -20,6 +20,13 @@ const remove = async (post) => {
   }
 }
 
+const hasChildren = (link) => {
+  if (!link.refLinks) {
+    return false
+  }
+  return link.refLinks.length > 0
+}
+
 export default function (props) {
   const { link } = props
   const isLike = link.like && link.like.includes(app.user.id)
@@ -79,9 +86,11 @@ export default function (props) {
       >
         <i className="icon-comment-empty" />
       </div>
-      <div className="sns-btn" title="관련글" onClick={props.refClick}>
-        <i className="icon-doc-new" />
-      </div>
+      {!props.isChild && (
+        <div className="sns-btn" title="관련글" onClick={props.refClick}>
+          <i className="icon-doc-new" />
+        </div>
+      )}
       {link.author.id === app.user.id && (
         <React.Fragment>
           <Link href={`/write?id=${link.id}`}>
@@ -89,7 +98,7 @@ export default function (props) {
               <i className="icon-pencil" />
             </div>
           </Link>
-          {(!link.refLinks || link.refLinks.length === 0) && (
+          {!hasChildren(link) && (
             <div
               className="delete-btn"
               title="삭제"

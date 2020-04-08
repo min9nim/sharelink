@@ -69,6 +69,7 @@ class RefPost extends React.Component {
             <div className="post-menu">
               {app.auth.isLogin() && (
                 <PostButton
+                  isChild={true}
                   link={link}
                   commentClick={() => this.commentClick()}
                   refClick={() => this.refClick()}
