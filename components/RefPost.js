@@ -6,6 +6,7 @@ import CommentWrite from './CommentWrite'
 import CommentList from './CommentList'
 import RefWrite from './RefWrite'
 import { highlight } from 'mingutils'
+import $m from '../com/util'
 
 import './RefPost.scss'
 
@@ -82,7 +83,7 @@ class RefPost extends React.Component {
 
     return (
       <li
-        ref={el => {
+        ref={(el) => {
           this.dom = el
         }}
       >
