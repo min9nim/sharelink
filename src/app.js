@@ -4,24 +4,8 @@ import getApi from './restful'
 import getAuth from './auth'
 import base64js from 'base64-js'
 import Cookies from 'universal-cookie'
-import createLogger from 'if-logger'
+import createLogger, { simpleFormat } from 'if-logger'
 import moment from 'moment'
-
-//console.log("process.env.PORT : " + process.env.PORT);
-//console.log("location.hostname : " + location.hostname);
-
-let BACKEND
-//console.log("process.env.GOOGLE_CLOUD_PROJECT = " + process.env.GOOGLE_CLOUD_PROJECT)
-console.log('process.env.API', process.env.API)
-console.log('process.env.NODE_ENV = [' + process.env.NODE_ENV + ']')
-
-if (process.env.API === 'local') {
-  BACKEND = 'http://localhost:3030'
-} else {
-  BACKEND = 'https://sharelink-api.now.sh'
-}
-
-console.log('Backend server : ' + BACKEND)
 
 const app = {
   $m, // 기본 유틸
@@ -63,11 +47,14 @@ const app = {
     token: '',
   },
   view: {}, // 공유가 필요한 react 컴포넌트
-  BACKEND,
+  BACKEND: 'https://sharelink-api.now.sh',
   PAGEROWS: 10,
 }
 
+console.log('simpleFormat', simpleFormat)
+
 app.logger = createLogger({
+  format: simpleFormat,
   tags: [() => moment().utc().add(9, 'hours').format('MM/DD HH:mm:ss')],
 })
 
@@ -177,6 +164,12 @@ app.getUser = async (req) => {
     return {}
   }
 }
+
+if (process.env.API === 'local') {
+  app.BACKEND = 'http://localhost:3030'
+}
+app.logger.verbose('process.env.NODE_ENV = [' + process.env.NODE_ENV + ']')
+app.logger.verbose('Backend server : ' + app.BACKEND)
 
 global.app = app
 export default app
