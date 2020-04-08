@@ -74,19 +74,24 @@ export default class List extends React.Component {
   }
   componentDidUpdate() {
     imageLazyLoad()
+    if (this.observingLast) {
+      return
+    }
     const lastPost = document.querySelector(
       '.PostList > li:last-child > .wrapper',
     )
     if (!lastPost) {
       return
     }
-    observeDom(lastPost, () =>
+    observeDom(lastPost, () => {
       app.api.fetchList({
         menuIdx: app.state.menuIdx,
         idx: app.state.links.length,
         cnt: app.PAGEROWS,
-      }),
-    )
+      })
+      this.observingLast = false
+    })
+    this.observingLast = true
   }
 
   componentWillUnmount() {
