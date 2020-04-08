@@ -1,5 +1,5 @@
 import { observable, reaction, decorate } from 'mobx'
-import $m from '../com/util'
+import $m from './com/util'
 import getApi from './restful'
 import getAuth from './auth'
 import base64js from 'base64-js'

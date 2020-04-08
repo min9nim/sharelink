@@ -1,4 +1,4 @@
-import List from '../components/List.js'
+import List from '../../components/List.js'
 // import { timelog } from '../com/util.js'
 
 export default class Index extends List {

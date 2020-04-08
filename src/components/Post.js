@@ -1,4 +1,4 @@
-import app from '../src/app'
+import app from '../app'
 import moment from 'moment'
 import { _getHostname, htmlspecialchars } from '../com/pure'
 import CommentWrite from './CommentWrite'

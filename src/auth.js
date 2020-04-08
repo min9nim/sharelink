@@ -1,4 +1,4 @@
-import { isExpired } from '../com/pure'
+import { isExpired } from './com/pure'
 import createLogger, { isNode } from 'if-logger'
 
 async function onGApiLoad() {
@@ -11,7 +11,7 @@ async function onGApiLoad() {
     scope: 'https://www.googleapis.com/auth/drive.metadata.readonly',
   })
   global.GoogleAuth = global.gapi.auth2.getAuthInstance()
-  logger.debug(m => console.log(...m('GoogleAuth initialized')))
+  logger.debug((m) => console.log(...m('GoogleAuth initialized')))
 
   global.GoogleAuth.isSignedIn.listen(() => {
     logger.verbose('isSignedIn listen..')
@@ -33,7 +33,7 @@ export default function getAuth(app) {
         onerror: logger.error,
         timeout: 10000, // 10 seconds.
         ontimeout() {
-          logger.debug(m => console.log(...m('gapi.load timeout')))
+          logger.debug((m) => console.log(...m('gapi.load timeout')))
         },
       })
     },

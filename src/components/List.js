@@ -1,7 +1,7 @@
 import Layout from './Layout.js'
 import Post from './Post.js'
 import LinkLoading from './LinkLoading.js'
-import app from '../src/app'
+import app from '../app'
 import './List.scss'
 import React, { useState, useEffect } from 'react'
 

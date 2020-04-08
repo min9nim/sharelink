@@ -1,5 +1,5 @@
 import React from 'react'
-import app from '../src/app'
+import app from '../app'
 import Link from 'next/link'
 import $m from '../com/util'
 

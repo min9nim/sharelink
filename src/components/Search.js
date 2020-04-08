@@ -1,4 +1,4 @@
-import app from '../src/app'
+import app from '../app'
 import { withRouter } from 'next/router'
 import './Search.scss'
 
@@ -68,7 +68,7 @@ class Search extends React.Component {
     this.search(e.target.value)
   }
 
-  search = async word => {
+  search = async (word) => {
     try {
       if (this.state.mode === 'search') {
         await app.api.fetchList({
@@ -80,7 +80,7 @@ class Search extends React.Component {
         return
       }
       if (!app.user.id) {
-        app.logger.warn(m => console.log(...m('app.user.id is undefined')))
+        app.logger.warn((m) => console.log(...m('app.user.id is undefined')))
         return
       }
 
@@ -110,7 +110,7 @@ class Search extends React.Component {
         )}
         <input
           className="ipt-search"
-          ref={el => {
+          ref={(el) => {
             this.ipt_serarch = el
           }}
           value={app.state.word}

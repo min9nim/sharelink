@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch'
-import { _findLink } from '../com/pure'
+import { _findLink } from './com/pure'
 
 const req = async (path, method, body) => {
   //global.NProgress && global.NProgress.start();

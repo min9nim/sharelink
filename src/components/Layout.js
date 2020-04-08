@@ -1,16 +1,16 @@
-import Head from 'next/head';
-import Header from './Header';
+import Head from 'next/head'
+import Header from './Header'
 import { withRouter } from 'next/router'
 
-import "./Layout.scss";
-import app from '../src/app';
+import './Layout.scss'
+import app from '../app'
 
-let layoutProps;
+let layoutProps
 const Layout = (props) => {
   // console.log("Layout 렌더링..");
 
-  app.router = props.router;
-  app.auth.init();
+  app.router = props.router
+  app.auth.init()
 
   return (
     <div className="layoutStyle">
