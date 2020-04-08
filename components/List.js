@@ -6,8 +6,6 @@ import './List.scss'
 
 export default class List extends React.Component {
   constructor(props) {
-    // timelog.check('List 생성자 호출')
-
     super(props)
     this.state = {
       loading: false,
