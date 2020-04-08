@@ -51,8 +51,6 @@ const app = {
   PAGEROWS: 10,
 }
 
-console.log('simpleFormat', simpleFormat)
-
 app.logger = createLogger({
   format: simpleFormat,
   tags: [() => moment().utc().add(9, 'hours').format('MM/DD HH:mm:ss')],
