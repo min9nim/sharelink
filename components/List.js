@@ -58,38 +58,12 @@ export default class List extends React.Component {
       // console.log("이동 후스크롤 위치 값 = " + app.scrollTop);
     }, 1000)
 
-    // global.document.body.onscroll = onscroll
-    observeDom(
-      document.querySelector('.PostList > li:last-child > .wrapper'),
-      () =>
-        app.api.fetchList({
-          menuIdx: app.state.menuIdx,
-          idx: app.state.links.length,
-          cnt: app.PAGEROWS,
-        }),
-    )
     imageLazyLoad()
+    infiniteLoading()
   }
   componentDidUpdate() {
     imageLazyLoad()
-    if (this.observingLast) {
-      return
-    }
-    const lastPost = document.querySelector(
-      '.PostList > li:last-child > .wrapper',
-    )
-    if (!lastPost) {
-      return
-    }
-    observeDom(lastPost, () => {
-      app.api.fetchList({
-        menuIdx: app.state.menuIdx,
-        idx: app.state.links.length,
-        cnt: app.PAGEROWS,
-      })
-      this.observingLast = false
-    })
-    this.observingLast = true
+    infiniteLoading()
   }
 
   componentWillUnmount() {
@@ -151,4 +125,33 @@ function imageLazyLoad() {
   }
   const lazyloadImages = document.querySelectorAll('.lazy')
   lazyloadImages.forEach((item) => observeDom(item, loadImage))
+}
+
+let observingLast = false
+function infiniteLoading() {
+  if (observingLast) {
+    app.logger.debug('지켜보고 있는 중', app.state.links.length, observingLast)
+    return
+  }
+  const lastPost = document.querySelector(
+    '.PostList > li:last-child > .wrapper',
+  )
+  if (!lastPost) {
+    app.logger.verbose('not found lastPost')
+    return
+  }
+  app.logger.debug(
+    '마지막 요소 지켜보기 설정:',
+    app.state.links.length,
+    observingLast,
+  )
+  observeDom(lastPost, () => {
+    app.api.fetchList({
+      menuIdx: app.state.menuIdx,
+      idx: app.state.links.length,
+      cnt: app.PAGEROWS,
+    })
+    observingLast = false
+  })
+  observingLast = true
 }
