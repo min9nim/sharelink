@@ -42,11 +42,7 @@ export default class Post extends React.Component {
     const { link } = this.props
 
     return (
-      <li
-        ref={(el) => {
-          this.dom = el
-        }}
-      >
+      <li id={link.id}>
         <div className="wrapper">
           <div className="left">
             <div className="title">

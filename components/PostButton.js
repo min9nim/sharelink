@@ -3,7 +3,8 @@ import app from '../src/app'
 import Link from 'next/link'
 import $m from '../com/util'
 
-const remove = async (post, dom) => {
+const remove = async (post) => {
+  const dom = document.getElementById(post.id)
   if (!confirm('삭제합니다')) {
     return
   }
@@ -92,7 +93,7 @@ export default function (props) {
             <div
               className="delete-btn"
               title="삭제"
-              onClick={() => remove(link, this.dom)}
+              onClick={() => remove(link)}
             >
               <i className="icon-trash-empty" />
             </div>
