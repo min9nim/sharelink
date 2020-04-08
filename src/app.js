@@ -6,39 +6,42 @@ import base64js from 'base64-js'
 import Cookies from 'universal-cookie'
 import createLogger, { simpleFormat } from 'if-logger'
 import moment from 'moment'
+// import React from 'react'
+
+const initialState = {
+  links: [],
+  totalCount: 0,
+  userID: '',
+  menuIdx: 0,
+  word: '', // 검색어
+  menu: [
+    {
+      label: '전체 포스트',
+      path: '/',
+    },
+    {
+      label: '내가 등록한 포스트',
+      path: '/my',
+    },
+    {
+      label: '내가 좋아하는 포스트',
+      path: '/like',
+    },
+    {
+      label: '내가 읽은 포스트',
+      path: '/read',
+    },
+    {
+      label: '나중에 읽을 포스트',
+      path: '/toread',
+    },
+  ],
+}
 
 const app = {
   $m, // 기본 유틸
   scrollTop: 0, // 목록화면에서 현재 스크롤 위치
-  state: {
-    links: [],
-    totalCount: 0,
-    userID: '',
-    menuIdx: 0,
-    word: '', // 검색어
-    menu: [
-      {
-        label: '전체 포스트',
-        path: '/',
-      },
-      {
-        label: '내가 등록한 포스트',
-        path: '/my',
-      },
-      {
-        label: '내가 좋아하는 포스트',
-        path: '/like',
-      },
-      {
-        label: '내가 읽은 포스트',
-        path: '/read',
-      },
-      {
-        label: '나중에 읽을 포스트',
-        path: '/toread',
-      },
-    ],
-  },
+  state: initialState,
   user: {
     id: '',
     name: '',
@@ -65,7 +68,8 @@ decorate(app, { state: observable })
 reaction(
   () => JSON.stringify(app.state.links),
   () => {
-    app.view.List && app.view.List._ismounted && app.view.List.forceUpdate()
+    app.logger.debug('변화 감지')
+    app.view.Index && app.view.Index._ismounted && app.view.Index.forceUpdate()
   },
 )
 
@@ -109,6 +113,7 @@ reaction(
   },
 )
 
+// app.ReactCtx = React.createContext(initialState)
 app.isDesktop = function () {
   const os = ['win16', 'win32', 'win64', 'mac', 'macintel']
   return (

@@ -3,51 +3,33 @@ import Post from './Post.js'
 import LinkLoading from './LinkLoading.js'
 import app from '../src/app'
 import './List.scss'
+import React, { useState, useEffect } from 'react'
 
-export default class List extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      loading: false,
+export default function List(props) {
+  const [loading, setLoading] = useState(false)
+
+  if (props.user && props.user.id) {
+    app.state.userID = props.user.id
+    app.user = props.user
+    global.sessionStorage &&
+      global.sessionStorage.setItem('user', JSON.stringify(app.user))
+  } else {
+    if (global.document) {
+      // 클라이언트에서 실행시
+      app.auth.signOut()
     }
+  }
 
-    app.view.List = this
-
-    if (props.user && props.user.id) {
-      app.state.userID = props.user.id
-      app.user = props.user
-      global.sessionStorage &&
-        global.sessionStorage.setItem('user', JSON.stringify(app.user))
-    } else {
-      if (global.document) {
-        // 클라이언트에서 실행시
-        app.auth.signOut()
-      }
-    }
-
+  useEffect(() => {
     app.state.menuIdx = props.menuIdx
     if (props.fetchRes) {
       app.state.totalCount = props.fetchRes.totalCount
       app.state.links = props.fetchRes.links
     }
-  }
+  }, [props.fetchRes])
 
-  static async getInitialProps({ req, asPath }) {
-    let menuIdx = app.state.menu.findIndex((m) => m.path === asPath)
-    let [user, fetchRes] = await Promise.all([
-      app.getUser(req),
-      app.api.fetchList({ menuIdx }),
-    ])
-    return {
-      menuIdx,
-      fetchRes,
-      user,
-    }
-  }
-
-  componentDidMount() {
-    this._ismounted = true
-
+  useEffect(() => {
+    List._ismounted = true
     /**
      * 18.11.02
      * delay를 줘도 스크롤 위치 보정이 잘 안된다;
@@ -60,44 +42,35 @@ export default class List extends React.Component {
 
     imageLazyLoad()
     infiniteLoading()
-  }
-  componentDidUpdate() {
-    imageLazyLoad()
-    infiniteLoading()
-  }
-
-  componentWillUnmount() {
-    this._ismounted = false
-    global.document.body.onscroll = undefined
-  }
-
-  render() {
-    let intro = app.state.menu[app.state.menuIdx].label
-
-    if (
-      app.view.Search &&
-      app.view.Search.state.mode === 'search' &&
-      app.state.word
-    ) {
-      intro = `"${app.state.word}" 검색 결과`
+    return () => {
+      List._ismounted = false
     }
+  })
 
-    return (
-      <Layout>
-        <div className="intro">
-          {'* ' + intro + '(' + app.state.totalCount + '개)'}
-        </div>
-        {/* <div className="intro">{"* " + intro}</div> */}
-        <ul className="PostList">
-          {app.state.links.map((link) => {
-            return <Post key={link.id} link={link} />
-          })}
-          {this.state.loading &&
-            [0, 1, 2, 3, 4].map((v) => <LinkLoading key={v} />)}
-        </ul>
-      </Layout>
-    )
+  let intro = app.state.menu[app.state.menuIdx].label
+
+  if (
+    app.view.Search &&
+    app.view.Search.state.mode === 'search' &&
+    app.state.word
+  ) {
+    intro = `"${app.state.word}" 검색 결과`
   }
+  const { links, totalCount } = props.state
+  console.log('List render', props.state, totalCount, props.state.totalCount)
+
+  return (
+    <Layout>
+      <div className="intro">{'* ' + intro + '(' + totalCount + '개)'}</div>
+      {/* <div className="intro">{"* " + intro}</div> */}
+      <ul className="PostList">
+        {links.map((link) => {
+          return <Post key={link.id} link={link} />
+        })}
+        {loading && [0, 1, 2, 3, 4].map((v) => <LinkLoading key={v} />)}
+      </ul>
+    </Layout>
+  )
 }
 
 function observeDom(dom, callback) {
@@ -129,22 +102,23 @@ function imageLazyLoad() {
 let observingLast = false
 function infiniteLoading() {
   if (observingLast) {
-    // app.logger.debug('지켜보고 있는 중', app.state.links.length, observingLast)
+    app.logger.debug('지켜보고 있는 중', app.state.links.length, observingLast)
     return
   }
   const lastPost = document.querySelector(
     '.PostList > li:last-child > .wrapper',
   )
   if (!lastPost) {
-    // app.logger.verbose('not found lastPost')
+    app.logger.verbose('not found lastPost')
     return
   }
-  // app.logger.debug(
-  //   '마지막 요소 지켜보기 설정:',
-  //   app.state.links.length,
-  //   observingLast,
-  // )
+  app.logger.debug(
+    '마지막 요소 지켜보기 설정:',
+    app.state.links.length,
+    observingLast,
+  )
   observeDom(lastPost, () => {
+    app.logger.debug('fetch call')
     app.api.fetchList({
       menuIdx: app.state.menuIdx,
       idx: app.state.links.length,
