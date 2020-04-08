@@ -65,13 +65,13 @@ app.auth = getAuth(app)
 decorate(app, { state: observable })
 
 // 변화에 따른 효과를 정의
-reaction(
-  () => JSON.stringify(app.state.links),
-  () => {
-    app.logger.debug('변화 감지')
-    app.view.Index && app.view.Index._ismounted && app.view.Index.forceUpdate()
-  },
-)
+// reaction(
+//   () => JSON.stringify(app.state.links),
+//   () => {
+//     app.logger.debug('변화 감지')
+//     app.view.Index && app.view.Index._ismounted && app.view.Index.forceUpdate()
+//   },
+// )
 
 reaction(
   () => JSON.stringify(app.state.word),

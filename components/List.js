@@ -8,20 +8,7 @@ import React, { useState, useEffect } from 'react'
 export default function List(props) {
   const [loading, setLoading] = useState(false)
 
-  if (props.user && props.user.id) {
-    app.state.userID = props.user.id
-    app.user = props.user
-    global.sessionStorage &&
-      global.sessionStorage.setItem('user', JSON.stringify(app.user))
-  } else {
-    if (global.document) {
-      // 클라이언트에서 실행시
-      app.auth.signOut()
-    }
-  }
-
   useEffect(() => {
-    app.state.menuIdx = props.menuIdx
     if (props.fetchRes) {
       app.state.totalCount = props.fetchRes.totalCount
       app.state.links = props.fetchRes.links
@@ -29,7 +16,7 @@ export default function List(props) {
   }, [props.fetchRes])
 
   useEffect(() => {
-    List._ismounted = true
+    app.logger.debug('app.state.links 변화 감지', app.state.links.length)
     /**
      * 18.11.02
      * delay를 줘도 스크롤 위치 보정이 잘 안된다;
@@ -42,12 +29,9 @@ export default function List(props) {
 
     imageLazyLoad()
     infiniteLoading()
-    return () => {
-      List._ismounted = false
-    }
-  })
+  }, [app.state.links.length])
 
-  let intro = app.state.menu[app.state.menuIdx].label
+  let intro = props.state.menu[props.state.menuIdx].label
 
   if (
     app.view.Search &&
@@ -116,6 +100,7 @@ function infiniteLoading() {
     '마지막 요소 지켜보기 설정:',
     app.state.links.length,
     observingLast,
+    lastPost,
   )
   observeDom(lastPost, () => {
     app.logger.debug('fetch call')

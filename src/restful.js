@@ -121,6 +121,7 @@ export default function getApi(app) {
         }
       }
 
+      console.log('menuIdx', menuIdx)
       let path =
         '/links' + app.state.menu[menuIdx].path + '?idx=' + idx + '&cnt=' + cnt
       if (word) {
@@ -155,13 +156,14 @@ export default function getApi(app) {
         // app.state.links = app.state.links.concat(fetchRes.links)
         app.logger.debug('둘', app.state.links.length)
 
-        // if (app.setState) {
-        //   const newLink = app.state.links.concat(fetchRes.links)
-        //   app.setState({ ...app.state, links: newLink })
-        //   app.state = state
-        // } else {
-
-        // }
+        if (app.setState) {
+          app.logger.debug('셋-1', app.state.links.length)
+          // const newLink = app.state.links.concat(fetchRes.links)
+          app.setState({ ...app.state })
+          app.logger.debug('셋-2', app.state.links.length)
+          // app.state = state
+        } else {
+        }
       }
 
       return fetchRes
