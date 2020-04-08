@@ -78,7 +78,6 @@ export default class List extends React.Component {
     const lastPost = document.querySelector(
       '.PostList > li:last-child > .wrapper',
     )
-    console.log('lastPost', lastPost)
     if (!lastPost) {
       return
     }
