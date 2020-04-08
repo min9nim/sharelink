@@ -14,23 +14,7 @@ import './Post.scss'
 
 moment.locale('ko')
 
-const remove = async (post, dom) => {
-  if (!confirm('삭제합니다')) {
-    return
-  }
-
-  // 애니메이션 시작
-  //await $m.removeAnimation(dom, 0.2)
-  $m.removeAnimation(dom, 0.2)
-
-  // DB 삭제처리
-  let json = await app.api.deleteLink(post)
-  if (json.status === 'Fail') {
-    $m.cancelRemoveAnimation(dom, 0.2)
-  }
-}
-
-class Post extends React.Component {
+export default class Post extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -104,24 +88,6 @@ class Post extends React.Component {
                   refClick={() => this.refClick()}
                 />
               )}
-              {app.auth.isLogin() && link.author.id === app.user.id && (
-                <React.Fragment>
-                  <Link href={`/write?id=${link.id}`}>
-                    <div className="edit-btn" title="수정">
-                      <i className="icon-pencil" />
-                    </div>
-                  </Link>
-                  {(!link.refLinks || link.refLinks.length === 0) && (
-                    <div
-                      className="delete-btn"
-                      title="삭제"
-                      onClick={() => remove(link, this.dom)}
-                    >
-                      <i className="icon-trash-empty" />
-                    </div>
-                  )}
-                </React.Fragment>
-              )}
             </div>
             {this.state.commentClicked && (
               <CommentWrite
@@ -147,5 +113,3 @@ class Post extends React.Component {
     )
   }
 }
-
-export default Post
