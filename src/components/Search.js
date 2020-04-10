@@ -30,8 +30,10 @@ class Search extends React.Component {
     this.subjectSubscription = observable.subscribe(subject)
     this.keypressSubscription = subject
       .pipe(
-        filter(({ type }) => type === 'keypress'),
-        filter(({ event }) => (event.keyCode || event.which) === 13),
+        filter(
+          ({ type, event }) =>
+            type === 'keypress' && (event.keyCode || event.which) === 13,
+        ),
       )
       .subscribe(({ event }) => {
         app.logger.debug('keypress 처리')
