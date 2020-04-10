@@ -4,19 +4,13 @@ import app from '../app'
 import './List.scss'
 import React, { useState, useEffect } from 'react'
 import { map } from 'ramda'
+import { withLogger } from '../com/pure.js'
+import { isNode } from 'if-logger'
 
 let logger
-export default function List(props) {
-  logger = app.logger.addTags('List')
+function List(props) {
+  logger = props.logger
   logger.debug('List start', props.state.links.length)
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    if (props.fetchRes) {
-      app.state.totalCount = props.fetchRes.totalCount
-      app.state.links = props.fetchRes.links
-    }
-  }, [props.fetchRes])
 
   useEffect(() => {
     logger.debug('effect', props.state.links.length)
@@ -50,8 +44,15 @@ export default function List(props) {
         {links.map((link) => {
           return <Post key={link.id} link={link} />
         })}
-        {loading && [0, 1, 2, 3, 4].map((v) => <LinkLoading key={v} />)}
       </ul>
+      <LinkLoading />
+      <LinkLoading />
+      <LinkLoading />
+      <LinkLoading />
+      <LinkLoading />
+      <LinkLoading />
+      <LinkLoading />
+      <LinkLoading />
     </>
   )
 }
@@ -107,3 +108,5 @@ function infiniteLoading() {
     })
   })
 }
+
+export default withLogger(List)

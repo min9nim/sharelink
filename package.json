@@ -29,7 +29,7 @@
     "next": "9.3.0",
     "ramda": "^0.27.0",
     "react": "16.13.0",
-    "react-content-loader": "^5.0.2",
+    "react-content-loader": "5.0.4",
     "react-dom": "16.13.0",
     "rxjs": "6.5.5",
     "shortid": "^2.2.13",
