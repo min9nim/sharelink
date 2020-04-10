@@ -102,7 +102,7 @@ function infiniteLoading() {
   //   lastPost,
   // )
   observeDom(lastPost, () => {
-    app.logger.debug('fetch call')
+    app.logger.debug('observeDom lastPost fetch call')
     app.api.fetchList({
       menuIdx: app.state.menuIdx,
       idx: app.state.links.length,
