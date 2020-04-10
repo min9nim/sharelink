@@ -3,7 +3,6 @@ import moment from 'moment'
 import $m from '../com/util.js'
 
 import './Comment.scss'
-import { toJS } from 'mobx'
 
 export default class Comment extends React.Component {
   constructor(props) {
