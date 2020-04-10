@@ -2,7 +2,7 @@ import List from '../components/List.js'
 import app from '../app'
 import { useState, useEffect } from 'react'
 
-export default function Index(props) {
+export default function My(props) {
   const [state, setState] = useState({ ...app.state, ...props.fetchRes })
   app.logger.debug(
     'Index 렌더',
@@ -26,7 +26,7 @@ export default function Index(props) {
   }, [props.user])
 
   useEffect(() => {
-    app.logger.debug('Index useEffect')
+    app.logger.debug('My useEffect')
     setState({ ...state, ...props.fetchRes })
   }, [props.fetchRes])
 
