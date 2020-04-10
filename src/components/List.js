@@ -2,10 +2,9 @@ import Post from './Post.js'
 import LinkLoading from './LinkLoading.js'
 import app from '../app'
 import './List.scss'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { map } from 'ramda'
-import { withLogger } from '../com/pure.js'
-import { isNode } from 'if-logger'
+import { withLogger, observeDom } from '../com/pure.js'
 
 let logger
 function List(props) {
@@ -55,22 +54,6 @@ function List(props) {
       <LinkLoading />
     </>
   )
-}
-
-function observeDom(dom, callback) {
-  const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) {
-        return
-      }
-      callback(entry.target)
-      observer.unobserve(entry.target)
-    })
-  })
-  observer.observe(dom)
-  return () => {
-    observer.unobserve(dom)
-  }
 }
 
 function imageLazyLoad() {
