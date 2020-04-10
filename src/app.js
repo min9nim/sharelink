@@ -6,6 +6,7 @@ import base64js from 'base64-js'
 import Cookies from 'universal-cookie'
 import createLogger, { simpleFormat } from 'if-logger'
 import moment from 'moment'
+import { Subject } from 'rxjs'
 // import React from 'react'
 
 const initialState = {
@@ -64,52 +65,29 @@ app.auth = getAuth(app)
 
 decorate(app, { state: observable })
 
-// 변화에 따른 효과를 정의
-// reaction(
-//   () => JSON.stringify(app.state.links),
-//   () => {
-//     app.logger.debug('변화 감지')
-//     app.view.Index && app.view.Index._ismounted && app.view.Index.forceUpdate()
-//   },
-// )
-
+app.linksSubject = new Subject()
 reaction(
-  () => JSON.stringify(app.state.word),
+  () => JSON.stringify(app.state.links),
   () => {
-    app.view.Search &&
-      app.view.Search._ismounted &&
-      app.view.Search.forceUpdate()
+    app.logger.debug('links changed & feed')
+    // app.view.Index && app.view.Index._ismounted && app.view.Index.forceUpdate()
+    app.linksSubject.next(app.state.links)
   },
 )
 
 reaction(
   () => app.state.userID,
   async () => {
-    // app.state.userID 값을 바라보며 앱의 로그인 여부를 판단한다.
-    if (app.auth.isLogin()) {
-      // console.log("로그인 상태")
-    } else {
-      // document.cookie = "user="
-      // global.sessionStorage.setItem("user", "");
-      // app.user = {
-      //     id: "",
-      //     name: "",
-      //     email: "",
-      //     image: "",
-      //     token: ""
-      // };
+    if (!app.auth.isLogin()) {
       if (app.router && app.router.pathname.indexOf('/write') === 0) {
         //app.router.push("/login");
         location.href = '/login'
       }
-
-      // console.log("로그아웃 됨")
     }
 
     app.view.Header &&
       app.view.Header._ismounted &&
       app.view.Header.forceUpdate()
-    app.view.List && app.view.List._ismounted && app.view.List.forceUpdate()
   },
 )
 

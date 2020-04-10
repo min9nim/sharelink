@@ -1,4 +1,3 @@
-import Layout from './Layout.js'
 import Post from './Post.js'
 import LinkLoading from './LinkLoading.js'
 import app from '../app'
@@ -6,6 +5,7 @@ import './List.scss'
 import React, { useState, useEffect } from 'react'
 
 export default function List(props) {
+  app.logger.debug('List start', props.state.links.length)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -16,20 +16,11 @@ export default function List(props) {
   }, [props.fetchRes])
 
   useEffect(() => {
-    app.logger.debug('app.state.links 변화 감지', app.state.links.length)
-    /**
-     * 18.11.02
-     * delay를 줘도 스크롤 위치 보정이 잘 안된다;
-     */
-    // console.log("이동할 스크롤 위치 값 = " + app.scrollTop);
-    setTimeout(function () {
-      app.$m.scrollTo(0, app.scrollTop) // 이전 스크롤 위치로 복원
-      // console.log("이동 후스크롤 위치 값 = " + app.scrollTop);
-    }, 1000)
+    app.logger.debug('props.state.links 변화 감지', props.state.links.length)
 
     imageLazyLoad()
     infiniteLoading()
-  }, [app.state.links])
+  }, [props.state.links.length])
 
   let intro = props.state.menu[props.state.menuIdx].label
 
@@ -43,7 +34,7 @@ export default function List(props) {
   const { links, totalCount } = props.state
 
   return (
-    <Layout>
+    <>
       <div className="intro">{'* ' + intro + '(' + totalCount + '개)'}</div>
       {/* <div className="intro">{"* " + intro}</div> */}
       <ul className="PostList">
@@ -52,7 +43,7 @@ export default function List(props) {
         })}
         {loading && [0, 1, 2, 3, 4].map((v) => <LinkLoading key={v} />)}
       </ul>
-    </Layout>
+    </>
   )
 }
 
@@ -102,7 +93,7 @@ function infiniteLoading() {
   //   lastPost,
   // )
   observeDom(lastPost, () => {
-    app.logger.debug('observeDom lastPost fetch call')
+    app.logger.debug('observeDom lastPost fetch call', app.state.links.length)
     app.api.fetchList({
       menuIdx: app.state.menuIdx,
       idx: app.state.links.length,

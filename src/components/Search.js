@@ -1,7 +1,7 @@
 import app from '../app'
 import { withRouter } from 'next/router'
 import './Search.scss'
-import { Observable, Subject } from 'rxjs'
+import { Subject } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { useState, useEffect } from 'react'
 
@@ -15,7 +15,6 @@ const search = async (word, mode) => {
       menuIdx: app.state.menuIdx,
       idx: 0,
       cnt: app.PAGEROWS,
-      word,
     })
     return
   }
@@ -34,6 +33,7 @@ const search = async (word, mode) => {
 }
 
 function Search(props) {
+  app.logger.debug('Search start')
   const [state, setState] = useState({
     mode: 'search',
     word: '',
@@ -61,7 +61,6 @@ function Search(props) {
         app.state.word = event.target.value
         setState({
           ...state,
-          word: event.target.value,
           mode: isAddMode(event) ? 'add' : 'search',
         })
       })
@@ -79,6 +78,7 @@ function Search(props) {
     }
   }, [])
 
+  app.logger.debug('Search render')
   return (
     <div className="ipt-wrapper">
       {app.auth.isLogin() && state.mode === 'add' ? (
@@ -89,7 +89,7 @@ function Search(props) {
       <input
         className="ipt-search"
         autoFocus
-        value={state.word}
+        value={app.state.word}
         onChange={(e) => state.subject.next({ type: 'change', event: e })}
         onKeyPress={(e) => state.subject.next({ type: 'keypress', event: e })}
         onBlur={(e) => state.subject.next({ type: 'blur', event: e })}
