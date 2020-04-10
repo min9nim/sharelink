@@ -1,6 +1,6 @@
 import Layout from '../components/Layout.js'
 import { withRouter } from 'next/router'
-import app from '../src/app'
+import app from '../app'
 import shortid from 'shortid'
 import './write.scss'
 import { _findLink, avoidXSS } from '../com/pure.js'
@@ -226,7 +226,7 @@ class Write extends React.Component {
               <input
                 placeholder="http://"
                 id="url"
-                ref={el => {
+                ref={(el) => {
                   this.urlInput = el
                 }}
                 value={this.state.url}
@@ -245,7 +245,7 @@ class Write extends React.Component {
               <input
                 placeholder=""
                 id="title"
-                ref={el => {
+                ref={(el) => {
                   this.titleInput = el
                 }}
                 value={this.state.title}
@@ -263,7 +263,7 @@ class Write extends React.Component {
               <input
                 placeholder=""
                 id="desc"
-                ref={el => {
+                ref={(el) => {
                   this.descInput = el
                 }}
                 value={this.state.desc}
@@ -281,7 +281,7 @@ class Write extends React.Component {
               <input
                 placeholder=""
                 id="image"
-                ref={el => {
+                ref={(el) => {
                   this.imageInput = el
                 }}
                 value={this.state.image}
@@ -302,7 +302,7 @@ class Write extends React.Component {
               <input
                 placeholder=""
                 id="favicon"
-                ref={el => {
+                ref={(el) => {
                   this.faviconInput = el
                 }}
                 value={this.state.favicon}

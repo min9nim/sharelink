@@ -33,7 +33,7 @@ export default function My(props) {
   return <List state={state} />
 }
 
-Index.getInitialProps = async ({ req, asPath }) => {
+My.getInitialProps = async ({ req, asPath }) => {
   let menuIdx = app.state.menu.findIndex((m) => m.path === asPath)
   let [user, fetchRes] = await Promise.all([
     app.getUser(req),
