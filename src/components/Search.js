@@ -1,6 +1,8 @@
 import app from '../app'
 import { withRouter } from 'next/router'
 import './Search.scss'
+import { Observable } from 'rxjs'
+import { throttleTime } from 'rxjs/operators'
 
 class Search extends React.Component {
   constructor(props) {
@@ -20,46 +22,42 @@ class Search extends React.Component {
     this._ismounted = true
     this.ipt_serarch.focus()
 
-    // Obaserver 등록
-    //this.text$
-    //.filter(text => text.length >= 2)
-    //.map(text => text + '!')
-    //.map(text => text + '!')
-    // .subscribe(text => {
-    //     console.log(text);
-    //     app.state.word = text;
-    // });
+    const observable = new Observable((subscriber) => {
+      this.subscriber = subscriber
+    })
+    this.subscription = observable.subscribe(({ type, event }) => {
+      app.logger.debug('여기')
+      if (type === 'keypress') {
+        let keyCode = event.keyCode || event.which
+        if (keyCode === 13) {
+          this.search(event.target.value)
+        }
+        return
+      }
+      if (event.target.value.indexOf('http') === 0) {
+        if (app.auth.isLogin()) {
+          this.state.mode = 'add'
+        } else {
+          this.state.mode = 'search'
+        }
+      } else {
+        this.state.mode = 'search'
+      }
+      app.state.word = event.target.value
+    })
   }
 
   componentWillUnmount() {
     this._ismounted = false
+    this.subscription.unsubscribe()
   }
 
   handleChange(e) {
-    if (e.target.value.indexOf('http') === 0) {
-      // 입력값이 http로 시작할 경우
-      //this.setState({ mode: "add" })
-      if (app.auth.isLogin()) {
-        this.state.mode = 'add'
-      } else {
-        this.state.mode = 'search'
-      }
-    } else {
-      //this.setState({ mode: "search" })
-      this.state.mode = 'search'
-    }
-
-    app.state.word = e.target.value
-
-    // 이벤트 할당
-    //this.text$.next(e.target.value)
+    this.subscriber.next({ type: 'change', event: e })
   }
 
   handleKeyPress(e) {
-    let keyCode = e.keyCode || e.which
-    if (keyCode === 13) {
-      this.search(e.target.value)
-    }
+    this.subscriber.next({ type: 'keypress', event: e })
   }
   handleBlur(e) {
     if (!e.target.value) {
@@ -100,7 +98,7 @@ class Search extends React.Component {
   }
 
   render() {
-    // console.log("Search 렌더링");
+    console.log('Search 렌더링')
     return (
       <div className="ipt-wrapper">
         {app.auth.isLogin() && this.state.mode === 'add' ? (
