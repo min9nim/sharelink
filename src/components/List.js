@@ -3,9 +3,12 @@ import LinkLoading from './LinkLoading.js'
 import app from '../app'
 import './List.scss'
 import React, { useState, useEffect } from 'react'
+import { map } from 'ramda'
 
+let logger
 export default function List(props) {
-  app.logger.debug('List start', props.state.links.length)
+  logger = app.logger.addTags('List')
+  logger.debug('List start', props.state.links.length)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -16,10 +19,16 @@ export default function List(props) {
   }, [props.fetchRes])
 
   useEffect(() => {
-    app.logger.debug('props.state.links 변화 감지', props.state.links.length)
+    logger.debug('effect', props.state.links.length)
+    const unsubscribes = imageLazyLoad()
+    const unsubscribe = infiniteLoading()
+    return () => {
+      logger.debug('마지막 요소 지켜보기 설정 해제')
+      unsubscribe()
 
-    imageLazyLoad()
-    infiniteLoading()
+      logger.debug('이미지dom 지켜보기 설정 해제')
+      unsubscribes.map((unsubscribe) => unsubscribe())
+    }
   }, [props.state.links.length])
 
   let intro = props.state.menu[props.state.menuIdx].label
@@ -48,7 +57,7 @@ export default function List(props) {
 }
 
 function observeDom(dom, callback) {
-  new IntersectionObserver((entries, observer) => {
+  const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) {
         return
@@ -56,7 +65,11 @@ function observeDom(dom, callback) {
       callback(entry.target)
       observer.unobserve(entry.target)
     })
-  }).observe(dom)
+  })
+  observer.observe(dom)
+  return () => {
+    observer.unobserve(dom)
+  }
 }
 
 function imageLazyLoad() {
@@ -70,36 +83,27 @@ function imageLazyLoad() {
     img.classList.remove('lazy')
   }
   const lazyloadImages = document.querySelectorAll('.lazy')
-  lazyloadImages.forEach((item) => observeDom(item, loadImage))
+
+  return map((item) => observeDom(item, loadImage))(lazyloadImages)
 }
 
-let observingLast = false
 function infiniteLoading() {
-  if (observingLast) {
-    // app.logger.debug('지켜보고 있는 중', app.state.links.length, observingLast)
-    return
-  }
   const lastPost = document.querySelector(
     '.PostList > li:last-child > .wrapper',
   )
+
   if (!lastPost) {
-    app.logger.verbose('not found lastPost')
-    return
+    logger.verbose('not found lastPost')
+    return () => {}
   }
-  // app.logger.debug(
-  //   '마지막 요소 지켜보기 설정:',
-  //   app.state.links.length,
-  //   observingLast,
-  //   lastPost,
-  // )
-  observeDom(lastPost, () => {
-    app.logger.debug('observeDom lastPost fetch call', app.state.links.length)
+  logger.debug('마지막 요소 지켜보기 설정')
+
+  return observeDom(lastPost, () => {
+    logger.debug('observeDom lastPost fetch call', app.state.links.length)
     app.api.fetchList({
       menuIdx: app.state.menuIdx,
       idx: app.state.links.length,
       cnt: app.PAGEROWS,
     })
-    observingLast = false
   })
-  observingLast = true
 }

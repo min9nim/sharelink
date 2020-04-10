@@ -1,8 +1,11 @@
 import { isExpired } from './com/pure'
-import createLogger, { isNode } from 'if-logger'
+import createLogger, { isNode, simpleFormat } from 'if-logger'
 
 async function onGApiLoad() {
-  const logger = createLogger({ tags: ['app.auth', 'onGApiLoad'] })
+  const logger = createLogger({
+    format: simpleFormat,
+    tags: ['app.auth', 'onGApiLoad'],
+  })
   // 구글 로그인 초기화
   await gapi.client.init({
     apiKey: 'sharelink',

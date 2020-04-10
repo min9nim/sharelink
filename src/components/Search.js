@@ -4,6 +4,7 @@ import './Search.scss'
 import { Subject } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { useState, useEffect } from 'react'
+import { withLogger } from '../com/pure'
 
 const isAddMode = (event) =>
   event.target.value.indexOf('http') === 0 && app.auth.isLogin()
@@ -19,7 +20,7 @@ const search = async (word, mode) => {
     return
   }
   if (!app.user.id) {
-    app.logger.warn('app.user.id is undefined')
+    props.logger.warn('app.user.id is undefined')
     return
   }
 
@@ -33,7 +34,7 @@ const search = async (word, mode) => {
 }
 
 function Search(props) {
-  app.logger.debug('Search start')
+  props.logger.debug('start')
   const [state, setState] = useState({
     mode: 'search',
     word: '',
@@ -41,7 +42,7 @@ function Search(props) {
   })
 
   useEffect(() => {
-    app.logger.debug('useEffect')
+    props.logger.debug('useEffect')
     state.subject = new Subject()
     const keypressSubscription = state.subject
       .pipe(
@@ -51,13 +52,13 @@ function Search(props) {
         ),
       )
       .subscribe(({ event }) => {
-        app.logger.debug('keypress 처리')
+        props.logger.debug('keypress 처리')
         search(event.target.value, state.mode)
       })
     const changeSubscription = state.subject
       .pipe(filter(({ type }) => type === 'change'))
       .subscribe(({ event }) => {
-        app.logger.debug('change 처리', event.target.value)
+        props.logger.debug('change 처리', event.target.value)
         app.state.word = event.target.value
         setState({
           ...state,
@@ -67,18 +68,18 @@ function Search(props) {
     const blurSubscription = state.subject
       .pipe(filter(({ type, event }) => type === 'blur' && event.target.value))
       .subscribe(({ event }) => {
-        app.logger.debug('blur 처리', event.target.value)
+        props.logger.debug('blur 처리', event.target.value)
         search(event.target.value, state.mode)
       })
     return () => {
-      app.logger.debug('unsubscribe')
+      props.logger.debug('unsubscribe')
       keypressSubscription.unsubscribe()
       changeSubscription.unsubscribe()
       blurSubscription.unsubscribe()
     }
   }, [])
 
-  app.logger.debug('Search render')
+  props.logger.debug('Search render')
   return (
     <div className="ipt-wrapper">
       {app.auth.isLogin() && state.mode === 'add' ? (
@@ -98,4 +99,4 @@ function Search(props) {
   )
 }
 
-export default withRouter(Search)
+export default withRouter(withLogger(Search))

@@ -53,12 +53,13 @@ const app = {
   view: {}, // 공유가 필요한 react 컴포넌트
   BACKEND: 'https://sharelink-api.now.sh',
   PAGEROWS: 10,
+  logger: createLogger({
+    format: simpleFormat,
+    tags: [() => moment().utc().add(9, 'hours').format('MM/DD HH:mm:ss')],
+  }),
 }
 
-app.logger = createLogger({
-  format: simpleFormat,
-  tags: [() => moment().utc().add(9, 'hours').format('MM/DD HH:mm:ss')],
-})
+const logger = app.logger.addTags('app.js')
 
 app.api = getApi(app)
 app.auth = getAuth(app)
@@ -69,7 +70,7 @@ app.linksSubject = new Subject()
 reaction(
   () => JSON.stringify(app.state.links),
   () => {
-    app.logger.debug('links changed & feed')
+    logger.debug('links changed & feed')
     // app.view.Index && app.view.Index._ismounted && app.view.Index.forceUpdate()
     app.linksSubject.next(app.state.links)
   },
@@ -128,7 +129,7 @@ app.getUser = async (req) => {
     } else {
       userStr = global.sessionStorage.getItem('user')
     }
-    // app.logger.verbose('userStr:', userStr)
+    // logger.verbose('userStr:', userStr)
 
     if (!userStr) {
       throw Error('[getInitialProps] 로그인 실패 : user 정보 없음')
@@ -141,7 +142,7 @@ app.getUser = async (req) => {
     }
     return user
   } catch (e) {
-    app.logger.error(e)
+    logger.error(e)
     return {}
   }
 }
@@ -149,8 +150,8 @@ app.getUser = async (req) => {
 if (process.env.API === 'local') {
   app.BACKEND = 'http://localhost:3030'
 }
-app.logger.verbose('process.env.NODE_ENV = [' + process.env.NODE_ENV + ']')
-app.logger.verbose('Backend server : ' + app.BACKEND)
+logger.verbose('process.env.NODE_ENV = [' + process.env.NODE_ENV + ']')
+logger.verbose('Backend server : ' + app.BACKEND)
 
 global.app = app
 export default app

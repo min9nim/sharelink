@@ -4,7 +4,8 @@ import app from '../app'
 import { useState, useEffect } from 'react'
 
 export default function Index(props) {
-  app.logger.debug('Index start')
+  const logger = app.logger.addTags('Index')
+  logger.debug('start')
   const [state, setState] = useState({ ...app.state, ...props.fetchRes })
 
   useEffect(() => {
@@ -12,7 +13,7 @@ export default function Index(props) {
   }, [])
 
   useEffect(() => {
-    app.logger.debug('[Index effect] 로긴여부 처리', app.state.links.length)
+    logger.debug('[Index effect] 로긴여부 처리', app.state.links.length)
     if (!props.user?.id) {
       app.auth.signOut()
       return
@@ -23,9 +24,9 @@ export default function Index(props) {
   }, [])
 
   useEffect(() => {
-    app.logger.debug('[Index effect] links 구독', app.state.links.length)
+    logger.debug('[Index effect] links 구독', app.state.links.length)
     const subscription = app.linksSubject.subscribe((links) => {
-      app.logger.debug(
+      logger.debug(
         '[Index effect] links 구독 중 feed 받아 먹음',
         links.length,
         app.state.links.length,
@@ -37,7 +38,7 @@ export default function Index(props) {
     }
   }, [])
 
-  app.logger.debug('Index render')
+  logger.debug('Index render')
   return (
     <Layout>
       <List state={state} />

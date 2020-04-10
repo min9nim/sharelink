@@ -1,4 +1,5 @@
 import { removeTag } from 'mingutils'
+import app from '../app'
 
 export function _findLink(links, linkID) {
   let link
@@ -61,7 +62,7 @@ export function htmlspecialchars(str) {
     '"': '&quot;',
     "'": '&#39;', // ' -> &apos; for XML only
   }
-  return str.replace(/[&<>"']/g, function(m) {
+  return str.replace(/[&<>"']/g, function (m) {
     return map[m]
   })
 }
@@ -76,9 +77,13 @@ export function htmlspecialchars_decode(str) {
     '&quot;': '"',
     '&#39;': "'",
   }
-  return str.replace(/(&amp;|&lt;|&gt;|&quot;|&#39;)/g, function(m) {
+  return str.replace(/(&amp;|&lt;|&gt;|&quot;|&#39;)/g, function (m) {
     return map[m]
   })
 }
 
-//global._findLink = _findLink;
+export function withLogger(Component) {
+  return (props) => {
+    return <Component {...props} logger={app.logger.addTags(Component.name)} />
+  }
+}
