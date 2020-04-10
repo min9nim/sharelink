@@ -1,7 +1,7 @@
 import Layout from '../components/Layout.js'
 import { withRouter } from 'next/router'
 //import Head from 'next/head';
-import app from '../src/app'
+import app from '../app'
 import './login.scss'
 import createLogger from 'if-logger'
 
@@ -28,7 +28,7 @@ Login.getInitialProps = async ({ req }) => {
   }
 }
 
-global.onSignIn = async googleUser => {
+global.onSignIn = async (googleUser) => {
   const logger = createLogger({ tags: ['onSignIn'] })
   console.log('global.onSignIn 호출')
 

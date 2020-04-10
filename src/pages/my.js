@@ -1,5 +1,5 @@
 import List from '../components/List.js'
-import app from '../src/app'
+import app from '../app'
 import { useState, useEffect } from 'react'
 
 export default function Index(props) {
