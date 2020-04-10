@@ -16,6 +16,7 @@ function Search(props) {
   })
 
   useEffect(() => {
+    app.logger.debug('useEffect')
     state.subject = new Subject()
     const keypressSubscription = state.subject
       .pipe(
@@ -46,11 +47,12 @@ function Search(props) {
         search(event.target.value)
       })
     return () => {
+      app.logger.debug('unsubscribe')
       keypressSubscription.unsubscribe()
       changeSubscription.unsubscribe()
       blurSubscription.unsubscribe()
     }
-  }, [state.subject])
+  }, [])
 
   const search = async (word) => {
     if (state.mode === 'search') {
