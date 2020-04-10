@@ -1,8 +1,11 @@
 import app from '../app'
 import { withRouter } from 'next/router'
 import './Search.scss'
-import { Observable } from 'rxjs'
-import { throttleTime } from 'rxjs/operators'
+import { Observable, Subject } from 'rxjs'
+import { filter } from 'rxjs/operators'
+
+const isAddMode = (event) =>
+  event.target.value.indexOf('http') === 0 && app.auth.isLogin()
 
 class Search extends React.Component {
   constructor(props) {
@@ -13,9 +16,6 @@ class Search extends React.Component {
     }
 
     app.view.Search = this
-
-    // Observable 생성
-    //this.text$ = new Rx.Subject();
   }
 
   componentDidMount() {
@@ -25,31 +25,32 @@ class Search extends React.Component {
     const observable = new Observable((subscriber) => {
       this.subscriber = subscriber
     })
-    this.subscription = observable.subscribe(({ type, event }) => {
-      app.logger.debug('여기')
-      if (type === 'keypress') {
-        let keyCode = event.keyCode || event.which
-        if (keyCode === 13) {
-          this.search(event.target.value)
-        }
-        return
-      }
-      if (event.target.value.indexOf('http') === 0) {
-        if (app.auth.isLogin()) {
-          this.state.mode = 'add'
-        } else {
-          this.state.mode = 'search'
-        }
-      } else {
-        this.state.mode = 'search'
-      }
-      app.state.word = event.target.value
-    })
+    const subject = new Subject()
+
+    this.subjectSubscription = observable.subscribe(subject)
+    this.keypressSubscription = subject
+      .pipe(
+        filter(({ type }) => type === 'keypress'),
+        filter(({ event }) => (event.keyCode || event.which) === 13),
+      )
+      .subscribe(({ event }) => {
+        app.logger.debug('keypress 처리')
+        this.search(event.target.value)
+      })
+    this.changeSubscription = subject
+      .pipe(filter(({ type }) => type === 'change'))
+      .subscribe(({ event }) => {
+        app.logger.debug('change 처리')
+        app.state.word = event.target.value
+        this.state.mode = isAddMode(event) ? 'add' : 'search'
+      })
   }
 
   componentWillUnmount() {
     this._ismounted = false
-    this.subscription.unsubscribe()
+    this.subjectSubscription.unsubscribe()
+    this.keypressSubscription.unsubscribe()
+    this.changeSubscription.unsubscribe()
   }
 
   handleChange(e) {
