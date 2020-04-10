@@ -5,33 +5,7 @@ import { Subject } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { useState, useEffect } from 'react'
 import { withLogger } from '../com/pure'
-
-const isAddMode = (event) =>
-  event.target.value.indexOf('http') === 0 && app.auth.isLogin()
-
-const search = async (word, mode) => {
-  if (mode === 'search') {
-    app.state.links = []
-    await app.api.fetchList({
-      menuIdx: app.state.menuIdx,
-      idx: 0,
-      cnt: app.PAGEROWS,
-    })
-    return
-  }
-  if (!app.user.id) {
-    props.logger.warn('app.user.id is undefined')
-    return
-  }
-
-  await app.api.postLink({
-    url: word,
-    author: {
-      id: app.user.id,
-      name: app.user.name,
-    },
-  })
-}
+import { isAddMode, search } from './search-fn'
 
 function Search(props) {
   props.logger.debug('start')
