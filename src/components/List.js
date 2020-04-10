@@ -3,12 +3,11 @@ import LinkLoading from './LinkLoading.js'
 import app from '../app'
 import './List.scss'
 import React, { useEffect } from 'react'
-import { map } from 'ramda'
-import { withLogger, observeDom } from '../com/pure.js'
+import { infiniteLoading, imageLazyLoad } from './list-fn'
+import { withLogger } from '../com/pure.js'
 
-let logger
 function List(props) {
-  logger = props.logger
+  const logger = props.logger
   logger.debug('List start', props.state.links.length)
 
   useEffect(() => {
@@ -24,21 +23,15 @@ function List(props) {
     }
   }, [props.state.links.length])
 
-  let intro = props.state.menu[props.state.menuIdx].label
+  const intro = app.state.word
+    ? `"${app.state.word}" 검색 결과`
+    : props.state.menu[props.state.menuIdx].label
 
-  if (
-    app.view.Search &&
-    app.view.Search.state.mode === 'search' &&
-    app.state.word
-  ) {
-    intro = `"${app.state.word}" 검색 결과`
-  }
   const { links, totalCount } = props.state
 
   return (
     <>
       <div className="intro">{'* ' + intro + '(' + totalCount + '개)'}</div>
-      {/* <div className="intro">{"* " + intro}</div> */}
       <ul className="PostList">
         {links.map((link) => {
           return <Post key={link.id} link={link} />
@@ -54,42 +47,6 @@ function List(props) {
       <LinkLoading />
     </>
   )
-}
-
-function imageLazyLoad() {
-  const loadImage = (img) => {
-    if (img.dataset.src) {
-      img.src = img.dataset.src
-    } else {
-      img.removeAttribute('src')
-    }
-    img.removeAttribute('data-src')
-    img.classList.remove('lazy')
-  }
-  const lazyloadImages = document.querySelectorAll('.lazy')
-
-  return map((item) => observeDom(item, loadImage))(lazyloadImages)
-}
-
-function infiniteLoading() {
-  const lastPost = document.querySelector(
-    '.PostList > li:last-child > .wrapper',
-  )
-
-  if (!lastPost) {
-    logger.verbose('not found lastPost')
-    return () => {}
-  }
-  logger.debug('마지막 요소 지켜보기 설정')
-
-  return observeDom(lastPost, () => {
-    logger.debug('observeDom lastPost fetch call', app.state.links.length)
-    app.api.fetchList({
-      menuIdx: app.state.menuIdx,
-      idx: app.state.links.length,
-      cnt: app.PAGEROWS,
-    })
-  })
 }
 
 export default withLogger(List)
