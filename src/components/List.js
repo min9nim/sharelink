@@ -16,7 +16,7 @@ export default function List(props) {
   }, [props.fetchRes])
 
   useEffect(() => {
-    // app.logger.debug('app.state.links 변화 감지', app.state.links.length)
+    app.logger.debug('app.state.links 변화 감지', app.state.links.length)
     /**
      * 18.11.02
      * delay를 줘도 스크롤 위치 보정이 잘 안된다;
@@ -29,7 +29,7 @@ export default function List(props) {
 
     imageLazyLoad()
     infiniteLoading()
-  }, [app.state.links.length])
+  }, [app.state.links])
 
   let intro = props.state.menu[props.state.menuIdx].label
 
