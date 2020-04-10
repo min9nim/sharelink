@@ -8,6 +8,31 @@ import { useState, useEffect } from 'react'
 const isAddMode = (event) =>
   event.target.value.indexOf('http') === 0 && app.auth.isLogin()
 
+const search = async (word, mode) => {
+  if (mode === 'search') {
+    app.state.links = []
+    await app.api.fetchList({
+      menuIdx: app.state.menuIdx,
+      idx: 0,
+      cnt: app.PAGEROWS,
+      word,
+    })
+    return
+  }
+  if (!app.user.id) {
+    app.logger.warn('app.user.id is undefined')
+    return
+  }
+
+  await app.api.postLink({
+    url: word,
+    author: {
+      id: app.user.id,
+      name: app.user.name,
+    },
+  })
+}
+
 function Search(props) {
   const [state, setState] = useState({
     mode: 'search',
@@ -27,13 +52,13 @@ function Search(props) {
       )
       .subscribe(({ event }) => {
         app.logger.debug('keypress 처리')
-        search(event.target.value)
+        search(event.target.value, state.mode)
       })
     const changeSubscription = state.subject
       .pipe(filter(({ type }) => type === 'change'))
       .subscribe(({ event }) => {
         app.logger.debug('change 처리', event.target.value)
-
+        app.state.word = event.target.value
         setState({
           ...state,
           word: event.target.value,
@@ -44,7 +69,7 @@ function Search(props) {
       .pipe(filter(({ type, event }) => type === 'blur' && event.target.value))
       .subscribe(({ event }) => {
         app.logger.debug('blur 처리', event.target.value)
-        search(event.target.value)
+        search(event.target.value, state.mode)
       })
     return () => {
       app.logger.debug('unsubscribe')
@@ -53,31 +78,6 @@ function Search(props) {
       blurSubscription.unsubscribe()
     }
   }, [])
-
-  const search = async (word) => {
-    if (state.mode === 'search') {
-      await app.api.fetchList({
-        menuIdx: app.state.menuIdx,
-        idx: 0,
-        cnt: app.PAGEROWS,
-        word,
-      })
-      return
-    }
-    if (!app.user.id) {
-      app.logger.warn('app.user.id is undefined')
-      return
-    }
-
-    await app.api.postLink({
-      url: state.word,
-      author: {
-        id: app.user.id,
-        name: app.user.name,
-      },
-    })
-    state.mode = 'search'
-  }
 
   return (
     <div className="ipt-wrapper">
