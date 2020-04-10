@@ -38,14 +38,12 @@ class Menu extends React.Component {
   }
 
   selectMenu(idx) {
-    return async (e) => {
-      this.props.router.push(app.state.menu[idx + 1].path)
-
+    return () => {
+      app.state.links = []
       app.state.menuIdx = idx + 1
       app.state.totalCount = '?'
 
-      //   let fetchRes = await app.api.fetchList({ menuIdx: idx + 1 })
-
+      this.props.router.push(app.state.menu[idx + 1].path)
       this.props.hideMenu()
     }
   }
