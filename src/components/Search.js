@@ -12,12 +12,11 @@ function Search(props) {
   const [state, setState] = useState({
     mode: 'search',
     word: '',
-    subject: null,
+    subject: new Subject(),
   })
 
   useEffect(() => {
-    props.logger.debug('useEffect')
-    state.subject = new Subject()
+    props.logger.debug('effect')
     const keypressSubscription = state.subject
       .pipe(
         filter(
@@ -46,12 +45,12 @@ function Search(props) {
         search(event.target.value, state.mode)
       })
     return () => {
-      props.logger.debug('unsubscribe')
+      props.logger.debug('effect clean-up')
       keypressSubscription.unsubscribe()
       changeSubscription.unsubscribe()
       blurSubscription.unsubscribe()
     }
-  }, [])
+  }, [state])
 
   props.logger.debug('Search render')
   return (

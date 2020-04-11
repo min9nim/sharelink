@@ -84,6 +84,7 @@ export function htmlspecialchars_decode(str) {
 
 export function withLogger(Component) {
   return (props) => {
+    app.logger.addTags('withLogger').verbose('Component.name:', Component.name)
     return <Component {...props} logger={app.logger.addTags(Component.name)} />
   }
 }

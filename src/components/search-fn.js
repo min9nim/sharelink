@@ -1,7 +1,11 @@
+import app from '../app'
+
 export const isAddMode = (event) =>
   event.target.value.indexOf('http') === 0 && app.auth.isLogin()
 
 export const search = async (word, mode) => {
+  const logger = app.logger.addTags('search-fn')
+  logger.verbose('mode', mode)
   if (mode === 'search') {
     app.state.links = []
     await app.api.fetchList({
