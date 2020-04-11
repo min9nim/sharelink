@@ -16,25 +16,25 @@ export function imageLazyLoad() {
   return map((item) => observeDom(item, loadImage))(lazyloadImages)
 }
 
-export function infiniteLoading() {
+export function infiniteLoading({ logger, setLoading }) {
   const lastPost = document.querySelector(
     '.PostList > li:last-child > .wrapper',
   )
 
   if (!lastPost) {
-    app.logger.addTags('List').warn('not found lastPost')
+    logger.warn('not found lastPost')
     return () => {}
   }
-  app.logger.addTags('List').debug('마지막 요소 지켜보기 설정')
+  logger.debug('마지막 요소 지켜보기 설정')
 
-  return observeDom(lastPost, () => {
-    app.logger
-      .addTags('List')
-      .debug('observeDom lastPost fetch call', app.state.links.length)
-    app.api.fetchList({
+  return observeDom(lastPost, async () => {
+    logger.debug('observeDom lastPost fetch call', app.state.links.length)
+    setLoading(true)
+    await app.api.fetchList({
       menuIdx: app.state.menuIdx,
       idx: app.state.links.length,
       cnt: app.PAGEROWS,
     })
+    setLoading(false)
   })
 }
