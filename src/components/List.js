@@ -5,6 +5,7 @@ import './List.scss'
 import React, { useEffect } from 'react'
 import { infiniteLoading, imageLazyLoad } from './list-fn'
 import { withLogger } from '../com/pure.js'
+import { isAddMode } from './search-fn'
 
 function List(props) {
   const logger = props.logger
@@ -23,9 +24,9 @@ function List(props) {
     }
   }, [props.state.links.length])
 
-  const intro = app.state.word
-    ? `"${app.state.word}" 검색 결과`
-    : props.state.menu[props.state.menuIdx].label
+  const intro = isAddMode(app.state.word)
+    ? props.state.menu[props.state.menuIdx].label
+    : `"${app.state.word}" 검색 결과`
 
   const { links, totalCount } = props.state
 

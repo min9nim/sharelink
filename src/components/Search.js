@@ -11,7 +11,6 @@ function Search(props) {
   props.logger.debug('start')
   const [state, setState] = useState({
     mode: 'search',
-    word: '',
     subject: new Subject(),
   })
 
@@ -35,7 +34,7 @@ function Search(props) {
         app.state.word = event.target.value
         setState({
           ...state,
-          mode: isAddMode(event) ? 'add' : 'search',
+          mode: isAddMode(event.target.value) ? 'add' : 'search',
         })
       })
     const blurSubscription = state.subject
