@@ -3,7 +3,7 @@ import Header from './Header'
 import { withRouter } from 'next/router'
 
 import './Layout.scss'
-import app from '../app'
+import app from '../biz/app'
 
 let layoutProps
 const Layout = (props) => {

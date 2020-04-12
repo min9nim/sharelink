@@ -1,6 +1,6 @@
 //import Link from 'next/link';
 import './Header.scss'
-import app from '../app'
+import app from '../biz/app'
 import Menu from './Menu'
 import Search from './Search'
 

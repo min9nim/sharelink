@@ -1,5 +1,5 @@
 import { removeTag } from 'mingutils'
-import app from '../app'
+import app from './app'
 
 export function _findLink(links, linkID) {
   let link

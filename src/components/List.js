@@ -1,10 +1,10 @@
 import Post from './Post.js'
 import LinkLoading from './LinkLoading.js'
-import app from '../app'
+import app from '../biz/app'
 import './List.scss'
 import React, { useEffect, useState } from 'react'
 import { infiniteLoading, imageLazyLoad } from './list-fn'
-import { withLogger } from '../com/pure.js'
+import { withLogger } from '../biz'
 import { isAddMode } from './search-fn'
 
 function List(props) {
@@ -25,7 +25,8 @@ function List(props) {
     }
   }, [props.state.links.length])
 
-  const intro = isAddMode(app.state.word)
+  logger.verbose('체크', app.state.word, isAddMode(app.state.word))
+  const intro = !isAddMode(app.state.word)
     ? props.state.menu[props.state.menuIdx].label
     : `"${app.state.word}" 검색 결과`
 

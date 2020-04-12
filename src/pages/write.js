@@ -1,12 +1,12 @@
 import Layout from '../components/Layout.js'
 import { withRouter } from 'next/router'
-import app from '../app'
+import app from '../biz/app'
 import shortid from 'shortid'
 import './write.scss'
-import { _findLink, avoidXSS } from '../com/pure.js'
+import { _findLink, avoidXSS } from '../biz'
 import { getQueryParams, go } from 'mingutils'
 import { prop } from 'ramda'
-import { webscrap } from '../com/webscrap.js'
+import { webscrap } from '../biz/webscrap.js'
 class Write extends React.Component {
   constructor(props) {
     super(props)

@@ -1,5 +1,5 @@
 import { map } from 'ramda'
-import { observeDom } from '../com/pure.js'
+import { observeDom } from '../biz'
 
 export function imageLazyLoad() {
   const loadImage = (img) => {

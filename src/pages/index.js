@@ -1,6 +1,6 @@
 import List from '../components/List'
 import Layout from '../components/Layout'
-import app from '../app'
+import app from '../biz/app'
 import { useState, useEffect } from 'react'
 
 export default function Index(props) {

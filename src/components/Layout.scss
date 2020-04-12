@@ -1,10 +1,9 @@
-@import "../com/com.scss";
-
+@import '../biz/com.scss';
 
 .layoutStyle {
-    margin: 0px auto;
-    padding: 0px 15px;
-    max-width: 1000px;
+  margin: 0px auto;
+  padding: 0px 15px;
+  max-width: 1000px;
 }
 
 // // mobile-first
@@ -14,8 +13,8 @@
 //     }
 // }
 
-@include mobile(){
-    .layoutStyle {
-        padding: 0px 5px;
-    }
+@include mobile() {
+  .layoutStyle {
+    padding: 0px 5px;
+  }
 }

@@ -1,4 +1,4 @@
-import app from '../app'
+import app from '../biz/app'
 
 export const isAddMode = (word) =>
   word.indexOf('http') === 0 && app.auth.isLogin()

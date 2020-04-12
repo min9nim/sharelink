@@ -1,105 +1,102 @@
-@import "../com/com.scss";
+@import '../biz/com.scss';
 
 .header {
-    position: relative;
-    border-bottom: 2px solid $site-color;
+  position: relative;
+  border-bottom: 2px solid $site-color;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2px 0px;
+  .logo-wrapper {
+    flex: 1;
+    .logo {
+      margin-right: 15px;
+      .logo-font {
+        font-family: 'logofont';
+        font-size: 30px;
+        cursor: pointer;
+        color: $site-color;
+      }
+      img {
+        //width: 120px;
+        cursor: pointer;
+        filter: hue-rotate(90deg) opacity(70%); //opacity: 0.7;
+      }
+    }
+  }
+  .search {
+    flex: 1;
+    padding: 2px;
+    margin-right: 10px;
+  }
+  .btn-wrapper {
     display: flex;
-    flex-wrap: wrap;
-    padding: 2px 0px;
-    .logo-wrapper {
-        flex: 1;
-        .logo {
-            margin-right: 15px;
-            .logo-font {
-                font-family: "logofont";
-                font-size: 30px;
-                cursor: pointer;
-                color: $site-color;
-            }
-            img {
-                //width: 120px;
-                cursor: pointer;
-                filter: hue-rotate(90deg) opacity(70%); //opacity: 0.7;
-            }
-        }
+    padding: 0px 3px 5px 8px;
+    .add-btn {
+      margin-right: 15px;
+      cursor: pointer;
+      font-size: 23px;
+      padding-top: 0px;
+      text-align: center;
+      padding-right: 0px;
+      border: 1px solid #ddd;
+      border-radius: 24px;
+      background-color: #f6f6f6;
+      color: #555;
+      width: 27px;
+      padding-left: 1px;
+      height: 26px;
+      &:hover {
+        background-color: #eee;
+        color: black;
+      }
     }
-    .search {
-        flex: 1;
-        padding: 2px;
-        margin-right: 10px;
-        
+    .login-btn {
+      margin-right: 15px;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 6px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f6f6f6;
+      color: #555;
+      &:hover {
+        background-color: #eee;
+        color: black;
+      }
     }
-    .btn-wrapper {
-        display: flex;
-        padding: 0px 3px 5px 8px;
-        .add-btn {
-            margin-right: 15px;
-            cursor: pointer;
-            font-size: 23px;
-            padding-top: 0px;
-            text-align: center;
-            padding-right: 0px;
-            border: 1px solid #ddd;
-            border-radius: 24px;
-            background-color: #f6f6f6;
-            color: #555;
-            width: 27px;
-            padding-left: 1px;
-            height: 26px;
-            &:hover {
-                background-color: #eee;
-                color: black;
-            }
-        }
-        .login-btn {
-            margin-right: 15px;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 6px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f6f6f6;
-            color: #555;
-            &:hover {
-                background-color: #eee;
-                color: black;
-            }
-        }
-        .user-name {
-            div {
-                display: inline-block;
-            }
-            //margin-right: 15px;
-            margin-left: 3px;
-            cursor: pointer;
-            font-size: 15px;
-            padding: 6px 0px 6px 6px;
-            color: #444;
-        }
-        .user-image {
-            width: 30px;
-            height: 30px;
-            border-radius: 15px;
-        }
+    .user-name {
+      div {
+        display: inline-block;
+      }
+      //margin-right: 15px;
+      margin-left: 3px;
+      cursor: pointer;
+      font-size: 15px;
+      padding: 6px 0px 6px 6px;
+      color: #444;
     }
+    .user-image {
+      width: 30px;
+      height: 30px;
+      border-radius: 15px;
+    }
+  }
 }
 
 // mobile-first
 @include mobile() {
-    .header .logo-wrapper {
-        .logo {
-            margin: 3px 0px;
-            img {
-                width: 100px;
-            }
-            .logo-font {
-                font-size: 22px;
-            }     
-        }
-        .user-name div {
-            display: none;
-        }              
+  .header .logo-wrapper {
+    .logo {
+      margin: 3px 0px;
+      img {
+        width: 100px;
+      }
+      .logo-font {
+        font-size: 22px;
+      }
     }
+    .user-name div {
+      display: none;
+    }
+  }
 }
-
-

@@ -1,5 +1,5 @@
 import { withRouter } from 'next/router'
-import app from '../app'
+import app from '../biz/app'
 import './Menu.scss'
 
 class Menu extends React.Component {

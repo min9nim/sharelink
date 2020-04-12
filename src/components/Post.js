@@ -1,6 +1,6 @@
-import app from '../app'
+import app from '../biz/app'
 import moment from 'moment'
-import { _getHostname, htmlspecialchars } from '../com/pure'
+import { _getHostname, htmlspecialchars } from '../biz'
 import CommentWrite from './CommentWrite'
 import CommentList from './CommentList'
 import RefWrite from './RefWrite'
@@ -36,8 +36,10 @@ export default class Post extends React.Component {
   }
 
   render() {
-    // console.log("Post 렌더링 " + this.state.commentClicked)
+    console.log('Post 렌더링 ' + this.state.commentClicked)
     const { link } = this.props
+
+    console.log('app.auth.isLogin():', app.auth.isLogin())
 
     return (
       <li id={link.id}>

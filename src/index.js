@@ -27,7 +27,7 @@ app.prepare().then(() => {
         handle(req, res, parsedUrl)
       }
     })
-    .listen(PORT, err => {
+    .listen(PORT, (err) => {
       if (err) throw err
       console.log(`Next server is running http://localhost:${PORT}`)
     })

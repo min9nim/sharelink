@@ -1,5 +1,5 @@
 import { observable, reaction, decorate } from 'mobx'
-import $m from './com/util'
+import $m from './util'
 import getApi from './restful'
 import getAuth from './auth'
 import base64js from 'base64-js'
@@ -108,12 +108,12 @@ app.isMobileChrome = function () {
   )
 }
 
-app.Base64Encode = (str, encoding = 'utf-8') => {
+const Base64Encode = (str, encoding = 'utf-8') => {
   var bytes = new (TextEncoder || TextEncoderLite)(encoding).encode(str)
   return base64js.fromByteArray(bytes)
 }
 
-app.Base64Decode = (str, encoding = 'utf-8') => {
+const Base64Decode = (str, encoding = 'utf-8') => {
   var bytes = base64js.toByteArray(str)
   return new (TextDecoder || TextDecoderLite)(encoding).decode(bytes)
 }

@@ -1,7 +1,7 @@
 import Layout from '../components/Layout.js'
 import { withRouter } from 'next/router'
 //import Head from 'next/head';
-import app from '../app'
+import app from '../biz/app'
 import './login.scss'
 import createLogger from 'if-logger'
 

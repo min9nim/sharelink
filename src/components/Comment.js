@@ -1,6 +1,6 @@
 import React from 'react'
 import moment from 'moment'
-import $m from '../com/util.js'
+import $m from '../biz/util.js'
 
 import './Comment.scss'
 

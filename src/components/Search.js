@@ -1,10 +1,10 @@
-import app from '../app'
+import app from '../biz/app'
 import { withRouter } from 'next/router'
 import './Search.scss'
 import { Subject } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { useState, useEffect } from 'react'
-import { withLogger } from '../com/pure'
+import { withLogger } from '../biz'
 import { isAddMode, search } from './search-fn'
 
 function Search(props) {

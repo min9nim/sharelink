@@ -1,4 +1,4 @@
-import { isExpired } from './com/pure'
+import { isExpired } from '.'
 import createLogger, { isNode, simpleFormat } from 'if-logger'
 
 async function onGApiLoad() {
@@ -55,7 +55,16 @@ export default function getAuth(app) {
       sessionStorage.setItem('user', JSON.stringify(app.user))
     },
 
-    isLogin: () => app.state.userID && !isExpired(app.user.exp * 1000),
+    isLogin: () => {
+      console.log('app.state.userID:', app.state.userID)
+      console.log('app.user.exp:', app.user.exp)
+      console.log(
+        'isExpired(app.user.exp * 1000)',
+        isExpired(app.user.exp * 1000),
+      )
+
+      return app.state.userID && !isExpired(app.user.exp * 1000)
+    },
 
     signOut: () => {
       logger.debug('signOut 처리')
