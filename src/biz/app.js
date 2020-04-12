@@ -76,7 +76,7 @@ app.linksSubject = new Subject()
 reaction(
   () => JSON.stringify(app.state.links),
   () => {
-    logger.debug('links changed & feed')
+    logger.debug('links feed')
     app.linksSubject.next(app.state.links)
   },
 )
