@@ -112,6 +112,7 @@ app.getUser = async (req) => {
     if (res.status === 'Fail') {
       throw Error(`[getInitialProps] 로그인 실패 : ${res.message}`)
     }
+    // logger.verbose('리턴하기 전', user)
     return user
   } catch (e) {
     logger.error(e)

@@ -37,7 +37,7 @@ function List(props) {
       <div className="intro">{'* ' + intro + '(' + totalCount + '개)'}</div>
       <ul className="PostList">
         {links.map((link) => {
-          return <Post key={link.id} link={link} />
+          return <Post key={link.id} link={link} state={props.state} />
         })}
       </ul>
       {loading && (

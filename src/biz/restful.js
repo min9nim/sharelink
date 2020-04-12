@@ -133,7 +133,7 @@ export default function getApi(app) {
         return
       }
 
-      app.logger.verbose('fetchRes:', fetchRes)
+      // app.logger.verbose('fetchRes:', fetchRes)
       app.state.totalCount = fetchRes.totalCount
       if (fetchRes.links.length == 0) {
         fetchRes.hasNext = false // 18.12.31 links 길이가 0인데 hasNext 가 true로 떨어지는 경우가 있어서 보정함.

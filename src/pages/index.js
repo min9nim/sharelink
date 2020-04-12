@@ -6,10 +6,16 @@ import { useState, useEffect } from 'react'
 export default function Index(props) {
   const logger = app.logger.addTags('Index')
   logger.debug('start')
-  const [state, setState] = useState({ ...app.state, ...props.fetchRes })
+  const [state, setState] = useState({
+    ...app.state,
+    ...props.fetchRes,
+    user: props.user,
+  })
 
   useEffect(() => {
     Object.assign(app.state, props.fetchRes)
+    app.user = props.user
+    logger.verbose('체크::: ', app.user, props)
   }, [])
 
   useEffect(() => {
@@ -52,6 +58,7 @@ Index.getInitialProps = async ({ req, asPath }) => {
     app.getUser(req),
     app.api.fetchList({ menuIdx }),
   ])
+  console.log('서버 여기', user)
   return {
     menuIdx,
     fetchRes,
