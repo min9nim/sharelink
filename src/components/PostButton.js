@@ -1,7 +1,7 @@
 import React from 'react'
 import app from '../biz/app'
 import Link from 'next/link'
-import $m from '../biz/util'
+import $m from '../biz/$m'
 
 const remove = async (post) => {
   const dom = document.getElementById(post.id)

@@ -1,13 +1,11 @@
 import { observable, reaction, decorate } from 'mobx'
-import $m from './util'
+import $m from './$m'
 import getApi from './restful'
 import getAuth from './auth'
-import base64js from 'base64-js'
 import Cookies from 'universal-cookie'
 import createLogger, { simpleFormat } from 'if-logger'
 import moment from 'moment'
 import { Subject } from 'rxjs'
-// import React from 'react'
 
 const initialState = {
   links: [],
@@ -91,32 +89,6 @@ reaction(
       app.view.Header.forceUpdate()
   },
 )
-
-// app.ReactCtx = React.createContext(initialState)
-app.isDesktop = function () {
-  const os = ['win16', 'win32', 'win64', 'mac', 'macintel']
-  return (
-    global.navigator && os.includes(global.navigator.platform.toLowerCase())
-  )
-}
-
-app.isMobileChrome = function () {
-  return (
-    !app.isDesktop() &&
-    global.navigator &&
-    global.navigator.userAgent.includes('Chrome')
-  )
-}
-
-const Base64Encode = (str, encoding = 'utf-8') => {
-  var bytes = new (TextEncoder || TextEncoderLite)(encoding).encode(str)
-  return base64js.fromByteArray(bytes)
-}
-
-const Base64Decode = (str, encoding = 'utf-8') => {
-  var bytes = base64js.toByteArray(str)
-  return new (TextDecoder || TextDecoderLite)(encoding).decode(bytes)
-}
 
 app.getUser = async (req) => {
   try {
