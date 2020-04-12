@@ -51,59 +51,11 @@ export function avoidXSS(link) {
   }
 }
 
-/**
- * 18.11.19
- * htmlspecialchars, htmlspecialchars_decode 소스출처: https://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities
- */
-export function htmlspecialchars(str) {
-  if (!str) return ''
-
-  var map = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;', // ' -> &apos; for XML only
+export function withLogger(Fn) {
+  const Component = (props) => {
+    // app.logger.addTags('withLogger').verbose('Component.name:', Component.name)
+    return <Fn {...props} logger={app.logger.addTags(Fn.name)} />
   }
-  return str.replace(/[&<>"']/g, function (m) {
-    return map[m]
-  })
-}
-
-export function htmlspecialchars_decode(str) {
-  if (!str) return ''
-
-  var map = {
-    '&amp;': '&',
-    '&lt;': '<',
-    '&gt;': '>',
-    '&quot;': '"',
-    '&#39;': "'",
-  }
-  return str.replace(/(&amp;|&lt;|&gt;|&quot;|&#39;)/g, function (m) {
-    return map[m]
-  })
-}
-
-export function withLogger(Component) {
-  return (props) => {
-    app.logger.addTags('withLogger').verbose('Component.name:', Component.name)
-    return <Component {...props} logger={app.logger.addTags(Component.name)} />
-  }
-}
-
-export function observeDom(dom, callback) {
-  const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) {
-        return
-      }
-      callback(entry.target)
-      observer.unobserve(entry.target)
-    })
-  })
-  observer.observe(dom)
-  return () => {
-    observer.unobserve(dom)
-  }
+  Component.getInitialProps = Fn.getInitialProps
+  return Component
 }

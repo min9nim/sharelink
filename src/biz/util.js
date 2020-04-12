@@ -207,39 +207,52 @@ export const cancelRemoveAnimation = (dom, delay) => {
   })
 }
 
-export function createTimelog() {
-  const newDate = function () {
-    let t = new Date()
-    let o = {
-      HH: String(t.getHours()).padStart(2, '0'),
-      mm: String(t.getMinutes()).padStart(2, '0'),
-      ss: String(t.getSeconds()).padStart(2, '0'),
-      SSS: String(t.getMilliseconds()).padStart(3, '0'),
-      time: t.getTime(),
-    }
-    return o
-  }
+/**
+ * 18.11.19
+ * htmlspecialchars, htmlspecialchars_decode 소스출처: https://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities
+ */
+export function htmlspecialchars(str) {
+  if (!str) return ''
 
-  let time = []
-  let seq = '#' + Math.floor(Math.random() * 100)
-  let o = {
-    start: function (str) {
-      let t = newDate()
-      time = [t.time]
-      console.log(`[START${seq} ${t.HH}:${t.mm}:${t.ss}:${t.SSS}] ` + str)
-    },
-    check: function (str) {
-      let t = newDate()
-      time.push(t.time)
-      let diff = time[time.length - 1] - time[time.length - 2]
-      let total = time[time.length - 1] - time[0]
-      console.log(
-        `[CHECK${seq} ${t.HH}:${t.mm}:${t.ss}:${t.SSS} +${diff}ms / +${total}ms] ` +
-          str,
-      )
-      return diff
-    },
+  var map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;', // ' -> &apos; for XML only
   }
-  return o
+  return str.replace(/[&<>"']/g, function (m) {
+    return map[m]
+  })
 }
-export const timelog = createTimelog()
+
+export function htmlspecialchars_decode(str) {
+  if (!str) return ''
+
+  var map = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&#39;': "'",
+  }
+  return str.replace(/(&amp;|&lt;|&gt;|&quot;|&#39;)/g, function (m) {
+    return map[m]
+  })
+}
+
+export function observeDom(dom, callback) {
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
+        return
+      }
+      callback(entry.target)
+      observer.unobserve(entry.target)
+    })
+  })
+  observer.observe(dom)
+  return () => {
+    observer.unobserve(dom)
+  }
+}

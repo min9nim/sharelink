@@ -63,12 +63,20 @@ app.auth = getAuth(app)
 
 decorate(app, { state: observable })
 
+app.stateSubject = new Subject()
+reaction(
+  () => JSON.stringify(app.state),
+  () => {
+    logger.debug('state feed')
+    app.stateSubject.next(app.state)
+  },
+)
+
 app.linksSubject = new Subject()
 reaction(
   () => JSON.stringify(app.state.links),
   () => {
     logger.debug('links changed & feed')
-    // app.view.Index && app.view.Index._ismounted && app.view.Index.forceUpdate()
     app.linksSubject.next(app.state.links)
   },
 )
@@ -103,18 +111,18 @@ app.getUser = async (req) => {
     // logger.verbose('userStr:', userStr)
 
     if (!userStr) {
-      throw Error('[getInitialProps] 로그인 실패 : user 정보 없음')
+      throw Error('[getUser] user 정보 없음')
     }
     let user = JSON.parse(userStr)
     app.state.user = user
     let res = await app.api.login()
     if (res.status === 'Fail') {
-      throw Error(`[getInitialProps] 로그인 실패 : ${res.message}`)
+      throw Error(`[getUser] 로그인 실패 : ${res.message}`)
     }
     // logger.verbose('리턴하기 전', user)
     return user
   } catch (e) {
-    logger.error(e)
+    logger.warn(e)
     return {}
   }
 }

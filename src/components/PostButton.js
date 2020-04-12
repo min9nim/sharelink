@@ -1,60 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import app from '../biz/app'
 import Link from 'next/link'
-import $m from '../biz/$m'
+import { remove, hasChildren } from './PostButton-fn'
+import { withLogger } from '../biz'
 
-const remove = async (post) => {
-  const dom = document.getElementById(post.id)
-  if (!confirm('삭제합니다')) {
-    return
-  }
+function PostButton(props) {
+  const [userId, setUserId] = useState(app.state.user.id)
 
-  // 애니메이션 시작
-  //await $m.removeAnimation(dom, 0.2)
-  $m.removeAnimation(dom, 0.2)
+  useEffect(() => {
+    props.logger.debug('effect')
+    const subscription = app.stateSubject.subscribe((state) => {
+      props.logger.debug('state 받아 먹음')
+      setUserId(state.user.id)
+    })
+    return () => {
+      subscription.unsubscribe()
+    }
+  })
 
-  // DB 삭제처리
-  let json = await app.api.deleteLink(post)
-  if (json.status === 'Fail') {
-    $m.cancelRemoveAnimation(dom, 0.2)
-  }
-}
-
-const hasChildren = (link) => {
-  if (!link.refLinks) {
-    return false
-  }
-  return link.refLinks.length > 0
-}
-
-export default function (props) {
   const { link } = props
   const isLike = link.like && link.like.includes(app.state.user.id)
   const isRead = link.read && link.read.includes(app.state.user.id)
   const isToread = link.toread && link.toread.includes(app.state.user.id)
 
-  const likeClick = (link) => {
-    if (isLike) {
-      app.api.unlike(link)
-    } else {
-      app.api.like(link)
-    }
-  }
+  const likeClick = (link) =>
+    isLike ? app.api.unlike(link) : app.api.like(link)
 
-  const readClick = (link) => {
-    if (isRead) {
-      app.api.unread(link)
-    } else {
-      app.api.read(link)
-    }
-  }
-  const toreadClick = (link) => {
-    if (isToread) {
-      app.api.untoread(link)
-    } else {
-      app.api.toread(link)
-    }
-  }
+  const readClick = (link) =>
+    isRead ? app.api.unread(link) : app.api.read(link)
+
+  const toreadClick = (link) =>
+    isToread ? app.api.untoread(link) : app.api.toread(link)
 
   return (
     <React.Fragment>
@@ -91,7 +67,7 @@ export default function (props) {
           <i className="icon-doc-new" />
         </div>
       )}
-      {link.author.id === app.state.user.id && (
+      {link.author.id === userId && (
         <React.Fragment>
           <Link href={`/write?id=${link.id}`}>
             <div className="edit-btn" title="수정">
@@ -112,3 +88,5 @@ export default function (props) {
     </React.Fragment>
   )
 }
+
+export default withLogger(PostButton)

@@ -55,11 +55,11 @@ export default function getAuth(app) {
     },
 
     isLogin: () => {
-      console.log('app.state.user.exp:', app.state.user.exp)
-      console.log(
-        'isExpired(app.state.user.exp * 1000)',
-        isExpired(app.state.user.exp * 1000),
-      )
+      // console.log('app.state.user.exp:', app.state.user.exp)
+      // console.log(
+      //   'isExpired(app.state.user.exp * 1000)',
+      //   isExpired(app.state.user.exp * 1000),
+      // )
 
       return app.state.user.id && !isExpired(app.state.user.exp * 1000)
     },

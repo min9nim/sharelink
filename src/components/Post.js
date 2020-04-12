@@ -1,6 +1,7 @@
 import app from '../biz/app'
 import moment from 'moment'
-import { _getHostname, htmlspecialchars, isExpired } from '../biz'
+import { _getHostname, isExpired } from '../biz'
+import { htmlspecialchars } from '../biz/util'
 import CommentWrite from './CommentWrite'
 import CommentList from './CommentList'
 import RefWrite from './RefWrite'
@@ -36,9 +37,7 @@ export default class Post extends React.Component {
   }
 
   render() {
-    console.log('Post 렌더링 ' + this.state.commentClicked)
     const { link } = this.props
-
     const isLogin = !isExpired(this.props.state.user?.exp * 1000)
 
     return (

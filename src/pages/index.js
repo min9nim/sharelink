@@ -2,9 +2,10 @@ import List from '../components/List'
 import Layout from '../components/Layout'
 import app from '../biz/app'
 import { useState, useEffect } from 'react'
+import { withLogger } from '../biz'
 
-export default function Index(props) {
-  const logger = app.logger.addTags('Index')
+function Index(props) {
+  const logger = props.logger
   logger.debug('start')
   const [state, setState] = useState({
     ...app.state,
@@ -13,12 +14,13 @@ export default function Index(props) {
   })
 
   useEffect(() => {
+    logger.debug('[1st effect] app.state 세팅', props.user)
     Object.assign(app.state, props.fetchRes, { user: props.user })
-    logger.verbose('체크::: ', app.state.user, props)
+    // app.state = { ...props.fetchRes, user: props.user }
   }, [])
 
   useEffect(() => {
-    logger.debug('[Index effect] 로긴여부 처리', app.state.links.length)
+    logger.debug('[2nd effect] 로긴여부 처리', app.state.links.length)
     if (!props.user?.id) {
       app.auth.signOut()
       return
@@ -62,3 +64,5 @@ Index.getInitialProps = async ({ req, asPath }) => {
     user,
   }
 }
+
+export default withLogger(Index)
