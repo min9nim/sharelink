@@ -11,6 +11,13 @@ const initialState = {
   links: [],
   totalCount: 0,
   userID: '',
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    image: '',
+    token: '',
+  },
   menuIdx: 0,
   word: '', // 검색어
   menu: [
@@ -41,13 +48,6 @@ const app = {
   $m, // 기본 유틸
   scrollTop: 0, // 목록화면에서 현재 스크롤 위치
   state: initialState,
-  user: {
-    id: '',
-    name: '',
-    email: '',
-    image: '',
-    token: '',
-  },
   view: {}, // 공유가 필요한 react 컴포넌트
   BACKEND: 'https://sharelink-api.now.sh',
   PAGEROWS: 10,
@@ -107,7 +107,7 @@ app.getUser = async (req) => {
       throw Error('[getInitialProps] 로그인 실패 : user 정보 없음')
     }
     let user = JSON.parse(userStr)
-    app.user.token = user.token
+    app.state.user = user
     let res = await app.api.login()
     if (res.status === 'Fail') {
       throw Error(`[getInitialProps] 로그인 실패 : ${res.message}`)

@@ -14,8 +14,8 @@ export default function Index(props) {
 
   useEffect(() => {
     Object.assign(app.state, props.fetchRes)
-    app.user = props.user
-    logger.verbose('체크::: ', app.user, props)
+    app.state.user = props.user
+    logger.verbose('체크::: ', app.state.user, props)
   }, [])
 
   useEffect(() => {
@@ -25,8 +25,8 @@ export default function Index(props) {
       return
     }
     app.state.userID = props.user.id
-    app.user = props.user
-    global.sessionStorage?.setItem('user', JSON.stringify(app.user))
+    app.state.user = props.user
+    global.sessionStorage?.setItem('user', JSON.stringify(app.state.user))
   }, [])
 
   useEffect(() => {
@@ -58,7 +58,6 @@ Index.getInitialProps = async ({ req, asPath }) => {
     app.getUser(req),
     app.api.fetchList({ menuIdx }),
   ])
-  console.log('서버 여기', user)
   return {
     menuIdx,
     fetchRes,

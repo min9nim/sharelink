@@ -11,12 +11,12 @@ export const isMobileChrome = () => {
   return !isDesktop() && global.navigator?.userAgent.includes('Chrome')
 }
 
-export const Base64Encode = (str, encoding = 'utf-8') => {
+export const base64Encode = (str, encoding = 'utf-8') => {
   var bytes = new (TextEncoder || TextEncoderLite)(encoding).encode(str)
   return base64js.fromByteArray(bytes)
 }
 
-export const Base64Decode = (str, encoding = 'utf-8') => {
+export const base64Decode = (str, encoding = 'utf-8') => {
   var bytes = base64js.toByteArray(str)
   return new (TextDecoder || TextDecoderLite)(encoding).decode(bytes)
 }

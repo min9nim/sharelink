@@ -10,7 +10,7 @@ const req = async (path, method, body) => {
     body: JSON.stringify(body),
     headers: {
       'Content-Type': 'application/json',
-      'x-access-token': app.user.token,
+      'x-access-token': app.state.user.token,
     },
   }
 
@@ -96,7 +96,6 @@ export default function getApi(app) {
 
     // 로그인처리
     login: async () => {
-      //let json = await req("/login", "POST", { token })
       let json = await req('/login', 'POST')
       return json
     },
@@ -155,7 +154,7 @@ export default function getApi(app) {
       await req('/links/like/', 'PUT', { linkID: link.id })
 
       // 로컬상태 업데이트
-      link.like.push(app.user.id)
+      link.like.push(app.state.user.id)
     },
     // 좋아요 취소
     unlike: async (link) => {
@@ -163,7 +162,7 @@ export default function getApi(app) {
       let res = await req('/links/unlike/', 'PUT', { linkID: link.id })
 
       // 로컬상태 업데이트
-      link.like = link.like.filter((userID) => userID !== app.user.id)
+      link.like = link.like.filter((userID) => userID !== app.state.user.id)
     },
     // 읽음 표시
     read: async (link) => {
@@ -171,7 +170,7 @@ export default function getApi(app) {
       let res = await req('/links/read/', 'PUT', { linkID: link.id })
 
       // 로컬상태 업데이트
-      link.read.push(app.user.id)
+      link.read.push(app.state.user.id)
     },
     // 읽음표시 취소
     unread: async (link) => {
@@ -179,7 +178,7 @@ export default function getApi(app) {
       await req('/links/unread/', 'PUT', { linkID: link.id })
 
       // 로컬상태 업데이트
-      link.read = link.read.filter((userID) => userID !== app.user.id)
+      link.read = link.read.filter((userID) => userID !== app.state.user.id)
     },
     // 읽을 글 표시
     toread: async (link) => {
@@ -187,7 +186,7 @@ export default function getApi(app) {
       await req('/links/toread/', 'PUT', { linkID: link.id })
 
       // 로컬상태 업데이트
-      link.toread.push(app.user.id)
+      link.toread.push(app.state.user.id)
     },
     // 읽을 글 표시 취소
     untoread: async (link) => {
@@ -195,7 +194,7 @@ export default function getApi(app) {
       await req('/links/untoread/', 'PUT', { linkID: link.id })
 
       // 로컬상태 업데이트
-      link.toread = link.toread.filter((userID) => userID !== app.user.id)
+      link.toread = link.toread.filter((userID) => userID !== app.state.user.id)
     },
 
     // 댓글추가

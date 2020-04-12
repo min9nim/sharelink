@@ -15,16 +15,16 @@ export const search = async (word, mode) => {
     })
     return
   }
-  if (!app.user.id) {
-    app.logger.warn('app.user.id is undefined')
+  if (!app.state.user.id) {
+    app.logger.warn('app.state.user.id is undefined')
     return
   }
 
   await app.api.postLink({
     url: word,
     author: {
-      id: app.user.id,
-      name: app.user.name,
+      id: app.state.user.id,
+      name: app.state.user.name,
     },
   })
 }

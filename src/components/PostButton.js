@@ -29,9 +29,9 @@ const hasChildren = (link) => {
 
 export default function (props) {
   const { link } = props
-  const isLike = link.like && link.like.includes(app.user.id)
-  const isRead = link.read && link.read.includes(app.user.id)
-  const isToread = link.toread && link.toread.includes(app.user.id)
+  const isLike = link.like && link.like.includes(app.state.user.id)
+  const isRead = link.read && link.read.includes(app.state.user.id)
+  const isToread = link.toread && link.toread.includes(app.state.user.id)
 
   const likeClick = (link) => {
     if (isLike) {
@@ -91,7 +91,7 @@ export default function (props) {
           <i className="icon-doc-new" />
         </div>
       )}
-      {link.author.id === app.user.id && (
+      {link.author.id === app.state.user.id && (
         <React.Fragment>
           <Link href={`/write?id=${link.id}`}>
             <div className="edit-btn" title="수정">

@@ -88,7 +88,7 @@ export default class Comment extends React.Component {
           <div className="meta">
             {author.name} - {moment(updatedAt).format('MM/DD dd HH:mm')}
           </div>
-          {this.props.comment.author.id === app.user.id && (
+          {this.props.comment.author.id === app.state.user.id && (
             <div className="comment-menu">
               <div className="edit" onClick={this.edit.bind(this)}>
                 수정

@@ -12,7 +12,7 @@ class Write extends React.Component {
     super(props)
 
     app.state.userID = props.user.id
-    app.user = props.user
+    app.state.user = props.user
 
     let link = this.props.link
     link = Object.assign({}, link) // 복사본을 전달
@@ -30,8 +30,8 @@ class Write extends React.Component {
           read: [],
           toread: [],
           author: {
-            id: app.user.id,
-            name: app.user.name,
+            id: app.state.user.id,
+            name: app.state.user.name,
           },
         }
 
@@ -40,7 +40,7 @@ class Write extends React.Component {
 
   static async getInitialProps({ req, asPath, query }) {
     let user = await app.getUser(req)
-    app.user.token = user.token
+    app.state.user.token = user.token
 
     let link
     if (req) {
@@ -98,7 +98,7 @@ class Write extends React.Component {
     }
 
     // 인증을 위한 토큰 전달
-    this.state.token = app.user.token
+    this.state.token = app.state.user.token
 
     if (this.state.id) {
       // 수정할 때

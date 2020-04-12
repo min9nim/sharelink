@@ -52,8 +52,8 @@ class Menu extends React.Component {
     return (
       <div className="menu">
         <div className="user-info">
-          <img className="user-image" src={app.user.image}></img>
-          <div className="user-name">{app.user.name}</div>
+          <img className="user-image" src={app.state.user.image}></img>
+          <div className="user-name">{app.state.user.name}</div>
         </div>
         <div className="item">
           {/* <div onClick={this.myLink.bind(this)}>내가 등록한 포스트</div>

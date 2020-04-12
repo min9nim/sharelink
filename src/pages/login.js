@@ -6,7 +6,7 @@ import './login.scss'
 import createLogger from 'if-logger'
 
 const Login = ({ router, user }) => {
-  app.user = user
+  app.state.user = user
 
   return (
     <Layout>
@@ -52,7 +52,7 @@ global.onSignIn = async (googleUser) => {
   // The ID token you need to pass to your backend:
   let id_token = googleUser.getAuthResponse().id_token
   //console.log("@@@@ token 세팅 하고 login 호출할꺼임")
-  app.user.token = id_token
+  app.state.user.token = id_token
 
   // console.log(id_token);
 

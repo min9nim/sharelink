@@ -27,6 +27,9 @@ export function _getHostname(url) {
 }
 
 export function isExpired(exp) {
+  if (!exp) {
+    return true
+  }
   let month = 1000 * 60 * 60 * 24 * 30
   return Date.now() > exp + month // 만료시간을 임의로 한달 연장
 }

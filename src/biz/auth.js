@@ -1,4 +1,5 @@
 import { isExpired } from '.'
+import { base64Encode } from './util'
 import createLogger, { isNode, simpleFormat } from 'if-logger'
 
 async function onGApiLoad() {
@@ -42,28 +43,25 @@ export default function getAuth(app) {
     },
 
     setLogin: (user, id_token) => {
-      app.user = user
-      app.user.token = id_token
-      app.state.userID = user.id
-      const enc = app.Base64Encode(JSON.stringify(app.user))
+      app.state.user = { ...user, token: id_token }
+      const enc = base64Encode(JSON.stringify(app.state.user))
 
       // 쿠키 만료일을 한달 후로 지정
       const month = 1000 * 60 * 60 * 24 * 30
-      const exp = new Date(app.user.exp * 1000 + month).toUTCString()
+      const exp = new Date(app.state.user.exp * 1000 + month).toUTCString()
       document.cookie = `user=${enc}; expires=${exp}; path=/`
 
-      sessionStorage.setItem('user', JSON.stringify(app.user))
+      sessionStorage.setItem('user', JSON.stringify(app.state.user))
     },
 
     isLogin: () => {
-      console.log('app.state.userID:', app.state.userID)
-      console.log('app.user.exp:', app.user.exp)
+      console.log('app.state.user.exp:', app.state.user.exp)
       console.log(
-        'isExpired(app.user.exp * 1000)',
-        isExpired(app.user.exp * 1000),
+        'isExpired(app.state.user.exp * 1000)',
+        isExpired(app.state.user.exp * 1000),
       )
 
-      return app.state.userID && !isExpired(app.user.exp * 1000)
+      return app.state.user.id && !isExpired(app.state.user.exp * 1000)
     },
 
     signOut: () => {
@@ -72,7 +70,7 @@ export default function getAuth(app) {
 
       global.document.cookie = 'user='
       global.sessionStorage.setItem('user', '')
-      app.user = {
+      app.state.user = {
         id: '',
         name: '',
         email: '',

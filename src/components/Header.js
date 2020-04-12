@@ -63,8 +63,8 @@ class Header extends React.Component {
         read: [],
         toread: [],
         author: {
-          id: app.user.id,
-          name: app.user.name,
+          id: app.state.user.id,
+          name: app.state.user.name,
         },
       })
     this.hideMenu()
@@ -89,14 +89,14 @@ class Header extends React.Component {
         <div className="btn-wrapper">
           {app.auth.isLogin() ? (
             // "프로필사진+이름"
-            <React.Fragment>
+            <>
               {/* <div className="add-btn" onClick={this.newLink.bind(this)}>+</div> */}
-              <img className="user-image" src={app.user.image}></img>
+              <img className="user-image" src={app.state.user.image}></img>
               <div className="user-name" onClick={this.showMenu.bind(this)}>
-                <div>{app.user.name}</div>
+                <div>{app.state.user.name}</div>
                 <i className="icon-menu" />
               </div>
-            </React.Fragment>
+            </>
           ) : (
             <div className="login-btn" onClick={this.goLogin.bind(this)}>
               <i className="icon-login" />
