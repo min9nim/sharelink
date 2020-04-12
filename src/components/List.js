@@ -25,7 +25,7 @@ function List(props) {
     }
   }, [props.state.links.length])
 
-  logger.verbose('체크', app.state.word, isAddMode(app.state.word))
+  logger.verbose('체크44', props.state)
   const intro = !isAddMode(app.state.word)
     ? props.state.menu[props.state.menuIdx].label
     : `"${app.state.word}" 검색 결과`
@@ -37,6 +37,14 @@ function List(props) {
       <div className="intro">{'* ' + intro + '(' + totalCount + '개)'}</div>
       <ul className="PostList">
         {links.map((link) => {
+          if (!props.state) {
+            logger.verbose('props.state 가 없어서 div 렌더링')
+            return (
+              <div key={link.id}>
+                {JSON.stringify(link, '', 2)} {props.state}
+              </div>
+            )
+          }
           return <Post key={link.id} link={link} state={props.state} />
         })}
       </ul>

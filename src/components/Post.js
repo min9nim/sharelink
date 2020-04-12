@@ -1,6 +1,6 @@
 import app from '../biz/app'
 import moment from 'moment'
-import { _getHostname, isExpired } from '../biz'
+import { _getHostname, isExpired, withLogger } from '../biz'
 import { htmlspecialchars } from '../biz/util'
 import CommentWrite from './CommentWrite'
 import CommentList from './CommentList'
@@ -11,9 +11,7 @@ import PostButton from './PostButton'
 
 import './Post.scss'
 
-moment.locale('ko')
-
-export default class Post extends React.Component {
+class Post extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -38,7 +36,11 @@ export default class Post extends React.Component {
 
   render() {
     const { link } = this.props
-    const isLogin = !isExpired(this.props.state.user?.exp * 1000)
+    // const isLogin = !isExpired(this.props.state.user?.exp * 1000)
+
+    this.props.logger
+      .if(!this.props.state)
+      .debug('this.props.state', this.props.state)
 
     return (
       <li id={link.id}>
@@ -110,3 +112,5 @@ export default class Post extends React.Component {
     )
   }
 }
+
+export default withLogger(Post)

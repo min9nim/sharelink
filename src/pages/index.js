@@ -23,29 +23,29 @@ function Index(props) {
   }, [])
 
   useEffect(() => {
-    // logger.debug('[2nd effect] 로긴여부 처리', app.state.links.length)
-    if (!props.user?.id) {
-      app.auth.signOut()
-      return
-    }
-    app.state.user = props.user
-    global.sessionStorage?.setItem('user', JSON.stringify(app.state.user))
-  }, [])
-
-  useEffect(() => {
-    logger.debug('[Index effect] links 구독', app.state.links.length)
-    const subscription = app.linksSubject.subscribe((links) => {
-      logger.debug(
-        '[Index effect] links 구독 중 feed 받아 먹음',
-        links.length,
-        app.state.links.length,
-      )
-      setState({ ...app.state })
+    const subscriptioin = app.stateSubject.subscribe((state) => {
+      logger.verbose('state food', state)
+      setState({ ...app.state, ...state })
     })
     return () => {
-      subscription.unsubscribe()
+      subscriptioin.unsubscribe()
     }
   }, [])
+
+  // useEffect(() => {
+  //   logger.debug('[Index effect] linksSubject 구독')
+  //   const subscription = app.linksSubject.subscribe((links) => {
+  //     logger.debug(
+  //       '[Index effect] links 구독 중 feed 받아 먹음',
+  //       links.length,
+  //       app.state.links.length,
+  //     )
+  //     setState({ ...app.state })
+  //   })
+  //   return () => {
+  //     subscription.unsubscribe()
+  //   }
+  // }, [])
 
   logger.debug('Index render')
   return (
