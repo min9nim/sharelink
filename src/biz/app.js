@@ -10,7 +10,6 @@ import { Subject } from 'rxjs'
 const initialState = {
   links: [],
   totalCount: 0,
-  userID: '',
   user: {
     id: '',
     name: '',
@@ -75,7 +74,7 @@ reaction(
 )
 
 reaction(
-  () => app.state.userID,
+  () => app.state.user.id,
   async () => {
     if (!app.auth.isLogin()) {
       if (app.router && app.router.pathname.indexOf('/write') === 0) {

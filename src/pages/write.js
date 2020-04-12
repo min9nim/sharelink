@@ -11,7 +11,6 @@ class Write extends React.Component {
   constructor(props) {
     super(props)
 
-    app.state.userID = props.user.id
     app.state.user = props.user
 
     let link = this.props.link

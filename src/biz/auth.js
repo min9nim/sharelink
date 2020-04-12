@@ -77,7 +77,6 @@ export default function getAuth(app) {
         image: '',
         token: '',
       }
-      app.state.userID = ''
 
       // 구글 로그아웃처리
       //let GoogleAuth = gapi.auth2.getAuthInstance();

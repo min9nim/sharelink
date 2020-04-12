@@ -13,8 +13,7 @@ export default function Index(props) {
   })
 
   useEffect(() => {
-    Object.assign(app.state, props.fetchRes)
-    app.state.user = props.user
+    Object.assign(app.state, props.fetchRes, { user: props.user })
     logger.verbose('체크::: ', app.state.user, props)
   }, [])
 
@@ -24,7 +23,6 @@ export default function Index(props) {
       app.auth.signOut()
       return
     }
-    app.state.userID = props.user.id
     app.state.user = props.user
     global.sessionStorage?.setItem('user', JSON.stringify(app.state.user))
   }, [])
