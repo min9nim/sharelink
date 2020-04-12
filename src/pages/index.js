@@ -6,7 +6,7 @@ import { withLogger } from '../biz'
 
 function Index(props) {
   const logger = props.logger
-  logger.debug('start')
+  // logger.debug('start')
   const [state, setState] = useState({
     ...app.state,
     ...props.fetchRes,
@@ -14,13 +14,13 @@ function Index(props) {
   })
 
   useEffect(() => {
-    logger.debug('[1st effect] app.state 세팅', props.user)
+    // logger.debug('[1st effect] app.state 세팅', props.user)
     Object.assign(app.state, props.fetchRes, { user: props.user })
     // app.state = { ...props.fetchRes, user: props.user }
   }, [])
 
   useEffect(() => {
-    logger.debug('[2nd effect] 로긴여부 처리', app.state.links.length)
+    // logger.debug('[2nd effect] 로긴여부 처리', app.state.links.length)
     if (!props.user?.id) {
       app.auth.signOut()
       return

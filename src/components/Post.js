@@ -76,10 +76,11 @@ export default class Post extends React.Component {
               }}
             ></div>
             <div className="post-menu">
-              {isLogin && (
+              {app.auth.isLogin() && (
                 <PostButton
                   isChild={this.props.isChild}
                   link={link}
+                  userId={this.props.state.user.id}
                   commentClick={() => this.commentClick()}
                   refClick={() => this.refClick()}
                 />

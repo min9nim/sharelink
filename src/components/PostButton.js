@@ -5,18 +5,18 @@ import { remove, hasChildren } from './PostButton-fn'
 import { withLogger } from '../biz'
 
 function PostButton(props) {
-  const [userId, setUserId] = useState(app.state.user.id)
+  // const [userId, setUserId] = useState(app.state.user.id)
 
-  useEffect(() => {
-    props.logger.debug('effect')
-    const subscription = app.stateSubject.subscribe((state) => {
-      props.logger.debug('state 받아 먹음')
-      setUserId(state.user.id)
-    })
-    return () => {
-      subscription.unsubscribe()
-    }
-  })
+  // useEffect(() => {
+  //   props.logger.debug('effect')
+  //   const subscription = app.stateSubject.subscribe((state) => {
+  //     props.logger.debug('state 받아 먹음')
+  //     setUserId(state.user.id)
+  //   })
+  //   return () => {
+  //     subscription.unsubscribe()
+  //   }
+  // })
 
   const { link } = props
   const isLike = link.like && link.like.includes(app.state.user.id)
@@ -33,7 +33,7 @@ function PostButton(props) {
     isToread ? app.api.untoread(link) : app.api.toread(link)
 
   return (
-    <React.Fragment>
+    <>
       <div
         className={isLike ? 'sns-btn marked' : 'sns-btn'}
         title="좋아요"
@@ -67,8 +67,8 @@ function PostButton(props) {
           <i className="icon-doc-new" />
         </div>
       )}
-      {link.author.id === userId && (
-        <React.Fragment>
+      {link.author.id === props.userId && (
+        <>
           <Link href={`/write?id=${link.id}`}>
             <div className="edit-btn" title="수정">
               <i className="icon-pencil" />
@@ -83,9 +83,9 @@ function PostButton(props) {
               <i className="icon-trash-empty" />
             </div>
           )}
-        </React.Fragment>
+        </>
       )}
-    </React.Fragment>
+    </>
   )
 }
 
