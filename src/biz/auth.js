@@ -54,14 +54,14 @@ export default function getAuth(app) {
       sessionStorage.setItem('user', JSON.stringify(app.state.user))
     },
 
-    isLogin: () => {
+    isLogin: (state = app.state) => {
       // console.log('app.state.user.exp:', app.state.user.exp)
       // console.log(
       //   'isExpired(app.state.user.exp * 1000)',
       //   isExpired(app.state.user.exp * 1000),
       // )
 
-      return app.state.user.id && !isExpired(app.state.user.exp * 1000)
+      return Boolean(state.user.id && !isExpired(state.user.exp * 1000))
     },
 
     signOut: () => {
