@@ -1,11 +1,10 @@
 import Head from 'next/head'
 import Header from './Header'
 import { withRouter } from 'next/router'
-
-import './Layout.scss'
+import { withLogger } from '../biz'
 import app from '../biz/app'
+import './Layout.scss'
 
-let layoutProps
 const Layout = (props) => {
   // console.log("Layout 렌더링..");
 
@@ -18,7 +17,7 @@ const Layout = (props) => {
         <title>sharelink - 링크공유</title>
       </Head>
       <div>
-        <Header />
+        <Header state={props.state} />
       </div>
       {/* {
         props.router.pathname !== "/login" &&
@@ -29,4 +28,4 @@ const Layout = (props) => {
   )
 }
 
-export default withRouter(Layout)
+export default withRouter(withLogger(Layout))
