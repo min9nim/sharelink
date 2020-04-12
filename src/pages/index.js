@@ -3,6 +3,7 @@ import Layout from '../components/Layout'
 import app from '../biz/app'
 import { useState, useEffect } from 'react'
 import { withLogger } from '../biz'
+import { isNode } from 'if-logger'
 
 function Index(props) {
   const logger = props.logger
@@ -10,12 +11,14 @@ function Index(props) {
   const [state, setState] = useState({
     ...app.state,
     ...props.fetchRes,
-    user: props.user,
+    user: isNode() ? {} : props.user,
   })
 
   useEffect(() => {
     // logger.debug('[1st effect] app.state 세팅', props.user)
-    Object.assign(app.state, props.fetchRes, { user: props.user })
+    Object.assign(app.state, props.fetchRes, {
+      user: isNode() ? {} : props.user,
+    })
     // app.state = { ...props.fetchRes, user: props.user }
   }, [])
 
@@ -46,7 +49,7 @@ function Index(props) {
 
   logger.debug('Index render')
   return (
-    <Layout>
+    <Layout state={state}>
       <List state={state} />
     </Layout>
   )

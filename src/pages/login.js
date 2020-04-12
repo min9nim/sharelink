@@ -9,7 +9,7 @@ const Login = ({ router, user }) => {
   app.state.user = user
 
   return (
-    <Layout>
+    <Layout state={app.state}>
       <div className="login-wrapper">
         <div className="login-title">구글 로그인만 지원됩니다</div>
         <div className="login-btn">

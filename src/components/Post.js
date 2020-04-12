@@ -76,7 +76,7 @@ export default class Post extends React.Component {
               }}
             ></div>
             <div className="post-menu">
-              {app.auth.isLogin() && (
+              {app.auth.isLogin(this.props.state) && (
                 <PostButton
                   isChild={this.props.isChild}
                   link={link}

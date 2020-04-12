@@ -3,8 +3,8 @@ import './Header.scss'
 import app from '../biz/app'
 import Menu from './Menu'
 import Search from './Search'
-
 import { withRouter } from 'next/router'
+import { withLogger } from '../biz'
 
 /**
  * 로고 이미지 출처: https://www.fontspace.com
@@ -51,8 +51,7 @@ class Header extends React.Component {
   }
 
   newLink = () => {
-    app.view.Write &&
-      app.view.Write._ismounted &&
+    app.view.Write?._ismounted &&
       Object.assign(app.view.Write.state, {
         id: '',
         url: '',
@@ -72,7 +71,8 @@ class Header extends React.Component {
   }
 
   render() {
-    // console.log("Header 렌더링..")
+    this.props.logger.debug('Header 렌더링..', this.props.state)
+    const { image, name } = this.props.state.user
     return (
       <div className="header">
         <div className="logo-wrapper">
@@ -80,20 +80,18 @@ class Header extends React.Component {
             <div className="logo-font" onClick={this.logoClick.bind(this)}>
               sharelink
             </div>
-            {/* <img src="/static/logo.png" onClick={this.logoClick.bind(this)}></img> */}
           </div>
         </div>
         <div className="search">
           {this.props.router.pathname === '/' && <Search />}
         </div>
         <div className="btn-wrapper">
-          {app.auth.isLogin() ? (
-            // "프로필사진+이름"
+          {app.auth.isLogin(this.props.state) ? (
             <>
               {/* <div className="add-btn" onClick={this.newLink.bind(this)}>+</div> */}
-              <img className="user-image" src={app.state.user.image}></img>
+              <img className="user-image" src={image} />
               <div className="user-name" onClick={this.showMenu.bind(this)}>
-                <div>{app.state.user.name}</div>
+                <div>{name}</div>
                 <i className="icon-menu" />
               </div>
             </>
@@ -112,4 +110,4 @@ class Header extends React.Component {
   }
 }
 
-export default withRouter(Header)
+export default withRouter(withLogger(Header))
