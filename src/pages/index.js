@@ -11,13 +11,13 @@ function Index(props) {
   const [state, setState] = useState({
     ...app.state,
     ...props.fetchRes,
-    user: isNode() ? {} : props.user,
+    user: props.user,
   })
 
   useEffect(() => {
     // logger.debug('[1st effect] app.state 세팅', props.user)
     Object.assign(app.state, props.fetchRes, {
-      user: isNode() ? {} : props.user,
+      user: props.user,
     })
     // app.state = { ...props.fetchRes, user: props.user }
   }, [])
