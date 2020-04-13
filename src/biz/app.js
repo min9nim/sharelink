@@ -21,6 +21,7 @@ const initialState = {
   },
   menuIdx: 0,
   word: '', // 검색어
+  searched: false,
   menu: [
     {
       label: '전체 포스트',

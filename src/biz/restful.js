@@ -122,6 +122,9 @@ export default function getApi(app) {
       }
 
       const fetchRes = await req(path, 'GET')
+      if (word) {
+        app.state.searched = true
+      }
 
       if (fetchRes.status !== 'Fail') {
         app.state.totalCount = fetchRes.totalCount

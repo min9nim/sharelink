@@ -1,6 +1,5 @@
 import Post from './Post.js'
 import LinkLoading from './LinkLoading.js'
-import app from '../biz/app'
 import './List.scss'
 import React, { useEffect, useState } from 'react'
 import { infiniteLoading, imageLazyLoad } from './list-fn'
@@ -27,9 +26,10 @@ function List(props) {
   }, [props.state.links.length])
 
   // logger.verbose('체크44', props.state)
-  const intro = !isAddMode(app.state.word)
-    ? props.state.menu[props.state.menuIdx].label
-    : `"${app.state.word}" 검색 결과`
+  const intro =
+    !isAddMode(props.state.word) && props.state.searched
+      ? `"${props.state.word}" 검색 결과`
+      : props.state.menu[props.state.menuIdx].label
 
   const { links, totalCount } = props.state
 

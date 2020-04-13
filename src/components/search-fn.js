@@ -7,7 +7,6 @@ export const search = async (word, mode) => {
   const logger = app.logger.addTags('search-fn')
   logger.verbose('mode', mode)
   if (mode === 'search') {
-    app.state.links = []
     await app.api.fetchList({
       menuIdx: app.state.menuIdx,
       idx: 0,
