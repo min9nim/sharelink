@@ -67,6 +67,14 @@ class Write extends React.Component {
   }
 
   componentDidMount() {
+    app.stateSubject.subscribe((state) => {
+      if (!app.auth.isLogin() && app.router?.pathname.includes('/write')) {
+        //app.router.push("/login");
+        location.href = '/login'
+      }
+      this.forceUpdate()
+    })
+
     this._ismounted = true
 
     if (this.state.url === '') {

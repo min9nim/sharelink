@@ -38,6 +38,7 @@ global.onSignIn = async (googleUser) => {
    * 로그아웃이 정상동작 않게 된다
    */
   if (app.auth.isLogin()) {
+    app.router.push('/')
     return
   }
 

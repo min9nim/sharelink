@@ -74,30 +74,14 @@ reaction(
   },
 )
 
-app.linksSubject = new Subject()
-reaction(
-  () => JSON.stringify(app.state.links),
-  () => {
-    logger.debug('links feed')
-    app.linksSubject.next(app.state.links)
-  },
-)
-
-reaction(
-  () => app.state.user.id,
-  async () => {
-    if (!app.auth.isLogin()) {
-      if (app.router && app.router.pathname.indexOf('/write') === 0) {
-        //app.router.push("/login");
-        location.href = '/login'
-      }
-    }
-
-    app.view.Header &&
-      app.view.Header._ismounted &&
-      app.view.Header.forceUpdate()
-  },
-)
+// app.linksSubject = new Subject()
+// reaction(
+//   () => JSON.stringify(app.state.links),
+//   () => {
+//     logger.debug('links feed')
+//     app.linksSubject.next(app.state.links)
+//   },
+// )
 
 app.getUser = async (req) => {
   try {
