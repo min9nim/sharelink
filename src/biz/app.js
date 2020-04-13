@@ -1,13 +1,17 @@
 import { observable, reaction, decorate } from 'mobx'
 import $m from './$m'
 import api from './api'
-import getAuth from './auth'
-import Cookies from 'universal-cookie'
+import auth from './auth'
 import createLogger, { simpleFormat } from 'if-logger'
 import moment from 'moment'
 import { Subject } from 'rxjs'
 
 moment.locale('ko')
+
+const logger = createLogger({
+  format: simpleFormat,
+  tags: [() => moment().utc().add(9, 'hours').format('MM/DD HH:mm:ss')],
+})
 
 const initialState = {
   links: [],
@@ -55,65 +59,21 @@ const app = {
   BACKEND: 'https://sharelink-api.now.sh',
   PAGEROWS: 20,
   api,
-  auth, getAuth(app),
-  logger: createLogger({
-    format: simpleFormat,
-    tags: [() => moment().utc().add(9, 'hours').format('MM/DD HH:mm:ss')],
-  }),
+  auth,
+  getUser: auth.getUser,
+  stateSubject: new Subject(),
+  logger,
 }
-
-const logger = app.logger.addTags('app.js')
+export default app
 
 decorate(app, { state: observable })
-
-app.stateSubject = new Subject()
 reaction(
   () => JSON.stringify(app.state),
   () => {
     logger.debug('state feed')
-    logger.if(!app.state).warn('app.state is undefined!!')
     app.stateSubject.next(app.state)
   },
 )
-
-// app.linksSubject = new Subject()
-// reaction(
-//   () => JSON.stringify(app.state.links),
-//   () => {
-//     logger.debug('links feed')
-//     app.linksSubject.next(app.state.links)
-//   },
-// )
-
-app.getUser = async (req) => {
-  try {
-    let userStr
-    if (req) {
-      const cookies = new Cookies(req.headers.cookie)
-      userStr = Buffer.from(cookies.get('user') || '', 'base64').toString(
-        'utf8',
-      )
-    } else {
-      userStr = global.sessionStorage.getItem('user')
-    }
-    // logger.verbose('userStr:', userStr)
-
-    if (!userStr) {
-      throw Error('[getUser] user 정보 없음')
-    }
-    let user = JSON.parse(userStr)
-    app.state.user = user
-    let res = await app.api.login()
-    if (res.status === 'Fail') {
-      throw Error(`[getUser] 로그인 실패 : ${res.message}`)
-    }
-    // logger.verbose('리턴하기 전', user)
-    return user
-  } catch (e) {
-    logger.warn(e)
-    return {}
-  }
-}
 
 if (process.env.API === 'local') {
   app.BACKEND = 'http://localhost:3030'
@@ -122,4 +82,3 @@ logger.verbose('process.env.NODE_ENV = [' + process.env.NODE_ENV + ']')
 logger.verbose('Backend server : ' + app.BACKEND)
 
 global.app = app
-export default app
