@@ -1,6 +1,6 @@
 import { observable, reaction, decorate } from 'mobx'
 import $m from './$m'
-import getApi from './restful'
+import getApi from './api'
 import getAuth from './auth'
 import Cookies from 'universal-cookie'
 import createLogger, { simpleFormat } from 'if-logger'
