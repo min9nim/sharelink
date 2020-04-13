@@ -22,6 +22,7 @@ const initialState = {
   menuIdx: 0,
   word: '', // 검색어
   searched: false,
+  hasNext: true,
   menu: [
     {
       label: '전체 포스트',
@@ -52,7 +53,7 @@ const app = {
   state: initialState,
   view: {}, // 공유가 필요한 react 컴포넌트
   BACKEND: 'https://sharelink-api.now.sh',
-  PAGEROWS: 50,
+  PAGEROWS: 20,
   logger: createLogger({
     format: simpleFormat,
     tags: [() => moment().utc().add(9, 'hours').format('MM/DD HH:mm:ss')],

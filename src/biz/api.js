@@ -126,6 +126,7 @@ export async function fetchList({
   if (fetchRes.status !== 'Fail') {
     app.state.totalCount = fetchRes.totalCount
     app.state.links = app.state.links.concat(fetchRes.links)
+    app.state.hasNext = fetchRes.hasNext
   }
 
   return fetchRes

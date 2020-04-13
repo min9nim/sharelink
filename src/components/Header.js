@@ -29,6 +29,8 @@ class Header extends React.Component {
   logoClick() {
     app.state.menuIdx = 0
     app.state.word = ''
+    app.state.hasNext = true
+    app.state.searched = false
     app.state.links = []
     this.props.router.push('/')
   }

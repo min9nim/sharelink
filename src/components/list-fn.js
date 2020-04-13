@@ -1,5 +1,7 @@
 import { map } from 'ramda'
 import { observeDom } from '../biz/util'
+import { fetchList } from '../biz/api'
+import app from '../biz/app'
 
 export function imageLazyLoad() {
   const loadImage = (img) => {
@@ -17,6 +19,10 @@ export function imageLazyLoad() {
 }
 
 export function infiniteLoading({ logger, setLoading }) {
+  if (!app.state.hasNext) {
+    logger.info('no more content')
+    return () => {}
+  }
   const lastPost = document.querySelector(
     '.PostList > li:last-child > .wrapper',
   )
@@ -30,7 +36,7 @@ export function infiniteLoading({ logger, setLoading }) {
   return observeDom(lastPost, async () => {
     logger.debug('observeDom lastPost fetch call', app.state.links.length)
     setLoading(true)
-    await app.api.fetchList({
+    await fetchList({
       menuIdx: app.state.menuIdx,
       idx: app.state.links.length,
       cnt: app.PAGEROWS,
