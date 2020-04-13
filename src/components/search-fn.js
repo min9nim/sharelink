@@ -5,7 +5,6 @@ export const isAddMode = (word) =>
 
 export const search = async (word, mode) => {
   const logger = app.logger.addTags('search-fn')
-  logger.verbose('mode', mode)
   if (mode === 'search') {
     await app.api.fetchList({
       menuIdx: app.state.menuIdx,
@@ -26,4 +25,5 @@ export const search = async (word, mode) => {
       name: app.state.user.name,
     },
   })
+  app.state.word = ''
 }
