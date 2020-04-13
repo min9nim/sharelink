@@ -23,13 +23,15 @@ function Search(props) {
         ),
       )
       .subscribe(({ event }) => {
-        props.logger.debug('keypress 처리')
+        props.logger.debug('keypress 처리', event.target)
+        event.target.blur()
         search(event.target.value, state.mode)
       })
     const changeSubscription = state.subject
       .pipe(filter(({ type }) => type === 'change'))
       .subscribe(({ event }) => {
         props.logger.debug('change 처리', event.target.value)
+
         app.state.word = event.target.value
         setState({
           ...state,
