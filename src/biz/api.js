@@ -2,10 +2,8 @@ import fetch from 'isomorphic-unfetch'
 import { _findLink } from '.'
 import app from './app'
 
-const req = async (path, method, body) => {
-  //global.NProgress && global.NProgress.start();
+export async function req(path, method, body) {
   global.NProgress?.start()
-  //console.log("@@@@ fetch 호출전 path = " + path)
   let opt = {
     method,
     body: JSON.stringify(body),

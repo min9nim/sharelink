@@ -92,8 +92,8 @@ $m.fn = {
 
     if (ele === undefined) {
       ele = this.doms[0]
-    } else {
-      if (ele.tagName === 'BODY') return
+    } else if (ele.tagName === 'BODY') {
+      return
     }
 
     if (selector === undefined) {
@@ -243,7 +243,6 @@ $m.fn = {
 
 $m.fn.init.prototype = $m.fn
 
-// 함수형 프로그래밍을 위한 함수 중심 API
 $m.html = function (selector, html) {
   return $m(selector).html(html)
 }
