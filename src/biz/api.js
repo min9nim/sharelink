@@ -140,6 +140,7 @@ export async function like(link) {
   // 로컬상태 업데이트
   link.like.push(app.state.user.id)
 }
+
 // 좋아요 취소
 export async function unlike(link) {
   // DB 업데이트
@@ -148,106 +149,70 @@ export async function unlike(link) {
   // 로컬상태 업데이트
   link.like = link.like.filter((userID) => userID !== app.state.user.id)
 }
+
 // 읽음 표시
 export async function read(link) {
-  // DB 업데이트
-  let res = await req('/links/read/', 'PUT', { linkID: link.id })
-
-  // 로컬상태 업데이트
+  await req('/links/read/', 'PUT', { linkID: link.id })
   link.read.push(app.state.user.id)
 }
+
 // 읽음표시 취소
 export async function unread(link) {
-  // DB 업데이트
   await req('/links/unread/', 'PUT', { linkID: link.id })
-
-  // 로컬상태 업데이트
   link.read = link.read.filter((userID) => userID !== app.state.user.id)
 }
+
 // 읽을 글 표시
 export async function toread(link) {
-  // DB 업데이트
   await req('/links/toread/', 'PUT', { linkID: link.id })
-
-  // 로컬상태 업데이트
   link.toread.push(app.state.user.id)
 }
+
 // 읽을 글 표시 취소
 export async function untoread(link) {
-  // DB 업데이트
   await req('/links/untoread/', 'PUT', { linkID: link.id })
-
-  // 로컬상태 업데이트
   link.toread = link.toread.filter((userID) => userID !== app.state.user.id)
 }
 
 // 댓글추가
 export async function postComment(comment) {
-  let res = await req('/comments', 'POST', comment)
-  //app.state.links.push(res.output);
-  if (res.status === 'Fail') {
-    console.log('등록 실패 : ' + res.message)
-    //alert("등록 실패 : " + res.message)
-  } else {
-    //let link = app.state.links.find(l => l.id === comment.linkID)
-
-    let link = _findLink(app.state.links, comment.linkID)
-
-    if (!link.comments) {
-      link.comments = []
-    }
-    link.comments.push(res.output)
+  const res = await req('/comments', 'POST', comment)
+  const link = _findLink(app.state.links, comment.linkID)
+  if (!link.comments) {
+    link.comments = []
   }
+  link.comments.push(res.output)
   return res
 }
 export async function deleteComment(comment) {
-  let json = await req('/comments/', 'DELETE', comment)
-  if (json.status === 'Fail') {
-    console.log('댓글 삭제 실패')
-  } else {
-    // let idx = app.state.links.findIndex(l => l.id === comment.linkID);
-    // let comments = app.state.links[idx].comments;
-    // app.state.links[idx].comments = comments.filter(c => c.id !== comment.id)
-
-    let link = _findLink(app.state.links, comment.linkID)
-    link.comments = link.comments.filter((c) => c.id !== comment.id)
-  }
+  const json = await req('/comments/', 'DELETE', comment)
+  const link = _findLink(app.state.links, comment.linkID)
+  link.comments = link.comments.filter((c) => c.id !== comment.id)
   return json
 }
 export async function putComment(comment) {
-  let res = await req('/comments', 'PUT', comment)
-  if (res.status === 'Fail') {
-    console.log('등록 실패 : ' + res.message)
-    //alert("등록 실패 : " + res.message)
-  } else {
-    // let linkIdx = app.state.links.findIndex(l => l.id === comment.linkID)
-    // let commentIdx = app.state.links[linkIdx].comments.findIndex(c => c.id === comment.id);
-    // app.state.links[linkIdx].comments[commentIdx] = comment;
-
-    let link = _findLink(app.state.links, comment.linkID)
-    let commentIdx = link.comments.findIndex((c) => c.id === comment.id)
-    link.comments[commentIdx] = comment
-  }
+  const res = await req('/comments', 'PUT', comment)
+  let link = _findLink(app.state.links, comment.linkID)
+  let commentIdx = link.comments.findIndex((c) => c.id === comment.id)
+  link.comments[commentIdx] = comment
   return res
 }
 
-export default function getApi(app) {
-  return {
-    deleteLink,
-    postLink,
-    putLink,
-    webscrap,
-    login,
-    fetchLink,
-    fetchList,
-    like,
-    unlike,
-    read,
-    unread,
-    toread,
-    untoread,
-    postComment,
-    deleteComment,
-    putComment,
-  }
+export default {
+  deleteLink,
+  postLink,
+  putLink,
+  webscrap,
+  login,
+  fetchLink,
+  fetchList,
+  like,
+  unlike,
+  read,
+  unread,
+  toread,
+  untoread,
+  postComment,
+  deleteComment,
+  putComment,
 }

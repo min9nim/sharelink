@@ -1,6 +1,6 @@
 import { observable, reaction, decorate } from 'mobx'
 import $m from './$m'
-import getApi from './api'
+import api from './api'
 import getAuth from './auth'
 import Cookies from 'universal-cookie'
 import createLogger, { simpleFormat } from 'if-logger'
@@ -54,6 +54,8 @@ const app = {
   view: {}, // 공유가 필요한 react 컴포넌트
   BACKEND: 'https://sharelink-api.now.sh',
   PAGEROWS: 20,
+  api,
+  auth, getAuth(app),
   logger: createLogger({
     format: simpleFormat,
     tags: [() => moment().utc().add(9, 'hours').format('MM/DD HH:mm:ss')],
@@ -61,9 +63,6 @@ const app = {
 }
 
 const logger = app.logger.addTags('app.js')
-
-app.api = getApi(app)
-app.auth = getAuth(app)
 
 decorate(app, { state: observable })
 
