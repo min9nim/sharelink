@@ -5,7 +5,7 @@ import { remove, hasChildren } from './PostButton-fn'
 import { withLogger } from '../biz'
 
 function PostButton(props) {
-  // const [userId, setUserId] = useState(app.state.user.id)
+  // const [userId, setUserId] = useState(props.userId)
 
   // useEffect(() => {
   //   props.logger.debug('effect')
@@ -19,9 +19,10 @@ function PostButton(props) {
   // })
 
   const { link } = props
-  const isLike = link.like && link.like.includes(app.state.user.id)
-  const isRead = link.read && link.read.includes(app.state.user.id)
-  const isToread = link.toread && link.toread.includes(app.state.user.id)
+  // props.logger.verbose('link.like', link.like)
+  const isLike = link.like?.includes(props.userId)
+  const isRead = link.read?.includes(props.userId)
+  const isToread = link.toread?.includes(props.userId)
 
   const likeClick = (link) =>
     isLike ? app.api.unlike(link) : app.api.like(link)

@@ -7,6 +7,8 @@ import createLogger, { simpleFormat } from 'if-logger'
 import moment from 'moment'
 import { Subject } from 'rxjs'
 
+moment.locale('ko')
+
 const initialState = {
   links: [],
   totalCount: 0,

@@ -25,7 +25,7 @@ function List(props) {
     }
   }, [props.state.links.length])
 
-  logger.verbose('체크44', props.state)
+  // logger.verbose('체크44', props.state)
   const intro = !isAddMode(app.state.word)
     ? props.state.menu[props.state.menuIdx].label
     : `"${app.state.word}" 검색 결과`

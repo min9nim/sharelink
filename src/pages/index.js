@@ -15,7 +15,7 @@ function Index(props) {
   })
 
   useEffect(() => {
-    // logger.debug('[1st effect] app.state 세팅', props.user)
+    logger.debug('[1st effect] app.state 세팅', props.user)
     Object.assign(app.state, props.fetchRes, {
       user: props.user,
     })
@@ -23,6 +23,7 @@ function Index(props) {
   }, [])
 
   useEffect(() => {
+    logger.debug('[2nd effect] state food setting', props.user)
     const subscriptioin = app.stateSubject.subscribe((state) => {
       logger.verbose('state food', state)
       setState({ ...app.state, ...state })
