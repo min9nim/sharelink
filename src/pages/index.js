@@ -14,19 +14,19 @@ function Index(props) {
     user: props.user,
   })
 
-  // useEffect(() => {
-  //   logger.debug('[1st effect] app.state 세팅', props.user)
-  //   Object.assign(app.state, props.fetchRes, {
-  //     user: props.user,
-  //   })
-  //   // app.state = { ...props.fetchRes, user: props.user }
-  // }, [])
+  useEffect(() => {
+    logger.debug('[1st effect] app.state 세팅', props.user)
+    Object.assign(app.state, props.fetchRes, {
+      user: props.user,
+    })
+  }, [])
 
   useEffect(() => {
     logger.debug('[2nd effect] state food setting')
     const subscriptioin = app.stateSubject.subscribe((state) => {
-      logger.verbose('state food')
-      setState({ ...app.state, ...state })
+      const newState = { ...app.state, ...state }
+      logger.verbose('state food', newState.user, 99)
+      setState(newState)
     })
     return () => {
       subscriptioin.unsubscribe()
