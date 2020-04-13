@@ -108,16 +108,11 @@ export default function getApi(app) {
     fetchList: async ({
       menuIdx,
       idx = 0,
-      cnt = 10,
+      cnt = app.PAGEROWS,
       word = app.state.word,
     }) => {
-      if (app.view.List) {
-        if (idx === 0) {
-          app.view.List.state.loading = true
-          app.state.links = []
-        } else {
-          app.view.List._ismounted && app.view.List.setState({ loading: true })
-        }
+      if (idx === 0) {
+        app.state.links = []
       }
 
       let path =
@@ -126,23 +121,11 @@ export default function getApi(app) {
         path += '&word=' + word
       }
 
-      let fetchRes = await req(path, 'GET')
+      const fetchRes = await req(path, 'GET')
 
-      if (fetchRes.status === 'Fail') {
-        return
-      }
-
-      // app.logger.verbose('fetchRes:', fetchRes)
-      app.state.totalCount = fetchRes.totalCount
-      if (fetchRes.links.length == 0) {
-        fetchRes.hasNext = false // 18.12.31 links 길이가 0인데 hasNext 가 true로 떨어지는 경우가 있어서 보정함.
-      } else {
-        // app.state.links.push(...fetchRes.links)
+      if (fetchRes.status !== 'Fail') {
+        app.state.totalCount = fetchRes.totalCount
         app.state.links = app.state.links.concat(fetchRes.links)
-
-        if (app.setState) {
-          app.setState({ ...app.state })
-        }
       }
 
       return fetchRes

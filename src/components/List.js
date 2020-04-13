@@ -12,11 +12,9 @@ function List(props) {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    logger.verbose(
-      'effect',
-      'props.state.links.length:',
-      props.state.links.length,
-    )
+    logger
+      .addTags('effecct')
+      .verbose('props.state.links.length:', props.state.links.length)
     const unsubscribes = imageLazyLoad()
     const unsubscribe = infiniteLoading({ logger, setLoading })
     return () => {
@@ -35,24 +33,15 @@ function List(props) {
 
   const { links, totalCount } = props.state
 
-  logger.verbose('render')
-  logger.verbose('props.state.links.length:', props.state.links.length)
+  logger.verbose('render', props.state.links.length)
 
   return (
     <>
       <div className="intro">{'* ' + intro + '(' + totalCount + '개)'}</div>
       <ul className="PostList">
-        {links.map((link) => {
-          if (!props.state) {
-            logger.verbose('props.state 가 없어서 div 렌더링')
-            return (
-              <div key={link.id}>
-                {JSON.stringify(link, '', 2)} {props.state}
-              </div>
-            )
-          }
-          return <Post key={link.id} link={link} state={props.state} />
-        })}
+        {links.map((link, idx) => (
+          <Post key={link.id} link={link} state={props.state} idx={idx} />
+        ))}
       </ul>
       {loading && (
         <>

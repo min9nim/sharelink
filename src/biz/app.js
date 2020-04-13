@@ -51,7 +51,7 @@ const app = {
   state: initialState,
   view: {}, // 공유가 필요한 react 컴포넌트
   BACKEND: 'https://sharelink-api.now.sh',
-  PAGEROWS: 10,
+  PAGEROWS: 50,
   logger: createLogger({
     format: simpleFormat,
     tags: [() => moment().utc().add(9, 'hours').format('MM/DD HH:mm:ss')],
@@ -70,6 +70,7 @@ reaction(
   () => JSON.stringify(app.state),
   () => {
     logger.debug('state feed')
+    logger.if(!app.state).warn('app.state is undefined!!')
     app.stateSubject.next(app.state)
   },
 )

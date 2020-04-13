@@ -36,11 +36,6 @@ class Post extends React.Component {
 
   render() {
     const { link } = this.props
-    // const isLogin = !isExpired(this.props.state.user?.exp * 1000)
-
-    this.props.logger
-      .if(!this.props.state)
-      .debug('this.props.state', this.props.state)
 
     return (
       <li id={link.id}>
@@ -107,7 +102,9 @@ class Post extends React.Component {
             ></img>
           </div>
         </div>
-        {link.refLinks && <RefPostList refLinks={link.refLinks} />}
+        {link.refLinks && (
+          <RefPostList refLinks={link.refLinks} state={this.props.state} />
+        )}
       </li>
     )
   }
