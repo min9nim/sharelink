@@ -48,7 +48,7 @@ function Index(props) {
   //   }
   // }, [])
 
-  logger.debug('Index render')
+  logger.verbose('render')
   return (
     <Layout state={state}>
       <List state={state} />

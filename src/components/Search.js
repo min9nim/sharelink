@@ -8,7 +8,6 @@ import { withLogger } from '../biz'
 import { isAddMode, search } from './search-fn'
 
 function Search(props) {
-  props.logger.debug('start')
   const [state, setState] = useState({
     mode: 'search',
     subject: new Subject(),
@@ -51,7 +50,7 @@ function Search(props) {
     }
   }, [state])
 
-  props.logger.debug('Search render')
+  props.logger.debug('render')
   return (
     <div className="ipt-wrapper">
       {app.auth.isLogin() && state.mode === 'add' ? (

@@ -71,10 +71,7 @@ class Header extends React.Component {
   }
 
   render() {
-    this.props.logger.debug(
-      'Header 렌더링..',
-      app.auth.isLogin(this.props.state),
-    )
+    this.props.logger.verbose('render')
     const { image, name } = this.props.state.user
     return (
       <div className="header">

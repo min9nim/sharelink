@@ -25,7 +25,7 @@ export function infiniteLoading({ logger, setLoading }) {
     logger.warn('not found lastPost')
     return () => {}
   }
-  logger.debug('마지막 요소 지켜보기 설정')
+  // logger.debug('마지막 요소 지켜보기 설정')
 
   return observeDom(lastPost, async () => {
     logger.debug('observeDom lastPost fetch call', app.state.links.length)
