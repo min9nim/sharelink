@@ -92,7 +92,7 @@ class Post extends React.Component {
             {this.state.refClicked && (
               <RefWrite linkID={link.id} refClick={this.refClick.bind(this)} />
             )}
-            <CommentList comments={link.comments} />
+            <CommentList comments={link.comments} state={this.props.state} />
           </div>
           <div className="right">
             <img

@@ -1,10 +1,11 @@
 import React from 'react'
 import moment from 'moment'
 import $m from '../biz/$m'
+import { withLogger } from '../biz'
 
 import './Comment.scss'
 
-export default class Comment extends React.Component {
+class Comment extends React.Component {
   constructor(props) {
     // console.log("Comment 생성자 호출");
     super(props)
@@ -73,7 +74,7 @@ export default class Comment extends React.Component {
   }
 
   render() {
-    // console.log("Comment 렌더링");
+    this.props.logger.verbose('render', this.props.state.user.id)
 
     const { comment, author, updatedAt } = this.props.comment
 
@@ -88,7 +89,7 @@ export default class Comment extends React.Component {
           <div className="meta">
             {author.name} - {moment(updatedAt).format('MM/DD dd HH:mm')}
           </div>
-          {this.props.comment.author.id === app.state.user.id && (
+          {this.props.comment.author.id === this.props.state.user.id && (
             <div className="comment-menu">
               <div className="edit" onClick={this.edit.bind(this)}>
                 수정
@@ -133,3 +134,5 @@ export default class Comment extends React.Component {
     )
   }
 }
+
+export default withLogger(Comment)
