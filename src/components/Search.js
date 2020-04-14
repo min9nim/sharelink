@@ -25,7 +25,7 @@ function Search(props) {
       .subscribe(({ event }) => {
         props.logger.debug('keypress 처리', event.target)
         event.target.blur()
-        search(event.target.value, state.mode)
+        // await search(event.target.value, state.mode)
       })
     const changeSubscription = state.subject
       .pipe(filter(({ type }) => type === 'change'))
@@ -41,7 +41,7 @@ function Search(props) {
     const blurSubscription = state.subject
       .pipe(filter(({ type, event }) => type === 'blur' && event.target.value))
       .subscribe(({ event }) => {
-        props.logger.debug('blur 처리', event.target.value)
+        props.logger.debug('blur 처리', event)
         search(event.target.value, state.mode)
       })
     return () => {
