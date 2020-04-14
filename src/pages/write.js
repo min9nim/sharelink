@@ -43,11 +43,11 @@ class Write extends React.Component {
   }
 
   componentDidMount() {
-    this.props.logger.verbose('componentDidMount 11')
+    // this.props.logger.verbose('componentDidMount 11')
     app.stateSubject.subscribe((state) => {
-      this.props.logger.verbose('componentDidMount 22')
+      // this.props.logger.verbose('componentDidMount 22')
       if (!app.auth.isLogin() && app.router?.pathname.includes('/write')) {
-        this.props.logger.verbose('componentDidMount 33')
+        // this.props.logger.verbose('componentDidMount 33')
         //app.router.push("/login");
         location.href = '/login'
       }
@@ -84,16 +84,14 @@ class Write extends React.Component {
       return
     }
 
-    // 인증을 위한 토큰 전달
-    this.state.token = app.state.user.token
-
     if (this.state.id) {
       // 수정할 때
       await app.api.putLink(avoidXSS(this.state))
     } else {
       // 신규등록
-      let newLink = Object.assign({}, this.state, { id: shortid.generate() })
-      await app.api.postLink(avoidXSS(newLink))
+      await app.api.postLink(
+        avoidXSS({ ...this.state, id: shortid.generate() }),
+      )
     }
 
     this.props.router.push('/')
@@ -108,10 +106,10 @@ class Write extends React.Component {
   }
 
   async handleBlur() {
-    const { url, title, desc, image } = this.state
+    const { url, title, desc, image, favicon } = this.state
 
-    if (url === '') return
-    if (title && desc && image) return
+    if (!url) return
+    if (title && desc && image && favicon) return
 
     const loadingMessage = 'Loading..'
 
