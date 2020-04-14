@@ -2,10 +2,10 @@ import Layout from '../components/Layout.js'
 import { withRouter } from 'next/router'
 import app from '../biz/app'
 import shortid from 'shortid'
-import './Write.scss'
 import { _findLink, avoidXSS, withLogger } from '../biz'
 import { webscrap } from '../biz/webscrap.js'
 import { observable, reaction, decorate } from 'mobx'
+import WriteTemplate from './WriteTemplate'
 
 class Write extends React.Component {
   constructor(props) {
@@ -165,147 +165,7 @@ class Write extends React.Component {
     this.props.logger.verbose('render')
     return (
       <Layout state={app.state}>
-        <div className="write-title">
-          {this.link.id ? '내용 수정' : '링크 등록'}
-        </div>
-        <div className="wrapper">
-          <div className="form">
-            <div>
-              <div className="label">글주소</div>
-              <input
-                placeholder={this.placeholder.url}
-                id="url"
-                ref={(el) => {
-                  this.urlInput = el
-                }}
-                value={this.link.url}
-                onChange={(e) => {
-                  this.link.url = e.target.value
-                }}
-                onBlur={this.handleBlur.bind(this)}
-              />
-              <div className="init-btn">
-                <i
-                  className="icon-cancel"
-                  onClick={(e) => {
-                    this.link.url = ''
-                  }}
-                />
-              </div>
-            </div>
-            <div>
-              <div className="label">글제목</div>
-              <input
-                placeholder={this.placeholder.title}
-                id="title"
-                ref={(el) => {
-                  this.titleInput = el
-                }}
-                value={this.link.title}
-                onChange={(e) => {
-                  this.link.title = e.target.value
-                }}
-              />
-              <div className="init-btn">
-                <i
-                  className="icon-cancel"
-                  onClick={() => {
-                    this.link.title = ''
-                  }}
-                />
-              </div>
-            </div>
-            <div>
-              <div className="label">간단 설명(선택)</div>
-              <input
-                placeholder={this.placeholder.desc}
-                id="desc"
-                ref={(el) => {
-                  this.descInput = el
-                }}
-                value={this.link.desc}
-                onChange={(e) => {
-                  this.link.desc = e.target.value
-                }}
-              />
-              <div className="init-btn">
-                <i
-                  className="icon-cancel"
-                  onClick={() => {
-                    this.link.desc = ''
-                  }}
-                />
-              </div>
-            </div>
-            <div>
-              <div className="label">대표 이미지 경로</div>
-              <input
-                placeholder={this.placeholder.image}
-                id="image"
-                ref={(el) => {
-                  this.imageInput = el
-                }}
-                value={this.link.image}
-                onChange={(e) => {
-                  this.link.image = e.target.value
-                }}
-              />
-              <div className="init-btn">
-                <i
-                  className="icon-cancel"
-                  onClick={() => {
-                    this.link.image = ''
-                  }}
-                />
-              </div>
-            </div>
-            <div>
-              <div className="label">
-                파비콘
-                <img className="favicon" src={this.link.favicon} />
-              </div>
-              <input
-                placeholder={this.placeholder.favicon}
-                id="favicon"
-                ref={(el) => {
-                  this.faviconInput = el
-                }}
-                value={this.link.favicon}
-                onChange={(e) => {
-                  this.link.favicon = e.target.value
-                }}
-              />
-              <div className="init-btn">
-                <i
-                  className="icon-cancel"
-                  onClick={() => {
-                    this.link.favicon = ''
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="image">
-            <img src={this.link.image}></img>
-          </div>
-        </div>
-
-        <div className="btn">
-          <div
-            onClick={this.save.bind(this)}
-            tabIndex="0"
-            onKeyPress={this.enterSave.bind(this)}
-          >
-            <i className="icon-floppy" /> 저장
-          </div>
-          <div
-            onClick={this.cancel.bind(this)}
-            tabIndex="0"
-            onKeyPress={this.enterCancel.bind(this)}
-          >
-            <i className="icon-cancel" /> 취소
-          </div>
-        </div>
+        <WriteTemplate parent={this} />
       </Layout>
     )
   }
