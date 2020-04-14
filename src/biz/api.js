@@ -3,14 +3,14 @@ import { _findLink } from '.'
 import app from './app'
 import { omit } from 'ramda'
 
-export async function req(path, method, body = {}) {
+export async function req(path, method, body) {
   global.NProgress?.start()
   let opt = {
     method,
-    body: JSON.stringify(omit(['token', body])),
+    body: body && JSON.stringify(omit(['token'], body)),
     headers: {
       'Content-Type': 'application/json',
-      'x-access-token': body.token || app.state.user.token,
+      'x-access-token': body?.token || app.state.user.token,
     },
   }
 
@@ -59,10 +59,12 @@ export async function postLink(link) {
 
 // 링크 수정
 export async function putLink(link) {
-  // DB 업데이트
-  await req('/links/', 'PUT', Object.assign(link, { id: link.id }))
+  await req('/links/', 'PUT', link)
 
-  if (app.state.links.length === 0) return
+  if (app.state.links.length === 0) {
+    // state.links 가 없는 경우(새로고침) 로컬상태 업데이트 필요없음
+    return
+  }
 
   // 로컬상태 업데이트
   if (link.linkID) {

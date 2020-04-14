@@ -7,9 +7,7 @@ import './Comment.scss'
 
 class Comment extends React.Component {
   constructor(props) {
-    // console.log("Comment 생성자 호출");
     super(props)
-    //this.deleteComment = this.deleteComment.bind(this);
     this.state = {
       editClicked: false,
       comment: this.props.comment.comment,
