@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import $m from '../biz/$m'
 import { withLogger } from '../biz'
+import { removeAnimation, cancelRemoveAnimation } from '../biz/util'
 
 import './Comment.scss'
 
@@ -17,11 +18,11 @@ class Comment extends React.Component {
   async delete(comment, dom) {
     if (confirm('댓글을 삭제합니다')) {
       //await $m.removeAnimation(dom, 0.2);
-      $m.removeAnimation(dom, 0.2)
+      removeAnimation(dom, 0.2)
 
       let res = await app.api.deleteComment(comment)
       if (res.status === 'Fail') {
-        $m.cancelRemoveAnimation(dom, 0.2)
+        cancelRemoveAnimation(dom, 0.2)
       }
     }
   }
