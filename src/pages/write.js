@@ -37,17 +37,6 @@ class Write extends React.Component {
   }
 
   componentDidMount() {
-    // this.props.logger.verbose('componentDidMount 11')
-    app.stateSubject.subscribe((state) => {
-      // this.props.logger.verbose('componentDidMount 22')
-      if (!app.auth.isLogin() && app.router?.pathname.includes('/write')) {
-        // this.props.logger.verbose('componentDidMount 33')
-        //app.router.push("/login");
-        location.href = '/login'
-      }
-      this.forceUpdate()
-    })
-
     if (this.state.url === '') {
       this.urlInput.focus()
     }
