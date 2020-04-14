@@ -7,6 +7,7 @@ import { _findLink, avoidXSS, withLogger } from '../biz'
 import { getQueryParams, go } from 'mingutils'
 import { prop } from 'ramda'
 import { webscrap } from '../biz/webscrap.js'
+import { observable, reaction, decorate } from 'mobx'
 
 class Write extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class Write extends React.Component {
 
     const link = { ...this.props.link }
 
-    this.state = link.id
+    this.link = link.id
       ? link
       : {
           id: '',
@@ -34,10 +35,35 @@ class Write extends React.Component {
             name: app.state.user.name,
           },
         }
+    this.placeholder = {
+      url: 'https://',
+      title: '',
+      desc: '',
+      image: '',
+      favicon: '',
+    }
+
+    // 변이를 추적할 상태 지정
+    decorate(this, { link: observable })
+
+    this.props.logger.verbose('리액션 등록')
+    // 변화에 따른 효과를 정의
+    reaction(
+      () => {
+        const res = JSON.stringify({ link: this.link }, null, 2)
+        // this.props.logger.verbose(res)
+        return res
+      },
+      (state) => {
+        this.props.logger.verbose('state 변화 감지 forceUpdate', state)
+        this.forceUpdate()
+      },
+    )
   }
 
   componentDidMount() {
-    if (this.state.url === '') {
+    global.write = this
+    if (this.link.url === '') {
       this.urlInput.focus()
     }
 
@@ -54,89 +80,72 @@ class Write extends React.Component {
   }
 
   async save() {
-    if (!this.state.url) {
+    if (!this.link.url) {
       alert('링크를 입력해 주세요')
       this.urlInput.focus()
       return
     }
-    if (!this.state.title) {
+    if (!this.link.title) {
       alert('제목을 입력해 주세요')
       this.titleInput.focus()
       return
     }
 
-    if (this.state.id) {
+    if (this.link.id) {
       // 수정할 때
-      await app.api.putLink(avoidXSS(this.state))
+      await app.api.putLink(avoidXSS(this.link))
     } else {
       // 신규등록
-      await app.api.postLink(
-        avoidXSS({ ...this.state, id: shortid.generate() }),
-      )
+      await app.api.postLink(avoidXSS({ ...this.link, id: shortid.generate() }))
     }
 
     this.props.router.push('/')
   }
 
-  handleChange(e) {
-    // this.state[e.target.id] = e.target.value
-    const newState = { ...this.state }
-    newState[e.target.id] = e.target.value
-    // global.logger.addTags('handleChange').debug('newState', newState)
-    this.setState(newState)
-  }
-
   async handleBlur() {
-    const { url, title, desc, image, favicon } = this.state
+    const { url, title, desc, image, favicon } = this.link
 
     if (!url) return
     if (title && desc && image && favicon) return
 
     const loadingMessage = 'Loading..'
 
-    this.titleInput.setAttribute('placeholder', loadingMessage)
-    this.descInput.setAttribute('placeholder', loadingMessage)
-    this.imageInput.setAttribute('placeholder', loadingMessage)
-    this.faviconInput.setAttribute('placeholder', loadingMessage)
-
+    Object.assign(this.placeholder, {
+      title: loadingMessage,
+      desc: loadingMessage,
+      image: loadingMessage,
+      favicon: loadingMessage,
+    })
     try {
-      const { title, image, desc, favicon } = await webscrap(this.state.url)
-
-      // 타이틀 세팅
-      if (!this.state.title) {
-        this.setState({ title })
-      }
-      // 설명세팅
-      if (!this.state.desc) {
-        this.setState({ desc })
+      this.props.logger.verbose('handleBlur')
+      const { title, image, desc, favicon } = await webscrap(this.link.url)
+      const newState = {
+        title: this.link.title || title,
+        desc: this.link.desc || desc,
+        image,
+        favicon,
       }
 
-      // 이미지&파비콘 세팅
-      this.setState({ image, favicon })
+      const newPlaceholder = {
+        title: newState.title ? '' : '링크 제목을 가져올 수 없습니다',
+        desc: newState.desc ? '' : '링크 제목을 가져올 수 없습니다',
+        image: newState.image ? '' : '대표 이미지가 없습니다',
+        favicon: newState.favicon ? '' : '파비콘 이미지가 없습니다',
+      }
 
-      if (this.state.title === '') {
-        this.titleInput.setAttribute(
-          'placeholder',
-          '글 제목을 가져올 수 없습니다',
-        )
-      }
-      if (this.state.desc === '') {
-        this.descInput.setAttribute(
-          'placeholder',
-          '글 설명을 가져올 수 없습니다',
-        )
-      }
-      if (this.state.image === '') {
-        this.imageInput.setAttribute('placeholder', '대표 이미지가 없습니다')
-      }
-      if (this.state.favicon === '') {
-        this.faviconInput.setAttribute('placeholder', '파비콘이 없습니다')
-      }
+      console.log('newState', newState)
+
+      Object.assign(this.link, newState)
+      Object.assign(this.placeholder, newPlaceholder)
     } catch (e) {
-      this.titleInput.setAttribute('placeholder', '')
-      this.descInput.setAttribute('placeholder', '')
-      this.imageInput.setAttribute('placeholder', '')
-      this.faviconInput.setAttribute('placeholder', '')
+      Object.assign(this.placeholder, {
+        url: 'https://',
+        title: '',
+        desc: '',
+        image: '',
+        favicon: '',
+      })
+
       this.props.logger.error(e.message)
     }
   }
@@ -153,119 +162,142 @@ class Write extends React.Component {
     }
   }
 
-  initValue(e) {
-    const newState = { ...this.state }
-    newState[e.target.parentNode.previousSibling.id] = ''
-    this.props.logger.addTags('initValue').debug('newState', newState)
-    this.setState(newState)
-    e.target.parentNode.previousSibling.focus()
-  }
+  // initValue(e) {
+  //   const newState = { ...this.link }
+  //   newState[e.target.parentNode.previousSibling.id] = ''
+  //   this.props.logger.addTags('initValue').debug('newState', newState)
+  //   this.setState(newState)
+  //   e.target.parentNode.previousSibling.focus()
+  // }
 
   render() {
+    this.props.logger.verbose('render')
     return (
       <Layout state={app.state}>
         <div className="write-title">
-          {this.state.id ? '내용 수정' : '링크 등록'}
+          {this.link.id ? '내용 수정' : '링크 등록'}
         </div>
         <div className="wrapper">
           <div className="form">
             <div>
               <div className="label">글주소</div>
               <input
-                placeholder="http://"
+                placeholder={this.placeholder.url}
                 id="url"
                 ref={(el) => {
                   this.urlInput = el
                 }}
-                value={this.state.url}
-                onChange={this.handleChange.bind(this)}
+                value={this.link.url}
+                onChange={(e) => {
+                  this.link.url = e.target.value
+                }}
                 onBlur={this.handleBlur.bind(this)}
               />
               <div className="init-btn">
                 <i
                   className="icon-cancel"
-                  onClick={this.initValue.bind(this)}
+                  onClick={(e) => {
+                    this.link.url = ''
+                  }}
                 />
               </div>
             </div>
             <div>
               <div className="label">글제목</div>
               <input
-                placeholder=""
+                placeholder={this.placeholder.title}
                 id="title"
                 ref={(el) => {
                   this.titleInput = el
                 }}
-                value={this.state.title}
-                onChange={this.handleChange.bind(this)}
+                value={this.link.title}
+                onChange={(e) => {
+                  this.props.logger.verbose(111)
+                  this.link.title = e.target.value
+                  this.props.logger.verbose(222)
+                }}
               />
               <div className="init-btn">
                 <i
                   className="icon-cancel"
-                  onClick={this.initValue.bind(this)}
+                  onClick={() => {
+                    this.link.title = ''
+                  }}
                 />
               </div>
             </div>
             <div>
               <div className="label">간단 설명(선택)</div>
               <input
-                placeholder=""
+                placeholder={this.placeholder.desc}
                 id="desc"
                 ref={(el) => {
                   this.descInput = el
                 }}
-                value={this.state.desc}
-                onChange={this.handleChange.bind(this)}
+                value={this.link.desc}
+                onChange={(e) => {
+                  this.link.desc = e.target.value
+                }}
               />
               <div className="init-btn">
                 <i
                   className="icon-cancel"
-                  onClick={this.initValue.bind(this)}
+                  onClick={() => {
+                    this.link.desc = ''
+                  }}
                 />
               </div>
             </div>
             <div>
               <div className="label">대표 이미지 경로</div>
               <input
-                placeholder=""
+                placeholder={this.placeholder.image}
                 id="image"
                 ref={(el) => {
                   this.imageInput = el
                 }}
-                value={this.state.image}
-                onChange={this.handleChange.bind(this)}
+                value={this.link.image}
+                onChange={(e) => {
+                  this.link.image = e.target.value
+                }}
               />
               <div className="init-btn">
                 <i
                   className="icon-cancel"
-                  onClick={this.initValue.bind(this)}
+                  onClick={() => {
+                    this.link.image = ''
+                  }}
                 />
               </div>
             </div>
             <div>
               <div className="label">
                 파비콘
-                <img className="favicon" src={this.state.favicon} />
+                <img className="favicon" src={this.link.favicon} />
               </div>
               <input
-                placeholder=""
+                placeholder={this.placeholder.favicon}
                 id="favicon"
                 ref={(el) => {
                   this.faviconInput = el
                 }}
-                value={this.state.favicon}
-                onChange={this.handleChange.bind(this)}
+                value={this.link.favicon}
+                onChange={(e) => {
+                  this.link.favicon = e.target.value
+                }}
               />
               <div className="init-btn">
                 <i
                   className="icon-cancel"
-                  onClick={this.initValue.bind(this)}
+                  onClick={() => {
+                    this.link.favicon = ''
+                  }}
                 />
               </div>
             </div>
           </div>
           <div className="image">
-            <img src={this.state.image}></img>
+            <img src={this.link.image}></img>
           </div>
         </div>
 
