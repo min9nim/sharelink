@@ -1,6 +1,5 @@
 import React from 'react'
 import moment from 'moment'
-import $m from '../biz/$m'
 import { withLogger } from '../biz'
 import { removeAnimation, cancelRemoveAnimation } from '../biz/util'
 
@@ -100,6 +99,19 @@ class Comment extends React.Component {
               >
                 삭제
               </div>
+              {this.state.editClicked && (
+                <>
+                  <div>|</div>
+                  <div
+                    className="cancel"
+                    onClick={() => {
+                      this.setState({ editClicked: false })
+                    }}
+                  >
+                    취소
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>
