@@ -44,13 +44,16 @@ class Write extends React.Component {
     }
 
     // 변이를 추적할 상태 지정
-    decorate(this, { link: observable })
+    decorate(this, { link: observable, placeholder: observable })
 
-    this.props.logger.verbose('리액션 등록')
     // 변화에 따른 효과를 정의
     reaction(
       () => {
-        const res = JSON.stringify({ link: this.link }, null, 2)
+        const res = JSON.stringify(
+          { link: this.link, placeholder: this.placeholder },
+          null,
+          2,
+        )
         // this.props.logger.verbose(res)
         return res
       },
@@ -133,8 +136,6 @@ class Write extends React.Component {
         favicon: newState.favicon ? '' : '파비콘 이미지가 없습니다',
       }
 
-      console.log('newState', newState)
-
       Object.assign(this.link, newState)
       Object.assign(this.placeholder, newPlaceholder)
     } catch (e) {
@@ -161,14 +162,6 @@ class Write extends React.Component {
       this.cancel()
     }
   }
-
-  // initValue(e) {
-  //   const newState = { ...this.link }
-  //   newState[e.target.parentNode.previousSibling.id] = ''
-  //   this.props.logger.addTags('initValue').debug('newState', newState)
-  //   this.setState(newState)
-  //   e.target.parentNode.previousSibling.focus()
-  // }
 
   render() {
     this.props.logger.verbose('render')
@@ -212,9 +205,7 @@ class Write extends React.Component {
                 }}
                 value={this.link.title}
                 onChange={(e) => {
-                  this.props.logger.verbose(111)
                   this.link.title = e.target.value
-                  this.props.logger.verbose(222)
                 }}
               />
               <div className="init-btn">
