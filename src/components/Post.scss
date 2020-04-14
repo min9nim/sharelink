@@ -105,6 +105,7 @@ $img-width-mobile: 100px;
     }
     .right {
       display: flex;
+      margin-left: 10px;
       align-items: center;
       justify-content: center;
       width: $img-width;
