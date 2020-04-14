@@ -22,7 +22,6 @@ const Login = ({ router, user }) => {
 
 Login.getInitialProps = async ({ req }) => {
   let user = await app.getUser(req)
-  console.log('@@ user = ' + JSON.stringify(user))
   return {
     user,
   }
@@ -53,7 +52,7 @@ global.onSignIn = async (googleUser) => {
   // The ID token you need to pass to your backend:
   let id_token = googleUser.getAuthResponse().id_token
   //console.log("@@@@ token 세팅 하고 login 호출할꺼임")
-  app.state.user.token = id_token
+  // app.state.user.token = id_token
 
   // console.log(id_token);
 
@@ -61,12 +60,11 @@ global.onSignIn = async (googleUser) => {
 
   const res = await app.api.login(id_token)
   if (res.status === 'Fail') {
-    logger.error('invalid token')
-  } else {
-    global.GoogleAuth = global.gapi.auth2.getAuthInstance()
-    app.auth.setLogin(res.user, id_token)
-    app.router.push('/')
+    throw Error('invalid token')
   }
+  global.GoogleAuth = global.gapi.auth2.getAuthInstance()
+  app.auth.setLogin(res.user, id_token)
+  app.router.push('/')
 }
 
 export default withRouter(Login)

@@ -53,8 +53,8 @@ export function avoidXSS(link) {
 
 export function withLogger(Fn) {
   const Component = (props) => {
-    // app.logger.addTags('withLogger').verbose('Component.name:', Component.name)
-    return <Fn {...props} logger={app.logger.addTags(Fn.name)} />
+    // global.logger.addTags('withLogger').verbose('Component.name:', Component.name)
+    return <Fn {...props} logger={global.logger.addTags(Fn.name)} />
   }
   Component.getInitialProps = Fn.getInitialProps
   return Component

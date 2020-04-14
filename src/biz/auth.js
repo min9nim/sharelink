@@ -88,21 +88,23 @@ export async function getUser(req) {
   try {
     let userStr
     if (req) {
+      logger.verbose('server side')
       const cookies = new Cookies(req.headers.cookie)
       userStr = Buffer.from(cookies.get('user') || '', 'base64').toString(
         'utf8',
       )
     } else {
+      logger.verbose('client side')
       userStr = global.sessionStorage.getItem('user')
     }
     // logger.verbose('userStr:', userStr)
 
     if (!userStr) {
-      throw Error('[getUser] user 정보 없음')
+      throw Error('[getUser] Not found user session')
     }
-    let user = JSON.parse(userStr)
-    app.state.user = user
-    let res = await app.api.login()
+    const user = JSON.parse(userStr)
+    // app.state.user = user
+    const res = await app.api.login(user.token)
     if (res.status === 'Fail') {
       throw Error(`[getUser] 로그인 실패 : ${res.message}`)
     }

@@ -58,10 +58,10 @@ function Index(props) {
 
 Index.getInitialProps = async ({ req, asPath }) => {
   let menuIdx = app.state.menu.findIndex((m) => m.path === asPath)
-  let [user, fetchRes] = await Promise.all([
-    app.getUser(req),
-    app.api.fetchList({ menuIdx }),
-  ])
+  const user = await app.getUser(req)
+  const fetchRes = await app.api.fetchList({ menuIdx })
+
+  logger.verbose('Index.getInitialProps', user.id)
   return {
     menuIdx,
     fetchRes,

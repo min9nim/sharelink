@@ -3,18 +3,23 @@ import { withRouter } from 'next/router'
 import app from '../biz/app'
 import shortid from 'shortid'
 import './write.scss'
-import { _findLink, avoidXSS } from '../biz'
+import { _findLink, avoidXSS, withLogger } from '../biz'
 import { getQueryParams, go } from 'mingutils'
 import { prop } from 'ramda'
 import { webscrap } from '../biz/webscrap.js'
+
+const logger = global.logger.addTags('Write')
+
 class Write extends React.Component {
   constructor(props) {
     super(props)
 
-    app.state.user = props.user
+    logger.verbose('props.user', props.user)
+    if (props.user) {
+      app.state.user = props.user
+    }
 
-    let link = this.props.link
-    link = Object.assign({}, link) // 복사본을 전달
+    const link = { ...this.props.link }
 
     this.state = link.id
       ? link
@@ -37,38 +42,16 @@ class Write extends React.Component {
     app.view.Write = this
   }
 
-  static async getInitialProps({ req, asPath, query }) {
-    let user = await app.getUser(req)
-    app.state.user.token = user.token
-
-    let link
-    if (req) {
-      const fetchRes = await go(
-        req.url,
-        getQueryParams,
-        prop('id'),
-        app.api.fetchLink,
-      )
-      link = fetchRes[0]
-    } else {
-      //link = app.state.links.find(l => l.id === query.id);
-      link = _findLink(app.state.links, query.id)
-    }
-
-    return {
-      menuIdx: 0,
-      link,
-      user,
-    }
-  }
-
   componentWillUnmount() {
     this._ismounted = false
   }
 
   componentDidMount() {
+    this.props.logger.verbose('componentDidMount 11')
     app.stateSubject.subscribe((state) => {
+      this.props.logger.verbose('componentDidMount 22')
       if (!app.auth.isLogin() && app.router?.pathname.includes('/write')) {
+        this.props.logger.verbose('componentDidMount 33')
         //app.router.push("/login");
         location.href = '/login'
       }
@@ -81,6 +64,7 @@ class Write extends React.Component {
       this.urlInput.focus()
     }
 
+    this.props.logger.verbose('app.state.user', app.state.user)
     if (!app.auth.isLogin()) {
       alert('글등록은 로그인이 필요합니다')
       //this.props.router.push("/login");
@@ -123,7 +107,7 @@ class Write extends React.Component {
     // this.state[e.target.id] = e.target.value
     const newState = { ...this.state }
     newState[e.target.id] = e.target.value
-    // app.logger.addTags('handleChange').debug('newState', newState)
+    // global.logger.addTags('handleChange').debug('newState', newState)
     this.setState(newState)
   }
 
@@ -135,10 +119,6 @@ class Write extends React.Component {
 
     const loadingMessage = 'Loading..'
 
-    // this.state.title = loadingMessage;
-    // this.state.desc = loadingMessage;
-    // this.state.image = loadingMessage;
-
     this.titleInput.setAttribute('placeholder', loadingMessage)
     this.descInput.setAttribute('placeholder', loadingMessage)
     this.imageInput.setAttribute('placeholder', loadingMessage)
@@ -146,32 +126,18 @@ class Write extends React.Component {
 
     try {
       const { title, image, desc, favicon } = await webscrap(this.state.url)
-      // console.log({ title, image, desc })
-
-      // let { title, image, desc } = await app.api.webscrap(this.state.url);
 
       // 타이틀 세팅
       if (!this.state.title) {
-        // this.state.title = title
         this.setState({ title })
       }
       // 설명세팅
       if (!this.state.desc) {
-        // this.state.desc = desc
         this.setState({ desc })
       }
 
       // 이미지&파비콘 세팅
       this.setState({ image, favicon })
-
-      // if (image && image.indexOf("http") === 0) {
-      //   // http 로 시작하면 그냥 사용
-      //   this.state.image = image;
-      // } else {
-      //   let url = new URL(this.state.url);
-      //   this.state.image = url.protocol + "//" + url.hostname + image;
-      //   //console.log(this.state.image);
-      // }
 
       if (this.state.title === '') {
         this.titleInput.setAttribute(
@@ -196,7 +162,7 @@ class Write extends React.Component {
       this.descInput.setAttribute('placeholder', '')
       this.imageInput.setAttribute('placeholder', '')
       this.faviconInput.setAttribute('placeholder', '')
-      app.logger.error(e.message)
+      global.logger.error(e.message)
     }
   }
 
@@ -215,7 +181,7 @@ class Write extends React.Component {
   initValue(e) {
     const newState = { ...this.state }
     newState[e.target.parentNode.previousSibling.id] = ''
-    app.logger.addTags('initValue').debug('newState', newState)
+    global.logger.addTags('initValue').debug('newState', newState)
     this.setState(newState)
     e.target.parentNode.previousSibling.focus()
   }
@@ -347,6 +313,31 @@ class Write extends React.Component {
       </Layout>
     )
   }
+  static async getInitialProps({ req, asPath, query }) {
+    logger.verbose('getInitialProps start')
+    let user = await app.getUser(req)
+    app.state.user.token = user.token
+
+    let link
+    if (req) {
+      const fetchRes = await go(
+        req.url,
+        getQueryParams,
+        prop('id'),
+        app.api.fetchLink,
+      )
+      link = fetchRes[0]
+    } else {
+      //link = app.state.links.find(l => l.id === query.id);
+      link = _findLink(app.state.links, query.id)
+    }
+
+    return {
+      menuIdx: 0,
+      link,
+      user,
+    }
+  }
 }
 
-export default withRouter(Write)
+export default withRouter(withLogger(Write))

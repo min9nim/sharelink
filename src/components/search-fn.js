@@ -4,7 +4,7 @@ export const isAddMode = (word) =>
   word.indexOf('http') === 0 && app.auth.isLogin()
 
 export const search = async (word, mode) => {
-  const logger = app.logger.addTags('search-fn')
+  const logger = global.logger.addTags('search-fn')
   if (mode === 'search') {
     await app.api.fetchList({
       menuIdx: app.state.menuIdx,
@@ -14,7 +14,7 @@ export const search = async (word, mode) => {
     return
   }
   if (!app.state.user.id) {
-    app.logger.warn('app.state.user.id is undefined')
+    global.logger.warn('app.state.user.id is undefined')
     return
   }
 

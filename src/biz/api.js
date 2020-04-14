@@ -1,15 +1,16 @@
 import fetch from 'isomorphic-unfetch'
 import { _findLink } from '.'
 import app from './app'
+import { omit } from 'ramda'
 
-export async function req(path, method, body) {
+export async function req(path, method, body = {}) {
   global.NProgress?.start()
   let opt = {
     method,
-    body: JSON.stringify(body),
+    body: JSON.stringify(omit(['token', body])),
     headers: {
       'Content-Type': 'application/json',
-      'x-access-token': app.state.user.token,
+      'x-access-token': body.token || app.state.user.token,
     },
   }
 
@@ -90,8 +91,8 @@ export async function webscrap(url) {
 }
 
 // 로그인처리
-export async function login() {
-  let json = await req('/login', 'POST')
+export async function login(token) {
+  let json = await req('/login', 'POST', { token })
   return json
 }
 

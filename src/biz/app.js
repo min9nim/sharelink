@@ -8,10 +8,11 @@ import { Subject } from 'rxjs'
 
 moment.locale('ko')
 
-const logger = createLogger({
+global.logger = createLogger({
   format: simpleFormat,
   tags: [() => moment().utc().add(9, 'hours').format('MM/DD HH:mm:ss')],
 })
+const logger = global.logger.addTags('app.js')
 
 const initialState = {
   links: [],
@@ -62,7 +63,6 @@ const app = {
   auth,
   getUser: auth.getUser,
   stateSubject: new Subject(),
-  logger,
 }
 export default app
 
@@ -70,7 +70,7 @@ decorate(app, { state: observable })
 reaction(
   () => JSON.stringify(app.state),
   () => {
-    logger.debug('state feed')
+    logger.verbose('state feed')
     app.stateSubject.next(app.state)
   },
 )
