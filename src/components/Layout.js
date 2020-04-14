@@ -19,10 +19,6 @@ const Layout = (props) => {
       <div>
         <Header state={props.state} />
       </div>
-      {/* {
-        props.router.pathname !== "/login" &&
-        <div style={{ display: "none" }} className="g-signin2" data-onsuccess="onSignIn" />
-      } */}
       {props.children}
     </div>
   )
