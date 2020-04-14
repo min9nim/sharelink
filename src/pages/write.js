@@ -8,16 +8,12 @@ import { getQueryParams, go } from 'mingutils'
 import { prop } from 'ramda'
 import { webscrap } from '../biz/webscrap.js'
 
-const logger = global.logger.addTags('Write')
-
 class Write extends React.Component {
   constructor(props) {
     super(props)
 
-    logger.verbose('props.user', props.user)
-    if (props.user) {
-      app.state.user = props.user
-    }
+    props.logger.verbose('props.user.id', props.user.id)
+    app.state.user = props.user
 
     const link = { ...this.props.link }
 
@@ -162,7 +158,7 @@ class Write extends React.Component {
       this.descInput.setAttribute('placeholder', '')
       this.imageInput.setAttribute('placeholder', '')
       this.faviconInput.setAttribute('placeholder', '')
-      global.logger.error(e.message)
+      this.props.logger.error(e.message)
     }
   }
 
@@ -181,7 +177,7 @@ class Write extends React.Component {
   initValue(e) {
     const newState = { ...this.state }
     newState[e.target.parentNode.previousSibling.id] = ''
-    global.logger.addTags('initValue').debug('newState', newState)
+    this.props.logger.addTags('initValue').debug('newState', newState)
     this.setState(newState)
     e.target.parentNode.previousSibling.focus()
   }
@@ -314,9 +310,10 @@ class Write extends React.Component {
     )
   }
   static async getInitialProps({ req, asPath, query }) {
-    logger.verbose('getInitialProps start')
+    const logger = global.logger.addTags('getInitialProps')
     let user = await app.getUser(req)
-    app.state.user.token = user.token
+    logger.verbose('user:', user)
+    app.state.user = user
 
     let link
     if (req) {

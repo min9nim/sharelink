@@ -86,6 +86,9 @@ export function signOut() {
 
 export async function getUser(req) {
   try {
+    if (app.state.user.id) {
+      return app.state.user
+    }
     let userStr
     if (req) {
       logger.verbose('server side')

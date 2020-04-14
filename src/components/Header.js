@@ -46,6 +46,7 @@ class Header extends React.Component {
 
   componentDidMount() {
     this._ismounted = true
+    global.router = this.props.router
   }
 
   componentWillUnmount() {
@@ -53,6 +54,8 @@ class Header extends React.Component {
   }
 
   newLink = () => {
+    const logger = global.logger.addTags('newLink')
+    logger.verbose('newLink 11')
     app.view.Write?._ismounted &&
       Object.assign(app.view.Write.state, {
         id: '',
@@ -68,8 +71,11 @@ class Header extends React.Component {
           name: app.state.user.name,
         },
       })
+    logger.verbose('newLink 22')
     this.hideMenu()
+    logger.verbose('newLink 33')
     this.props.router.push('/write')
+    logger.verbose('newLink 44')
   }
 
   render() {

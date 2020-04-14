@@ -66,13 +66,11 @@ class Menu extends React.Component {
                     <div onClick={this.selectMenu(app.api.fetchMyRead)}>내가 읽은 포스트</div>
                     <div onClick={this.selectMenu(app.api.fetchMyToread)}>나중에 읽을 포스트</div> */}
 
-          {this.state.menu.map((m, idx) => {
-            return (
-              <div key={idx} onClick={this.selectMenu(idx)}>
-                {m.label}
-              </div>
-            )
-          })}
+          {this.state.menu.map((m, idx) => (
+            <div key={idx} onClick={this.selectMenu(idx)}>
+              {m.label}
+            </div>
+          ))}
         </div>
         <div className="item2">
           <div onClick={this.props.newLink}>등록하기</div>
