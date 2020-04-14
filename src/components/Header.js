@@ -54,28 +54,9 @@ class Header extends React.Component {
   }
 
   newLink = () => {
-    const logger = global.logger.addTags('newLink')
-    logger.verbose('newLink 11')
-    app.view.Write?._ismounted &&
-      Object.assign(app.view.Write.state, {
-        id: '',
-        url: '',
-        title: '',
-        desc: '',
-        image: '',
-        like: [],
-        read: [],
-        toread: [],
-        author: {
-          id: app.state.user.id,
-          name: app.state.user.name,
-        },
-      })
-    logger.verbose('newLink 22')
+    // const logger = global.logger.addTags('newLink')
     this.hideMenu()
-    logger.verbose('newLink 33')
     this.props.router.push('/write')
-    logger.verbose('newLink 44')
   }
 
   render() {

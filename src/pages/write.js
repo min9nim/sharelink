@@ -34,12 +34,6 @@ class Write extends React.Component {
             name: app.state.user.name,
           },
         }
-
-    app.view.Write = this
-  }
-
-  componentWillUnmount() {
-    this._ismounted = false
   }
 
   componentDidMount() {
@@ -53,8 +47,6 @@ class Write extends React.Component {
       }
       this.forceUpdate()
     })
-
-    this._ismounted = true
 
     if (this.state.url === '') {
       this.urlInput.focus()
