@@ -46,15 +46,11 @@ class Write extends React.Component {
 
     // 변화에 따른 효과를 정의
     reaction(
-      () => {
-        const res = JSON.stringify(
-          { link: this.link, placeholder: this.placeholder },
-          null,
-          2,
-        )
-        // this.props.logger.verbose(res)
-        return res
-      },
+      () =>
+        JSON.stringify({
+          link: this.link,
+          placeholder: this.placeholder,
+        }),
       (state) => {
         this.props.logger.verbose('state 변화 감지 forceUpdate', state)
         this.forceUpdate()
@@ -63,7 +59,6 @@ class Write extends React.Component {
   }
 
   componentDidMount() {
-    global.write = this
     if (this.link.url === '') {
       this.urlInput.focus()
     }
