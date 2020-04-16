@@ -20,10 +20,10 @@ class Menu extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener('click', menuOutClick)
+    document.onclick = menuOutClick(this.props.hideMenu)
   }
   componentWillUnmount() {
-    document.removeEventListener('click', menuOutClick)
+    document.onclick = null
   }
 
   selectMenu(idx) {
