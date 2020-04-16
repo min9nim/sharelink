@@ -6,12 +6,6 @@ import { menuOutClick } from './Menu-fn'
 class Menu extends React.Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      menu: app.state.menu.slice(1),
-    }
-
-    app.view.Menu = this
   }
 
   logout = async () => {
@@ -45,7 +39,7 @@ class Menu extends React.Component {
           <div className="user-name">{app.state.user.name}</div>
         </div>
         <div className="item">
-          {this.state.menu.map((m, idx) => (
+          {app.state.menu.slice(1).map((m, idx) => (
             <div key={idx} onClick={this.selectMenu(idx)}>
               {m.label}
             </div>
