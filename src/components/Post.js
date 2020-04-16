@@ -33,7 +33,7 @@ class Post extends React.Component {
     reaction(
       () => JSON.stringify(this.state),
       () => {
-        props.logger.verbose('forceUpdate')
+        // props.logger.verbose('forceUpdate')
         this.forceUpdate()
       },
     )
@@ -60,7 +60,7 @@ class Post extends React.Component {
     //   refClicked: !this.state.refClicked,
     //   commentClicked: false,
     // })
-    this.props.logger.verbose('refClick')
+    // this.props.logger.verbose('refClick')
     Object.assign(this.state, {
       refClicked: !this.state.refClicked,
       commentClicked: false,
