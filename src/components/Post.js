@@ -8,6 +8,7 @@ import RefWrite from './RefWrite'
 import RefPostList from './RefPostList'
 import { highlight } from 'mingutils'
 import PostButton from './PostButton'
+import { decorate, observable, reaction } from 'mobx'
 
 import './Post.scss'
 
@@ -18,17 +19,34 @@ class Post extends React.Component {
       commentClicked: false,
       refClicked: false,
     }
+    decorate(this, { state: observable })
+    reaction(
+      () => JSON.stringify(this.state),
+      () => {
+        props.logger.verbose('forceUpdate')
+        this.forceUpdate()
+      },
+    )
   }
 
   commentClick() {
-    this.setState({
+    // this.setState({
+    //   commentClicked: !this.state.commentClicked,
+    //   refClicked: false,
+    // })
+    Object.assign(this.state, {
       commentClicked: !this.state.commentClicked,
       refClicked: false,
     })
   }
 
   refClick() {
-    this.setState({
+    // this.setState({
+    //   refClicked: !this.state.refClicked,
+    //   commentClicked: false,
+    // })
+    this.props.logger.verbose('refClick')
+    Object.assign(this.state, {
       refClicked: !this.state.refClicked,
       commentClicked: false,
     })
