@@ -1,7 +1,7 @@
 import app from '../biz/app'
 import moment from 'moment'
-import { _getHostname, isExpired, withLogger } from '../biz'
-import { htmlspecialchars } from '../biz/util'
+import { _getHostname, withLogger } from '../biz'
+import { htmlspecialchars, observeDom } from '../biz/util'
 import CommentWrite from './CommentWrite'
 import CommentList from './CommentList'
 import RefWrite from './RefWrite'
@@ -11,6 +11,16 @@ import PostButton from './PostButton'
 import { decorate, observable, reaction } from 'mobx'
 
 import './Post.scss'
+
+const loadImage = (img) => {
+  if (img.dataset.src) {
+    img.src = img.dataset.src
+  } else {
+    img.removeAttribute('src')
+  }
+  img.removeAttribute('data-src')
+  img.classList.remove('lazy')
+}
 
 class Post extends React.Component {
   constructor(props) {
@@ -38,6 +48,11 @@ class Post extends React.Component {
       commentClicked: !this.state.commentClicked,
       refClicked: false,
     })
+  }
+
+  componentDidMount() {
+    observeDom(this.favicon, loadImage)
+    observeDom(this.image, loadImage)
   }
 
   refClick() {
@@ -75,6 +90,9 @@ class Post extends React.Component {
                 className="lazy favicon"
                 data-src={link.favicon}
                 src="/static/loading.gif"
+                ref={(dom) => {
+                  this.favicon = dom
+                }}
               />
               <div className="url">{_getHostname(link.url)}</div>
               <div className="author-name">
@@ -117,6 +135,9 @@ class Post extends React.Component {
               className="lazy"
               data-src={link.image}
               src="/static/loading.gif"
+              ref={(dom) => {
+                this.image = dom
+              }}
             ></img>
           </div>
         </div>

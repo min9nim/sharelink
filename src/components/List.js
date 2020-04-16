@@ -2,7 +2,7 @@ import Post from './Post.js'
 import LinkLoading from './LinkLoading.js'
 import './List.scss'
 import React, { useEffect, useState } from 'react'
-import { infiniteLoading, imageLazyLoad } from './list-fn'
+import { infiniteLoading } from './list-fn'
 import { withLogger } from '../biz'
 import { isAddMode } from './search-fn'
 
@@ -14,14 +14,13 @@ function List(props) {
     logger
       .addTags('effecct')
       .verbose('props.state.links.length:', props.state.links.length)
-    const unsubscribes = imageLazyLoad()
+    // const unsubscribes = imageLazyLoad()
     const unsubscribe = infiniteLoading({ logger, setLoading })
     return () => {
       // logger.debug('마지막 요소 지켜보기 설정 해제')
       unsubscribe()
-
       // logger.debug('이미지dom 지켜보기 설정 해제')
-      unsubscribes.map((unsubscribe) => unsubscribe())
+      // unsubscribes.map((unsubscribe) => unsubscribe())
     }
   }, [props.state.links.length])
 
