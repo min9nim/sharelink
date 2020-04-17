@@ -8,8 +8,7 @@ import RefWrite from './RefWrite'
 import RefPostList from './RefPostList'
 import { highlight } from 'mingutils'
 import PostButton from './PostButton'
-import { decorate, observable, reaction } from 'mobx'
-
+import { decorate, observable, reaction, action } from 'mobx'
 import './Post.scss'
 
 const loadImage = (img) => {
@@ -44,9 +43,11 @@ class Post extends React.Component {
     //   commentClicked: !this.state.commentClicked,
     //   refClicked: false,
     // })
-    Object.assign(this.state, {
-      commentClicked: !this.state.commentClicked,
-      refClicked: false,
+    action(() => {
+      Object.assign(this.state, {
+        commentClicked: !this.state.commentClicked,
+        refClicked: false,
+      })
     })
   }
 
@@ -61,9 +62,12 @@ class Post extends React.Component {
     //   commentClicked: false,
     // })
     // this.props.logger.verbose('refClick')
-    Object.assign(this.state, {
-      refClicked: !this.state.refClicked,
-      commentClicked: false,
+
+    action(() => {
+      Object.assign(this.state, {
+        refClicked: !this.state.refClicked,
+        commentClicked: false,
+      })
     })
   }
 
