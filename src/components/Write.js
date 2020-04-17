@@ -4,7 +4,7 @@ import app from '../biz/app'
 import shortid from 'shortid'
 import { _findLink, avoidXSS, withLogger } from '../biz'
 import { webscrap } from '../biz/webscrap.js'
-import { observable, reaction, decorate } from 'mobx'
+import { observable, reaction, decorate, action, transaction } from 'mobx'
 import WriteTemplate from './WriteTemplate'
 
 class Write extends React.Component {
@@ -98,6 +98,15 @@ class Write extends React.Component {
     this.props.router.push('/')
   }
 
+  @action
+  setLink(link) {
+    Object.assign(this.link, link)
+  }
+  @action
+  setPlaceholder(placeholder) {
+    Object.assign(this.placeholder, placeholder)
+  }
+
   async handleBlur() {
     const { url, title, desc, image, favicon } = this.link
 
@@ -106,12 +115,13 @@ class Write extends React.Component {
 
     const loadingMessage = 'Loading..'
 
-    Object.assign(this.placeholder, {
+    this.setPlaceholder({
       title: loadingMessage,
       desc: loadingMessage,
       image: loadingMessage,
       favicon: loadingMessage,
     })
+
     try {
       this.props.logger.verbose('handleBlur')
       const { title, image, desc, favicon } = await webscrap(this.link.url)
@@ -129,10 +139,12 @@ class Write extends React.Component {
         favicon: newState.favicon ? '' : '파비콘 이미지가 없습니다',
       }
 
-      Object.assign(this.link, newState)
-      Object.assign(this.placeholder, newPlaceholder)
+      transaction(() => {
+        this.setLink(newState)
+        this.setPlaceholder(newPlaceholder)
+      })
     } catch (e) {
-      Object.assign(this.placeholder, {
+      this.setPlaceholder({
         url: 'https://',
         title: '',
         desc: '',
