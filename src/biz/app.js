@@ -1,10 +1,12 @@
-import { observable, reaction, decorate } from 'mobx'
+import { observable, reaction, decorate, configure } from 'mobx'
 import $m from './$m'
 import api from './api'
 import auth from './auth'
 import createLogger, { simpleFormat } from 'if-logger'
 import moment from 'moment'
 import { Subject } from 'rxjs'
+
+configure({ enforceActions: 'never' })
 
 moment.locale('ko')
 
