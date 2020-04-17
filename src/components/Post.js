@@ -24,23 +24,16 @@ const loadImage = (img) => {
 class Post extends React.Component {
   constructor(props) {
     super(props)
-    this.state = observable({
+    this.state = {
       commentClicked: false,
       refClicked: false,
-    })
+    }
 
-    action(
-      this,
-      'commentClick',
-      Object.getOwnPropertyDescriptor(this.__proto__, 'commentClick'),
-    )
-    reaction(
-      () => JSON.stringify(this.state),
-      () => {
-        // props.logger.verbose('forceUpdate')
-        this.forceUpdate()
-      },
-    )
+    // action(
+    //   this,
+    //   'commentClick',
+    //   Object.getOwnPropertyDescriptor(this.__proto__, 'commentClick'),
+    // )
   }
 
   commentClick() {
@@ -53,6 +46,14 @@ class Post extends React.Component {
   componentDidMount() {
     observeDom(this.favicon, loadImage)
     observeDom(this.image, loadImage)
+
+    reaction(
+      () => JSON.stringify(this.state),
+      () => {
+        // props.logger.verbose('forceUpdate')
+        this.forceUpdate()
+      },
+    )
   }
 
   refClick() {
@@ -143,5 +144,10 @@ class Post extends React.Component {
     )
   }
 }
+
+decorate(Post, {
+  state: observable,
+  commentClick: action,
+})
 
 export default withLogger(Post)
