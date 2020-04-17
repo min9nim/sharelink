@@ -1,4 +1,4 @@
-import { observable, reaction, decorate, configure } from 'mobx'
+import { observable, reaction, decorate, configure, autorun } from 'mobx'
 import $m from './$m'
 import api from './api'
 import auth from './auth'
@@ -76,6 +76,10 @@ reaction(
     app.stateSubject.next(app.state)
   },
 )
+// autorun(() => {
+//   logger.verbose('state feed')
+//   app.stateSubject.next(app.state)
+// })
 
 if (process.env.API === 'local') {
   app.BACKEND = 'http://localhost:3030'
