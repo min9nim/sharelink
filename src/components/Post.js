@@ -24,11 +24,16 @@ const loadImage = (img) => {
 class Post extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
+    this.state = observable({
       commentClicked: false,
       refClicked: false,
-    }
-    decorate(this, { state: observable })
+    })
+
+    action(
+      this,
+      'commentClick',
+      Object.getOwnPropertyDescriptor(this.__proto__, 'commentClick'),
+    )
     reaction(
       () => JSON.stringify(this.state),
       () => {
@@ -39,15 +44,9 @@ class Post extends React.Component {
   }
 
   commentClick() {
-    // this.setState({
-    //   commentClicked: !this.state.commentClicked,
-    //   refClicked: false,
-    // })
-    action(() => {
-      Object.assign(this.state, {
-        commentClicked: !this.state.commentClicked,
-        refClicked: false,
-      })
+    Object.assign(this.state, {
+      commentClicked: !this.state.commentClicked,
+      refClicked: false,
     })
   }
 
@@ -57,17 +56,9 @@ class Post extends React.Component {
   }
 
   refClick() {
-    // this.setState({
-    //   refClicked: !this.state.refClicked,
-    //   commentClicked: false,
-    // })
-    // this.props.logger.verbose('refClick')
-
-    action(() => {
-      Object.assign(this.state, {
-        refClicked: !this.state.refClicked,
-        commentClicked: false,
-      })
+    Object.assign(this.state, {
+      refClicked: !this.state.refClicked,
+      commentClicked: false,
     })
   }
 
