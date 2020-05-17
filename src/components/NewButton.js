@@ -1,13 +1,13 @@
 import React from 'react'
 import './NewButton.scss'
-import { isAddable, search } from './search-fn'
+import { isAddable, postLink } from './search-fn'
 
 function newLink() {
   navigator.clipboard
     .readText()
     .then((text) => {
       if (isAddable(text)) {
-        search(text, 'add')
+        postLink(text)
       } else {
         alert('클립보드 데이터가 유효한 URL이 아닙니다.')
       }

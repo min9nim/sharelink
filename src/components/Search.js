@@ -5,7 +5,7 @@ import { Subject } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { useState, useEffect } from 'react'
 import { withLogger } from '../biz'
-import { isAddable, search } from './search-fn'
+import { isAddable, search, postLink } from './search-fn'
 
 function Search(props) {
   const [state, setState] = useState({
@@ -42,7 +42,7 @@ function Search(props) {
       .pipe(filter(({ type, event }) => type === 'blur' && event.target.value))
       .subscribe(({ event }) => {
         props.logger.debug('blur 처리', event)
-        search(event.target.value, state.mode)
+        state.mode === 'search' ? search() : postLink(event.target.value)
       })
     return () => {
       props.logger.debug('effect clean-up')
