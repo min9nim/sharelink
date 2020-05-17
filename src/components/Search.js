@@ -5,7 +5,7 @@ import { Subject } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { useState, useEffect } from 'react'
 import { withLogger } from '../biz'
-import { isAddMode, search } from './search-fn'
+import { isAddable, search } from './search-fn'
 
 function Search(props) {
   const [state, setState] = useState({
@@ -35,7 +35,7 @@ function Search(props) {
         app.state.word = event.target.value
         setState({
           ...state,
-          mode: isAddMode(event.target.value) ? 'add' : 'search',
+          mode: isAddable(event.target.value) ? 'add' : 'search',
         })
       })
     const blurSubscription = state.subject

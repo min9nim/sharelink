@@ -4,7 +4,8 @@ import './List.scss'
 import React, { useEffect, useState } from 'react'
 import { infiniteLoading } from './list-fn'
 import { withLogger } from '../biz'
-import { isAddMode } from './search-fn'
+import { isAddable } from './search-fn'
+import NewButton from './NewButton'
 
 function List(props) {
   const logger = props.logger
@@ -26,7 +27,7 @@ function List(props) {
 
   // logger.verbose('체크44', props.state)
   const intro =
-    !isAddMode(props.state.word) && props.state.searched
+    !isAddable(props.state.word) && props.state.searched
       ? `"${props.state.word}" 검색 결과`
       : props.state.menu[props.state.menuIdx].label
 
@@ -36,7 +37,10 @@ function List(props) {
 
   return (
     <>
-      <div className="intro">{'* ' + intro + '(' + totalCount + '개)'}</div>
+      <div className="intro">
+        {'* ' + intro + '(' + totalCount + '개)'}
+        <NewButton />
+      </div>
       <ul className="PostList">
         {links.map((link, idx) => (
           <Post key={link.id} link={link} state={props.state} idx={idx} />

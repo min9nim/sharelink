@@ -1,6 +1,6 @@
 import app from '../biz/app'
 
-export const isAddMode = (word) =>
+export const isAddable = (word) =>
   word.indexOf('http') === 0 && app.auth.isLogin()
 
 export const search = async (word, mode) => {

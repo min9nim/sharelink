@@ -1,11 +1,13 @@
 ul {
-    padding: 0px;
+  padding: 0px;
 }
 
 .intro {
-    border-bottom: 1px solid #eee;
-    padding: 10px 0px;
-    margin-top: 10px;
-    font-size: 18px;
-    color: #333;    
+  border-bottom: 1px solid #eee;
+  padding: 10px 0px;
+  margin-top: 10px;
+  font-size: 18px;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
 }
