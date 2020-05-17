@@ -62,7 +62,7 @@ function Search(props) {
       )}
       <input
         className="ipt-search"
-        autoFocus
+        // autoFocus
         value={app.state.word}
         onChange={(e) => state.subject.next({ type: 'change', event: e })}
         onKeyPress={(e) => state.subject.next({ type: 'keypress', event: e })}
