@@ -55,11 +55,7 @@ function Search(props) {
   props.logger.debug('render')
   return (
     <div className="ipt-wrapper">
-      {app.auth.isLogin() && state.mode === 'add' ? (
-        <i className="icon-doc-new" />
-      ) : (
-        <i className="icon-search" />
-      )}
+      <i className="icon-search" />
       <input
         className="ipt-search"
         // autoFocus
