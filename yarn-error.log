@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: EACCES: permission denied, unlink '/Users/mac9/project/side-p/sharelink/node_modules/.bin/acorn'
+  Error: EACCES: permission denied, unlink '/Users/mac9/project/side-p/sharelink/node_modules/.bin/amphtml-validator'
 
 npm manifest: 
   {
