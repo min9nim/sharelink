@@ -6,6 +6,7 @@ import { infiniteLoading } from './list-fn'
 import { withLogger } from '../biz'
 import { isAddable } from './search-fn'
 import NewButton from './NewButton'
+import app from '../biz/app.js'
 
 function List(props) {
   const logger = props.logger
@@ -39,7 +40,7 @@ function List(props) {
     <>
       <div className="intro">
         {'* ' + intro + '(' + totalCount + '개)'}
-        <NewButton />
+        {app.auth.isLogin(props.state) && <NewButton />}
       </div>
       <ul className="PostList">
         {links.map((link, idx) => (
