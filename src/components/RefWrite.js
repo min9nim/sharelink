@@ -38,7 +38,7 @@ export default class RefWrite extends React.Component {
     if (!app.state.user.id) return
 
     if (!this.state.url) {
-      navigator.clipboard
+      await navigator.clipboard
         .readText()
         .then((text) => {
           if (isAddable(text)) {
@@ -53,10 +53,9 @@ export default class RefWrite extends React.Component {
           console.error(err)
           alert('Failed to read clipboard contents: ', err)
         })
-      return
+    } else {
+      await app.api.postLink(this.state)
     }
-
-    await app.api.postLink(this.state)
 
     this.setState({ ref: '' })
     this.props.refClick()
