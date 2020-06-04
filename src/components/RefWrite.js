@@ -1,4 +1,5 @@
 import React from 'react'
+import { isAddable } from './search-fn'
 // import shortid from "shortid";
 import './RefWrite.scss'
 
@@ -36,7 +37,26 @@ export default class RefWrite extends React.Component {
   async saveRef() {
     if (!app.state.user.id) return
 
-    let link = await app.api.postLink(this.state)
+    if (!this.state.url) {
+      navigator.clipboard
+        .readText()
+        .then((text) => {
+          if (isAddable(text)) {
+            this.setState({ url: text }, () => {
+              app.api.postLink(this.state).catch((e) => alert(e.message))
+            })
+          } else {
+            alert('클립보드 데이터가 유효한 URL이 아닙니다.')
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+          alert('Failed to read clipboard contents: ', err)
+        })
+      return
+    }
+
+    await app.api.postLink(this.state)
 
     this.setState({ ref: '' })
     this.props.refClick()
