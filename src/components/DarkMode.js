@@ -1,6 +1,7 @@
 import React from 'react'
 import ThemeContext from '../context/theme'
 import Toggle from './atom/toggle'
+import { moon, sun } from './atom/icon'
 
 export default function DarkMode() {
   return (
@@ -10,7 +11,7 @@ export default function DarkMode() {
           icons={{
             checked: (
               <img
-                src="/static/images/moon.png"
+                src={moon}
                 alt="moon"
                 width="16"
                 height="16"
@@ -20,7 +21,7 @@ export default function DarkMode() {
             ),
             unchecked: (
               <img
-                src="/static/images/sun.png"
+                src={sun}
                 alt="sun"
                 width="16"
                 height="16"
