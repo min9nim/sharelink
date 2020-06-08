@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import ThemeContext from '../context/theme'
 import Toggle from './atom/toggle'
 
