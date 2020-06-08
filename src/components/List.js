@@ -41,8 +41,8 @@ function List(props) {
     <>
       <div className="intro">
         {'* ' + intro + '(' + totalCount + '개)'}
-        <DarkMode />
         {app.auth.isLogin(props.state) && <NewButton />}
+        <DarkMode />
       </div>
       <ul className="PostList">
         {links.map((link, idx) => (
