@@ -1,22 +1,37 @@
 import React, { useState, useEffect } from 'react'
 import ThemeContext from '../context/theme'
+import Toggle from './atom/toggle'
 
 export default function DarkMode() {
   return (
     <ThemeContext.Consumer>
       {(ctx) => (
-        <div
-          style={{
-            color: 'var(--textNormal)',
-            cursor: 'pointer',
+        <Toggle
+          icons={{
+            checked: (
+              <img
+                src="/static/images/moon.png"
+                alt="moon"
+                width="16"
+                height="16"
+                role="presentation"
+                style={{ pointerEvents: 'none' }}
+              />
+            ),
+            unchecked: (
+              <img
+                src="/static/images/sun.png"
+                alt="sun"
+                width="16"
+                height="16"
+                role="presentation"
+                style={{ pointerEvents: 'none' }}
+              />
+            ),
           }}
-          onClick={() => {
-            console.log('122', ctx.theme)
-            ctx.setTheme(ctx.theme === 'dark' ? 'light' : 'dark')
-          }}
-        >
-          {ctx.theme === 'dark' ? 'L' : 'D'}
-        </div>
+          checked={ctx.theme === 'dark'}
+          onChange={(e) => ctx.setTheme(e.target.checked ? 'dark' : 'light')}
+        />
       )}
     </ThemeContext.Consumer>
   )
