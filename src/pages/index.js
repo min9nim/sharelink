@@ -3,6 +3,7 @@ import Layout from '../components/Layout'
 import app from '../biz/app'
 import { useState, useEffect } from 'react'
 import { withLogger } from '../biz'
+import { ThemeProvider } from '../context/theme'
 
 function Index(props) {
   const logger = props.logger
@@ -34,9 +35,11 @@ function Index(props) {
 
   logger.verbose('render')
   return (
-    <Layout state={state}>
-      <List state={state} />
-    </Layout>
+    <ThemeProvider>
+      <Layout state={state}>
+        <List state={state} />
+      </Layout>
+    </ThemeProvider>
   )
 }
 
