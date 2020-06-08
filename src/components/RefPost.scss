@@ -55,11 +55,11 @@ $img-width-mobile: 100px;
 
         div {
           margin-right: 5px;
-          color: #888;
+          color: var(--textDesc);
           font-size: 11px;
           width: 43px;
           cursor: pointer;
-          border: 1px solid #ddd;
+          border: 1px solid var(--textDesc);
           padding: 4px;
           /* margin: 3px; */
           background-color: var(--bg);

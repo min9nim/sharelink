@@ -5,9 +5,9 @@ body {
   &.light {
     --bg: #ffffff;
     --bg-secondary: rgb(249, 250, 251);
-    --textNormal: #555;
     --textTitle: #444;
-    --textDesc: #666;
+    --textNormal: #555;
+    --textDesc: #999;
     --hr: hsla(0, 0%, 0%, 0.2);
     --form-shadow: 0 2px 15px 0 rgba(210, 214, 220, 0.5);
     --code-bg-color: #011627;
@@ -21,7 +21,7 @@ body {
     --bg-secondary: rgb(54, 60, 72);
     --textTitle: #eee;
     --textNormal: #ddd;
-    --textDesc: #ccc;
+    --textDesc: #888;
     --hr: hsla(0, 0%, 100%, 0.2);
     --form-shadow: 0 2px 15px 0 rgba(26, 26, 27, 0.637);
     --link-color: #33addd;
