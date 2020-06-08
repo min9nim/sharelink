@@ -1,8 +1,40 @@
+body {
+  background-color: var(--bg);
+  font-family: 'Apple SD Gothic Neo', AppleGothic, NanumBarunGothic, 'Malgun Gothic', Dotum,
+    sans-serif;
+  &.light {
+    --bg: #ffffff;
+    --bg-secondary: rgb(249, 250, 251);
+    --textNormal: #555;
+    --textTitle: #444;
+    --textDesc: #666;
+    --hr: hsla(0, 0%, 0%, 0.2);
+    --form-shadow: 0 2px 15px 0 rgba(210, 214, 220, 0.5);
+    --code-bg-color: #011627;
+    --table-border-color: gray;
+    --box-shadow-color: rgba(16, 58, 102, 0.2);
+  }
+
+  &.dark {
+    -webkit-font-smoothing: antialiased;
+    --bg: #282c35;
+    --bg-secondary: rgb(54, 60, 72);
+    --textTitle: #eee;
+    --textNormal: #ddd;
+    --textDesc: #ccc;
+    --hr: hsla(0, 0%, 100%, 0.2);
+    --form-shadow: 0 2px 15px 0 rgba(26, 26, 27, 0.637);
+    --link-color: #33addd;
+    --table-border-color: #aaa;
+    --box-shadow-color: #777;
+  }
+}
+
 $mobile-width: 600px;
-$site-color: #91171F;
-$site-color-light:#BA1F33;
+$site-color: #91171f;
+$site-color-light: #ba1f33;
 @mixin mobile() {
-    @media only screen and (max-width: $mobile-width) {
-        @content;
-    }
+  @media only screen and (max-width: $mobile-width) {
+    @content;
+  }
 }

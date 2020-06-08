@@ -16,7 +16,7 @@ $img-width-mobile: 100px;
         font-size: 17px;
         font-weight: bold;
         a:-webkit-any-link {
-          color: #555;
+          color: var(--textNormal);
         }
       }
       .meta {
@@ -67,7 +67,7 @@ $img-width-mobile: 100px;
           border: 1px solid #ddd;
           padding: 4px;
           /* margin: 3px; */
-          background-color: #fafafa;
+          background-color: var(--bg);
           border-radius: 8px;
         }
 

@@ -41,7 +41,7 @@
       border: 1px solid #ddd;
       border-radius: 24px;
       background-color: #f6f6f6;
-      color: #555;
+      color: var(--textNormal);
       width: 27px;
       padding-left: 1px;
       height: 26px;
@@ -73,7 +73,7 @@
       cursor: pointer;
       font-size: 15px;
       padding: 6px 0px 6px 6px;
-      color: #444;
+      color: var(--textNormal);
     }
     .user-image {
       width: 30px;

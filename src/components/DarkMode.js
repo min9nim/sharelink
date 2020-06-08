@@ -6,7 +6,10 @@ export default function DarkMode() {
     <ThemeContext.Consumer>
       {(ctx) => (
         <div
-          style={{ cursor: 'pointer' }}
+          style={{
+            color: 'var(--textNormal)',
+            cursor: 'pointer',
+          }}
           onClick={() => {
             console.log('122', ctx.theme)
             ctx.setTheme(ctx.theme === 'dark' ? 'light' : 'dark')

@@ -4,12 +4,12 @@
   position: absolute;
   right: 0px;
   top: 50px;
-  background-color: white;
+  background-color: var(--bg);
   display: flex;
   flex-direction: column;
   padding: 17px;
   border-radius: 7px;
-  box-shadow: rgba(16, 58, 102, 0.2) 0px 5px 50px -5px;
+  box-shadow: var(--box-shadow-color) 0px 5px 50px -5px;
   font-family: sans-serif;
   .user-info {
     display: flex;
