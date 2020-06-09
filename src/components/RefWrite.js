@@ -81,10 +81,8 @@ export default class RefWrite extends React.Component {
             placeholder="관련 링크입력"
           />
         </div>
-        <div className="save-btn">
-          <button onKeyUp={this.handleKeyUp.bind(this)}>
-            <i onClick={this.saveRef} className="icon-floppy" />
-          </button>
+        <div className="save-btn" onKeyUp={this.handleKeyUp.bind(this)}>
+          <i onClick={this.saveRef} className="icon-floppy" />
         </div>
       </div>
     )

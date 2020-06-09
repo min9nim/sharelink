@@ -26,23 +26,20 @@
     }
   }
   .save-btn {
-    width: 70px;
     margin: 1px 0px;
     color: #666;
-    button {
-      width: 42px;
-      border: 0px;
-      i {
-        cursor: pointer;
-        font-size: 16px;
-        // margin-top: 20px;
-        margin-right: 3px;
-        padding-top: 3px;
-        padding-bottom: 2px;
-        padding-left: 3px;
-        padding-right: 6px;
-        -moz-user-focus: normal;
-      }
+    // border: 1px solid var(--textDesc);
+
+    i {
+      cursor: pointer;
+      font-size: 16px;
+      // margin-top: 20px;
+      margin-right: 3px;
+      padding-top: 3px;
+      padding-bottom: 2px;
+      padding-left: 3px;
+      padding-right: 6px;
+      -moz-user-focus: normal;
     }
   }
 }
