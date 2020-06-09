@@ -20,7 +20,7 @@ $img-width-mobile: 100px;
       margin-bottom: 10px;
       .label {
         font-size: 14px;
-        color: #555;
+        color: var(--textNormal);
         margin-bottom: 5px;
         .favicon {
           width: 20px;
@@ -32,7 +32,7 @@ $img-width-mobile: 100px;
         max-width: 800px;
         height: 24px;
         font-size: 14px;
-        color: #777;
+        color: var(--textNormal);
         padding-right: 25px;
         border: 1px solid #ddd;
       }
@@ -40,7 +40,7 @@ $img-width-mobile: 100px;
         text-align: right;
         height: 5px;
         .icon-cancel {
-          color: #777;
+          color: var(--textNormal);
           display: inline-block;
           top: -23px;
           right: -26px;
@@ -63,7 +63,7 @@ $img-width-mobile: 100px;
   div {
     display: inline-block;
     margin-right: 5px;
-    color: #666;
+    color: var(--textNormal);
     font-size: 13px;
     width: 49px;
     cursor: pointer;
