@@ -5,6 +5,7 @@ import Menu from './Menu'
 import Search from './Search'
 import { withRouter } from 'next/router'
 import { withLogger } from '../biz'
+import DarkMode from './DarkMode'
 
 /**
  * 로고 이미지 출처: https://www.fontspace.com
@@ -73,6 +74,15 @@ class Header extends React.Component {
         </div>
         <div className="search">
           {this.props.router.pathname === '/' && <Search />}
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            paddingBottom: '6px',
+          }}
+        >
+          <DarkMode />
         </div>
         <div className="btn-wrapper">
           {app.auth.isLogin(this.props.state) ? (
