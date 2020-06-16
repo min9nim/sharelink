@@ -24,43 +24,24 @@ function PostButton(props) {
   const isRead = link.read?.includes(props.userId)
   const isToread = link.toread?.includes(props.userId)
 
-  const likeClick = (link) =>
-    isLike ? app.api.unlike(link) : app.api.like(link)
+  const likeClick = link => (isLike ? app.api.unlike(link) : app.api.like(link))
 
-  const readClick = (link) =>
-    isRead ? app.api.unread(link) : app.api.read(link)
+  const readClick = link => (isRead ? app.api.unread(link) : app.api.read(link))
 
-  const toreadClick = (link) =>
-    isToread ? app.api.untoread(link) : app.api.toread(link)
+  const toreadClick = link => (isToread ? app.api.untoread(link) : app.api.toread(link))
 
   return (
     <>
-      <div
-        className={isLike ? 'sns-btn marked' : 'sns-btn'}
-        title="좋아요"
-        onClick={() => likeClick(link)}
-      >
+      <div className={isLike ? 'sns-btn marked' : 'sns-btn'} title="좋아요" onClick={() => likeClick(link)}>
         <i className="icon-thumbs-up" />
       </div>
-      <div
-        className={isRead ? 'sns-btn marked' : 'sns-btn'}
-        title="읽음표시"
-        onClick={() => readClick(link)}
-      >
+      <div className={isRead ? 'sns-btn marked' : 'sns-btn'} title="읽음표시" onClick={() => readClick(link)}>
         <i className="icon-ok" />
       </div>
-      <div
-        className={isToread ? 'sns-btn marked' : 'sns-btn'}
-        title="읽을 글 표시"
-        onClick={() => toreadClick(link)}
-      >
+      <div className={isToread ? 'sns-btn marked' : 'sns-btn'} title="읽을 글 표시" onClick={() => toreadClick(link)}>
         <i className="icon-basket" />
       </div>
-      <div
-        className="sns-btn comment-btn"
-        title="댓글"
-        onClick={props.commentClick}
-      >
+      <div className="sns-btn comment-btn" title="댓글" onClick={props.commentClick}>
         <i className="icon-comment-empty" />
       </div>
       {!props.isChild && (
@@ -76,11 +57,7 @@ function PostButton(props) {
             </div>
           </Link>
           {!hasChildren(link) && (
-            <div
-              className="delete-btn"
-              title="삭제"
-              onClick={() => remove(link)}
-            >
+            <div className="delete-btn" title="삭제" onClick={() => remove(link)}>
               <i className="icon-trash-empty" />
             </div>
           )}

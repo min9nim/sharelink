@@ -10,9 +10,9 @@ import { highlight } from 'mingutils'
 import PostButton from './PostButton'
 import { decorate, observable, reaction, action } from 'mobx'
 import './Post.scss'
-import {isAddable} from './search-fn'
+import { isAddable } from './search-fn'
 
-const loadImage = (img) => {
+const loadImage = img => {
   if (img.dataset.src) {
     img.src = img.dataset.src
   } else {
@@ -58,10 +58,9 @@ class Post extends React.Component {
   }
 
   async refClick() {
-    if(!this.state.refClicked){
-      try{
-        const text = await navigator.clipboard
-          .readText()
+    if (!this.state.refClicked) {
+      try {
+        const text = await navigator.clipboard.readText()
         if (isAddable(text)) {
           await app.api.postLink({
             linkID: this.props.link.id,
@@ -69,13 +68,13 @@ class Post extends React.Component {
             author: {
               id: app.state.user.id,
               name: app.state.user.name,
-            }})
+            },
+          })
           return
         }
-      }catch (err) {
+      } catch (err) {
         console.error(err)
       }
-
     }
     Object.assign(this.state, {
       refClicked: !this.state.refClicked,
@@ -95,35 +94,29 @@ class Post extends React.Component {
                 href={link.url}
                 target="_blank"
                 dangerouslySetInnerHTML={{
-                  __html: highlight(app.state.word)(
-                    htmlspecialchars(link.title),
-                  ),
+                  __html: highlight(app.state.word)(htmlspecialchars(link.title)),
                 }}
-              ></a>
+              />
             </div>
             <div className="meta">
               <img
                 className="lazy favicon"
                 data-src={link.favicon}
                 src="/static/loading.gif"
-                ref={(dom) => {
+                ref={dom => {
                   this.favicon = dom
                 }}
               />
               <div className="url">{_getHostname(link.url)}</div>
-              <div className="author-name">
-                {link.author && ' | by ' + link.author.name}
-              </div>
-              <div className="updatedAt">
-                {link.updatedAt && '| ' + moment(link.updatedAt).fromNow()}
-              </div>
+              <div className="author-name">{link.author && ' | by ' + link.author.name}</div>
+              <div className="updatedAt">{link.updatedAt && '| ' + moment(link.updatedAt).fromNow()}</div>
             </div>
             <div
               className="desc"
               dangerouslySetInnerHTML={{
                 __html: highlight(app.state.word)(htmlspecialchars(link.desc)),
               }}
-            ></div>
+            />
             <div className="post-menu">
               {app.auth.isLogin(this.props.state) && (
                 <PostButton
@@ -135,15 +128,8 @@ class Post extends React.Component {
                 />
               )}
             </div>
-            {this.state.commentClicked && (
-              <CommentWrite
-                linkID={link.id}
-                commentClick={this.commentClick.bind(this)}
-              />
-            )}
-            {this.state.refClicked && (
-              <RefWrite linkID={link.id} refClick={this.refClick.bind(this)} />
-            )}
+            {this.state.commentClicked && <CommentWrite linkID={link.id} commentClick={this.commentClick.bind(this)} />}
+            {this.state.refClicked && <RefWrite linkID={link.id} refClick={this.refClick.bind(this)} />}
             <CommentList comments={link.comments} state={this.props.state} />
           </div>
           <div className="right">
@@ -151,15 +137,13 @@ class Post extends React.Component {
               className="lazy"
               data-src={link.image}
               src="/static/loading.gif"
-              ref={(dom) => {
+              ref={dom => {
                 this.image = dom
               }}
-            ></img>
+            />
           </div>
         </div>
-        {link.refLinks && (
-          <RefPostList refLinks={link.refLinks} state={this.props.state} />
-        )}
+        {link.refLinks && <RefPostList refLinks={link.refLinks} state={this.props.state} />}
       </li>
     )
   }
