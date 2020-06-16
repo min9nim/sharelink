@@ -10,6 +10,7 @@ import { highlight } from 'mingutils'
 import PostButton from './PostButton'
 import { decorate, observable, reaction, action } from 'mobx'
 import './Post.scss'
+import {isAddable} from './search-fn'
 
 const loadImage = (img) => {
   if (img.dataset.src) {
@@ -56,7 +57,26 @@ class Post extends React.Component {
     )
   }
 
-  refClick() {
+  async refClick() {
+    if(!this.state.refClicked){
+      try{
+        const text = await navigator.clipboard
+          .readText()
+        if (isAddable(text)) {
+          await app.api.postLink({
+            linkID: this.props.link.id,
+            url: text,
+            author: {
+              id: app.state.user.id,
+              name: app.state.user.name,
+            }})
+          return
+        }
+      }catch (err) {
+        console.error(err)
+      }
+
+    }
     Object.assign(this.state, {
       refClicked: !this.state.refClicked,
       commentClicked: false,
