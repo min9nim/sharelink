@@ -45,8 +45,6 @@ export default class RefWrite extends React.Component {
             this.setState({ url: text }, () => {
               app.api.postLink(this.state).catch((e) => alert(e.message))
             })
-          } else {
-            alert('클립보드 데이터가 유효한 URL이 아닙니다.')
           }
         })
         .catch((err) => {
