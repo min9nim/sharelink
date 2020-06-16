@@ -15,15 +15,16 @@
         max-width: 300px;
         textarea {
             font-size: 14px;
-            color: #555;
+            color: var(--textNormal);
             overflow: hidden;
             padding-top: 0px;
             padding-bottom: 0px;
             height: 20px;
             resize: none;
             flex:1;
-            border: 1px solid #eee;
+            border: 1px solid var(--textNormal);
             min-width: 50px;
+            background-color: var(--bg);
         }
     }
     .save-btn {
@@ -32,7 +33,7 @@
         color: #666;
         button {
             width: 42px;
-            border: 0px;    
+            border: 0px;
             i {
                 cursor: pointer;
                 font-size: 16px;
@@ -43,7 +44,7 @@
                 padding-left: 3px;
                 padding-right: 6px;
                 -moz-user-focus: normal;
-                
+
             }
         }
     }
