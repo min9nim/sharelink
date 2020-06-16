@@ -38,19 +38,16 @@ export default class RefWrite extends React.Component {
     if (!app.state.user.id) return
 
     if (!this.state.url) {
-      await navigator.clipboard
+      const text = await navigator.clipboard
         .readText()
-        .then((text) => {
-          if (isAddable(text)) {
-            this.setState({ url: text }, () => {
-              app.api.postLink(this.state).catch((e) => alert(e.message))
-            })
-          }
+      if (isAddable(text)) {
+        this.setState({ url: text }, () => {
+          app.api.postLink(this.state).catch((e) => alert(e.message))
         })
-        .catch((err) => {
-          console.error(err)
-          alert('Failed to read clipboard contents: ', err)
-        })
+      }else{
+        alert('url 을 입력하세요')
+        return
+      }
     } else {
       await app.api.postLink(this.state)
     }
