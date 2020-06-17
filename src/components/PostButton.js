@@ -25,20 +25,19 @@ function PostButton(props) {
   const [isRead, setIsRead] = useState(link.read?.includes(props.userId))
   const [isToread, setIsToread] = useState(link.toread?.includes(props.userId))
 
-  const likeClick = link => {
+  const likeClick = async link => {
+    await isLike ? app.api.unlike(link) : app.api.like(link)
     setIsLike(R.not)
-    isLike ? app.api.unlike(link) : app.api.like(link)
   }
-  console.log('setIsRead', typeof setIsRead)
 
-  const readClick = link => {
+  const readClick = async link => {
+    await isRead ? app.api.unread(link) : app.api.read(link)
     setIsRead(R.not)
-    isRead ? app.api.unread(link) : app.api.read(link)
   }
 
-  const toreadClick = link => {
+  const toreadClick = async link => {
+    await isToread ? app.api.untoread(link) : app.api.toread(link)
     setIsToread(R.not)
-    isToread ? app.api.untoread(link) : app.api.toread(link)
   }
 
   return (
