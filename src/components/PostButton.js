@@ -3,6 +3,7 @@ import app from '../biz/app'
 import Link from 'next/link'
 import { remove, hasChildren } from './PostButton-fn'
 import { withLogger } from '../biz'
+import * as R from 'ramda'
 
 function PostButton(props) {
   // const [userId, setUserId] = useState(props.userId)
@@ -20,15 +21,25 @@ function PostButton(props) {
 
   const { link } = props
   // props.logger.verbose('link.like', link.like)
-  const isLike = link.like?.includes(props.userId)
-  const isRead = link.read?.includes(props.userId)
-  const isToread = link.toread?.includes(props.userId)
+  const [isLike, setIsLike] = useState(link.like?.includes(props.userId))
+  const [isRead, setIsRead] = useState(link.read?.includes(props.userId))
+  const [isToread, setIsToread] = useState(link.toread?.includes(props.userId))
 
-  const likeClick = link => (isLike ? app.api.unlike(link) : app.api.like(link))
+  const likeClick = link => {
+    setIsLike(R.not)
+    isLike ? app.api.unlike(link) : app.api.like(link)
+  }
+  console.log('setIsRead', typeof setIsRead)
 
-  const readClick = link => (isRead ? app.api.unread(link) : app.api.read(link))
+  const readClick = link => {
+    setIsRead(R.not)
+    isRead ? app.api.unread(link) : app.api.read(link)
+  }
 
-  const toreadClick = link => (isToread ? app.api.untoread(link) : app.api.toread(link))
+  const toreadClick = link => {
+    setIsToread(R.not)
+    isToread ? app.api.untoread(link) : app.api.toread(link)
+  }
 
   return (
     <>
