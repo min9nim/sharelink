@@ -11,18 +11,18 @@ module.exports = {
     API,
   },
   dir: './src',
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Note: we provide webpack above so you should not `require` it
-    // Perform customizations to webpack config
-    // Important: return the modified config
-    // auto open window setting // do now works 😭
-    if(config.devServer){
-      config.devServer.open = true
-    }else{
-      config.devServer = {open: true}
-    }
-
-    return config
-  },
+  // webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+  //   // Note: we provide webpack above so you should not `require` it
+  //   // Perform customizations to webpack config
+  //   // Important: return the modified config
+  //   // auto open window setting // do now works 😭
+  //   if(config.devServer){
+  //     config.devServer.open = true
+  //   }else{
+  //     config.devServer = {open: true}
+  //   }
+  //
+  //   return config
+  // },
 
 }
